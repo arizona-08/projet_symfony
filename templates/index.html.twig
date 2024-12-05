@@ -1,6 +1,15 @@
 {% extends "base.html.twig" %}
 
+{% block title %}Welcome!{% endblock %}
 {% block body %}
-    {# Créer un template navbar #}
-   <h1 class="text-3xl font-semibold">Bienvenue sur FlexiFleet</h1>
+    {% include "components/navbar.html.twig" %}
+    <main class="max-w-7xl m-auto">
+        {% block main %}
+            <section class="px-3 py-6 custom-2xl:px-0">
+                <h1 class="text-5xl font-semibold">Bienvenue sur FlexiFleet</h1>
+            </section>
+        {% endblock %}
+        
+    </main>
+   
 {% endblock %}
