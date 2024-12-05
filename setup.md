@@ -1,4 +1,4 @@
-Run the following commands for setup:
+## Run the following commands for setup:
 
 - ``docker compose build --no-cache`` to build the project
 - ``docker compose up -d`` to start the containers
