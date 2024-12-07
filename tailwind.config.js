@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       screens: {
         "custom-2xl" : "1292px"
+      },
+      backgroundImage: {
+        'hero-car': "url('./imgs/hero-car.jpg')"
       }
     },
   },
