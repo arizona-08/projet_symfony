@@ -1,0 +1,75 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Détails du véhicule{% endblock %}
+
+{% block main %}
+<section class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Détails du véhicule : {{ vehicle.marque }} - {{ vehicle.model }}</h2>
+        </div>
+
+        <!-- Vehicle Details -->
+        <div class="bg-white p-6 shadow-md rounded-lg">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Modèle :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.model }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Marque :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.marque }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Dernière maintenance :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.lastMaintenance|date('d/m/Y') }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nombre de kilomètres :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.nbKilometrage }} Km</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Numéro de série :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.nbSerie }}</p>
+                </div>
+                {# Commenté car lié à Status #}
+                {# <div>
+                    <label class="block text-sm font-medium text-gray-700">Statut :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.status.label }}</p>
+                </div> #}
+                {# Commenté car lié à Agency #}
+                {# <div>
+                    <label class="block text-sm font-medium text-gray-700">Agence :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.agency.label }}</p>
+                </div> #}
+                {# Commenté car lié à Supplier #}
+                {# <div>
+                    <label class="block text-sm font-medium text-gray-700">Fournisseur :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.supplier.label }}</p>
+                </div> #}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Prix par jour :</label>
+                    <p class="mt-1 text-gray-800">{{ vehicle.pricePerDay }} €</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end space-x-4">
+                <a href="{{ path('vehicle_index') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium">
+                    Retour
+                </a>
+                <a href="{{ path('vehicle_edit', { id: vehicle.id }) }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium">
+                    Modifier
+                </a>
+                <form action="{{ path('vehicle_delete', { id: vehicle.id }) }}" method="POST" class="inline">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="px-2 py-1 border-2 bg-red-600 rounded text-white font-medium hover:bg-red-700">
+                        Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
