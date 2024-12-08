@@ -79,6 +79,8 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.6",
+        "hautelook/alice-bundle": "^2.14",
+        "pelmered/fake-car": "^2.1",
         "symfony/maker-bundle": "^1.61"
     }
 }
