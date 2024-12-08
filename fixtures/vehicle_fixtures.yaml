@@ -1,0 +1,8 @@
+App\Entity\Vehicle:
+    car_{1..10}:
+        model: <vehicleModel()>
+        marque: <vehicleBrand()>
+        last_maintenance: <dateTimeBetween('-1 year', 'now')>
+        nb_kilometrage: <numberBetween(1000, 100000)>
+        nb_serie: <vin()>
+        price_per_day: <numberBetween(50, 200)>
