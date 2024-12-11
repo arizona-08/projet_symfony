@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: '`users`')]
 class User
 {
     #[ORM\Id]
@@ -32,6 +34,14 @@ class User
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Agency::class, cascade: ['persist', 'remove'])]
+    private Collection $agencies;
+
+    public function __construct()
+    {
+        $this->agencies = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,7 +55,6 @@ class User
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -57,7 +66,6 @@ class User
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -69,7 +77,6 @@ class User
     public function setEmailVerifiedAt(\DateTimeImmutable $email_verified_at): static
     {
         $this->email_verified_at = $email_verified_at;
-
         return $this;
     }
 
@@ -81,7 +88,6 @@ class User
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -93,7 +99,6 @@ class User
     public function setRememberToken(?string $remember_token): static
     {
         $this->remember_token = $remember_token;
-
         return $this;
     }
 
@@ -105,6 +110,35 @@ class User
     public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agency>
+     */
+    public function getAgencies(): Collection
+    {
+        return $this->agencies;
+    }
+
+    public function addAgency(Agency $agency): static
+    {
+        if (!$this->agencies->contains($agency)) {
+            $this->agencies->add($agency);
+            $agency->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgency(Agency $agency): static
+    {
+        if ($this->agencies->removeElement($agency)) {
+            // Set the owning side to null (unless already changed)
+            if ($agency->getUser() === $this) {
+                $agency->setUser(null);
+            }
+        }
 
         return $this;
     }

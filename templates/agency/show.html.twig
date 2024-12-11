@@ -1,0 +1,78 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Agence - {{ agency.label }}{% endblock %}
+
+{% block main %}
+<section class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Agence : {{ agency.label }}</h2>
+        </div>
+        <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <table class="w-full table-auto">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2 text-center">Nom de l'agence</th>
+                        <th class="px-4 py-2 text-center">Chef d'agence</th>
+                        <th class="px-4 py-2 text-center">Nombre de véhicules</th>
+                        <th class="px-4 py-2 text-center">Adresse</th>
+                        <th class="px-4 py-2 text-center">Ville</th>
+                        <th class="px-4 py-2 text-center">Code postal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-4 py-2 text-center">{{ agency.label }}</td>
+                        <td class="px-4 py-2 text-center">{{ agency.user.name }}</td>
+                        <td class="px-4 py-2 text-center">{{ agency.vehicles|length }}</td>
+                        <td class="px-4 py-2 text-center">{{ agency.address }}</td>
+                        <td class="px-4 py-2 text-center">{{ agency.city }}</td>
+                        <td class="px-4 py-2 text-center">{{ agency.zipCode }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6">
+            <h3 class="text-2xl text-gray-800">Liste des véhicules possédés</h3>
+            <div class="mt-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <table class="w-full table-auto">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-center">Marque</th>
+                            <th class="px-4 py-2 text-center">Modèle</th>
+                            <th class="px-4 py-2 text-center">Dernière maintenance</th>
+                            <th class="px-4 py-2 text-center">Nombre de kilomètres</th>
+                            <th class="px-4 py-2 text-center">Numéro de série</th>
+                            <th class="px-4 py-2 text-center">Fournisseur</th>
+                            <th class="px-4 py-2 text-center">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if agency.vehicles is empty %}
+                            <tr class="hover:bg-gray-100">
+                                <td colspan="7" class="px-4 py-2 text-center">Cette agence ne possède aucun véhicule</td>
+                            </tr>
+                        {% else %}
+                            {% for vehicle in agency.vehicles %}
+                                <tr class="hover:bg-gray-100">
+                                    <td class="px-4 py-2 text-center">
+                                        <a href="{{ path('vehicle_show', { id: vehicle.id }) }}" class="underline text-blue-600 hover:text-blue-800">
+                                            {{ vehicle.marque }}
+                                        </a>
+                                    </td>
+                                    <td class="px-4 py-2 text-center">{{ vehicle.model }}</td>
+                                    <td class="px-4 py-2 text-center">{{ vehicle.lastMaintenance|date('d/m/Y') }}</td>
+                                    <td class="px-4 py-2 text-center">{{ vehicle.nbKilometrage }}</td>
+                                    <td class="px-4 py-2 text-center">{{ vehicle.nbSerie }}</td>
+                                    <td class="px-4 py-2 text-center">{{ vehicle.supplier.label ?? 'N/A' }}</td>
+                                    <td class="px-4 py-2 text-center">{{ vehicle.status.label ?? 'N/A' }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

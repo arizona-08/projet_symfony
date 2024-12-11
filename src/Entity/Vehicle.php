@@ -28,20 +28,12 @@ class Vehicle
     #[ORM\Column(type: 'string', length: 255)]
     private $nbSerie;
 
-    // #[ORM\ManyToOne(targetEntity: Status::class)]
-    // #[ORM\JoinColumn(nullable: false)]
-    // private $status;
-
-    // #[ORM\ManyToOne(targetEntity: Agency::class)]
-    // #[ORM\JoinColumn(nullable: false)]
-    // private $agency;
-
-    // #[ORM\ManyToOne(targetEntity: Supplier::class)]
-    // #[ORM\JoinColumn(nullable: false)]
-    // private $supplier;
-
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $pricePerDay;
+
+    #[ORM\ManyToOne(targetEntity: Agency::class, inversedBy: 'vehicles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agency $agency = null;
 
     public function getId(): ?int
     {
@@ -108,77 +100,6 @@ class Vehicle
         return $this;
     }
 
-    // public function getStatus(): ?Status
-    // {
-    //     return $this->status;
-    // }
-
-    // public function setStatus(?Status $status): self
-    // {
-    //     $this->status = $status;
-
-    //     return $this;
-    // }
-
-    // public function getAgency(): ?Agency
-    // {
-    //     return $this->agency;
-    // }
-
-    // public function setAgency(?Agency $agency): self
-    // {
-    //     $this->agency = $agency;
-
-    //     return $this;
-    // }
-
-    // public function getSupplier(): ?Supplier
-    // {
-    //     return $this->supplier;
-    // }
-
-    // public function setSupplier(?Supplier $supplier): self
-    // {
-    //     $this->supplier = $supplier;
-
-    //     return $this;
-    // }
-    // public function getStatus(): ?Status
-    // {
-    //     return $this->status;
-    // }
-
-    // public function setStatus(?Status $status): self
-    // {
-    //     $this->status = $status;
-
-    //     return $this;
-    // }
-
-    // public function getAgency(): ?Agency
-    // {
-    //     return $this->agency;
-    // }
-
-    // public function setAgency(?Agency $agency): self
-    // {
-    //     $this->agency = $agency;
-
-    //     return $this;
-    // }
-
-    // public function getSupplier(): ?Supplier
-    // {
-    //     return $this->supplier;
-    // }
-
-    // public function setSupplier(?Supplier $supplier): self
-    // {
-    //     $this->supplier = $supplier;
-
-    //     return $this;
-    // }
-
     public function getPricePerDay(): ?string
     {
         return $this->pricePerDay;
@@ -190,5 +111,16 @@ class Vehicle
 
         return $this;
     }
-}
 
+    public function getAgency(): ?Agency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?Agency $agency): self
+    {
+        $this->agency = $agency;
+
+        return $this;
+    }
+}
