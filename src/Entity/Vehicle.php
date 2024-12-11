@@ -43,6 +43,9 @@ class Vehicle
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $pricePerDay;
 
+    #[ORM\ManyToOne(inversedBy: 'vehicle')]
+    private ?Location $location = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -187,6 +190,18 @@ class Vehicle
     public function setPricePerDay(string $pricePerDay): self
     {
         $this->pricePerDay = $pricePerDay;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }
