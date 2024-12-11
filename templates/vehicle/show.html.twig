@@ -5,12 +5,9 @@
 {% block main %}
 <section class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Header Section -->
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Détails du véhicule : {{ vehicle.marque }} - {{ vehicle.model }}</h2>
         </div>
-
-        <!-- Vehicle Details -->
         <div class="bg-white p-6 shadow-md rounded-lg">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <div>
@@ -39,10 +36,10 @@
                     <p class="mt-1 text-gray-800">{{ vehicle.status.label }}</p>
                 </div> #}
                 {# Commenté car lié à Agency #}
-                {# <div>
+                <div>
                     <label class="block text-sm font-medium text-gray-700">Agence :</label>
                     <p class="mt-1 text-gray-800">{{ vehicle.agency.label }}</p>
-                </div> #}
+                </div>
                 {# Commenté car lié à Supplier #}
                 {# <div>
                     <label class="block text-sm font-medium text-gray-700">Fournisseur :</label>
@@ -53,8 +50,6 @@
                     <p class="mt-1 text-gray-800">{{ vehicle.pricePerDay }} €</p>
                 </div>
             </div>
-
-            <!-- Action Buttons -->
             <div class="flex justify-end space-x-4">
                 <a href="{{ path('vehicle_index') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium">
                     Retour

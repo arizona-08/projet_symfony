@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Agency;
 use App\Entity\Vehicle;
-// use App\Entity\Agency;
 // use App\Entity\Status;
 // use App\Entity\Supplier;
 use App\Repository\VehicleRepository;
@@ -18,11 +18,9 @@ class VehicleController extends AbstractController
     #[Route('/vehicles', name: 'vehicle_index', methods: ['GET'])]
     public function index(VehicleRepository $vehicleRepository, Request $request): Response
     {
-        // Récupération des paramètres de filtre
         $brand = $request->query->get('brand');
         $sortKm = $request->query->get('sort_km');
 
-        // Construction de la requête
         $queryBuilder = $vehicleRepository->createQueryBuilder('v');
 
         if ($brand) {
@@ -34,14 +32,12 @@ class VehicleController extends AbstractController
             $queryBuilder->orderBy('v.nbKilometrage', $sortKm);
         }
 
-        // Exécution de la requête
         $vehicles = $queryBuilder->getQuery()->getResult();
 
-        // Ajout de données fictives si la base est vide
         if (empty($vehicles)) {
             $this->addFlash('info', 'Aucun véhicule trouvé. Ajoutez des véhicules pour les afficher.');
         }
-        // Rendu de la vue avec les données
+
         return $this->render('vehicle/index.html.twig', [
             'vehicles' => $vehicles,
         ]);
@@ -62,12 +58,11 @@ class VehicleController extends AbstractController
             $vehicle->setNbSerie($data['nb_serie']);
             $vehicle->setPricePerDay($data['price_per_day']);
 
-            // Récupérer les relations (commentées pour le moment)
-            // $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
+            $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
             // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
             // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
 
-            // $vehicle->setAgency($agency);
+            $vehicle->setAgency($agency);
             // $vehicle->setStatus($status);
             // $vehicle->setSupplier($supplier);
 
@@ -77,13 +72,12 @@ class VehicleController extends AbstractController
             return $this->redirectToRoute('vehicle_index');
         }
 
-        // Récupérer les agences, statuts et fournisseurs (commentés pour le moment)
-        // $agencies = $entityManager->getRepository(Agency::class)->findAll();
+        $agencies = $entityManager->getRepository(Agency::class)->findAll();
         // $statuses = $entityManager->getRepository(Status::class)->findAll();
         // $suppliers = $entityManager->getRepository(Supplier::class)->findAll();
 
         return $this->render('vehicle/create.html.twig', [
-            // 'agencies' => $agencies,
+            'agencies' => $agencies,
             // 'statuses' => $statuses,
             // 'suppliers' => $suppliers,
         ]);
@@ -92,16 +86,13 @@ class VehicleController extends AbstractController
     #[Route('/vehicles/store', name: 'vehicle_store', methods: ['POST'])]
     public function store(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupération des données du formulaire
         $data = $request->request->all();
 
-        // Validation des champs (simple pour le moment, peut être améliorée avec un FormType)
         if (empty($data['marque']) || empty($data['model']) || empty($data['last_maintenance']) || empty($data['nb_kilometrage']) || empty($data['nb_serie']) || empty($data['price_per_day'])) {
             $this->addFlash('error', 'Tous les champs requis doivent être remplis.');
             return $this->redirectToRoute('vehicle_create');
         }
 
-        // Création d'un nouvel objet Vehicle
         $vehicle = new Vehicle();
         $vehicle->setModel($data['model']);
         $vehicle->setMarque($data['marque']);
@@ -110,24 +101,19 @@ class VehicleController extends AbstractController
         $vehicle->setNbSerie($data['nb_serie']);
         $vehicle->setPricePerDay((float) $data['price_per_day']);
 
-        // Récupérer les relations (commentées pour le moment)
-        // $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
+        $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
         // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
         // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
 
-        // Associer les relations (commentées pour le moment)
-        // $vehicle->setAgency($agency);
+        $vehicle->setAgency($agency);
         // $vehicle->setStatus($status);
         // $vehicle->setSupplier($supplier);
 
-        // Persister l'objet Vehicle
         $entityManager->persist($vehicle);
         $entityManager->flush();
 
-        // Message de confirmation
         $this->addFlash('success', 'Le véhicule a été ajouté avec succès.');
 
-        // Redirection vers la liste des véhicules
         return $this->redirectToRoute('vehicle_index');
     }
 
@@ -143,11 +129,10 @@ class VehicleController extends AbstractController
         $vehicle->setNbSerie($data['nb_serie']);
         $vehicle->setPricePerDay((float) $data['price_per_day']);
 
-        // Mise à jour des relations (commenté pour le moment)
-        // $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
+        $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
         // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
         // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
-        // $vehicle->setAgency($agency);
+        $vehicle->setAgency($agency);
         // $vehicle->setStatus($status);
         // $vehicle->setSupplier($supplier);
 
@@ -171,11 +156,11 @@ class VehicleController extends AbstractController
             $vehicle->setNbSerie($data['nb_serie']);
             $vehicle->setPricePerDay($data['price_per_day']);
 
-            // $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']); // Commenté
+            $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']); // Commenté
             // $status = $entityManager->getRepository(Status::class)->find($data['status_id']); // Commenté
             // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']); // Commenté
 
-            // $vehicle->setAgency($agency);
+            $vehicle->setAgency($agency);
             // $vehicle->setStatus($status);
             // $vehicle->setSupplier($supplier);
 
@@ -184,13 +169,13 @@ class VehicleController extends AbstractController
             return $this->redirectToRoute('vehicle_index');
         }
 
-        // $agencies = $entityManager->getRepository(Agency::class)->findAll(); // Commenté
+        $agencies = $entityManager->getRepository(Agency::class)->findAll(); // Commenté
         // $statuses = $entityManager->getRepository(Status::class)->findAll(); // Commenté
         // $suppliers = $entityManager->getRepository(Supplier::class)->findAll(); // Commenté
 
         return $this->render('vehicle/edit.html.twig', [
             'vehicle' => $vehicle,
-            // 'agencies' => $agencies,
+            'agencies' => $agencies,
             // 'statuses' => $statuses,
             // 'suppliers' => $suppliers,
         ]);

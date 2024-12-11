@@ -1,9 +1,69 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Agence{% endblock %}
+{% block title %}Agences
+{% endblock %}
 
 {% block main %}
-    <section class="max-w-8xl m-auto">
-        <h1 class="4xl">Agence</h1>
-    </section>
+	<section class="py-12">
+		<div
+			class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+			<div class="flex justify-between items-center mb-6">
+				<h2 class="text-2xl font-bold text-gray-800">Liste des agences</h2>
+				<a href="{{ path('agency_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium">
+					Ajouter une agence
+				</a>
+			</div>
+			<div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+				<table class="w-full border-collapse">
+					<thead class="bg-gray-200">
+						<tr>
+							<th class="px-4 py-2 border text-center">Nom de l'agence</th>
+							<th class="px-4 py-2 border text-center">Chef d'agence</th>
+							<th class="px-4 py-2 border text-center">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if agencies is empty %}
+							<tr>
+								<td colspan="3" class="px-4 py-2 text-center">Aucune agence à afficher</td>
+							</tr>
+						{% else %}
+							{% for agency in agencies %}
+								<tr class="hover:bg-gray-100">
+									<td class="px-4 py-2 border text-center">
+										{{ agency.label }}
+									</td>
+									<td class="px-4 py-2 border text-center">
+										{{ agency.user.name }}
+									</td>
+									<td class="px-4 py-2 border text-center">
+										<div class="flex justify-center items-center gap-2">
+											<a href="{{ path('agency_show', { id: agency.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
+												Voir
+											</a>
+											<a href="{{ path('agency_edit', { id: agency.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
+												Modifier
+											</a>
+											<form action="{{ path('agency_delete', { id: agency.id }) }}" method="POST" class="inline">
+												<input type="hidden" name="_method" value="DELETE">
+												<button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
+													Supprimer
+												</button>
+											</form>
+										</div>
+									</td>
+
+								</tr>
+							{% endfor %}
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+			<!-- Pagination -->
+			{# <div class="pagination mt-3">
+			    {{ knp_pagination_render(agencies) }}
+			</div> #}
+		</div>
+	</section>
 {% endblock %}
+
