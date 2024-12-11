@@ -14,7 +14,7 @@
                     {% if app.user is defined and app.user is not null %}
                         <button class="px-2 py-1 bg-red-600 rounded max-w-md font-medium text-white"><a href="{{ path('dashboard') }}">Aller à l'accueil</a></button>
                     {% else %}
-                        <button class="px-2 py-1 bg-red-600 rounded max-w-md font-medium text-white"><a href="{{ path('register') }}">Inscription</a></button>
+                        <button class="px-2 py-1 bg-red-600 rounded max-w-md font-medium text-white"><a href="{{ path('app_register') }}">Inscription</a></button>
                     {% endif %}
                 </div>
             </section>
