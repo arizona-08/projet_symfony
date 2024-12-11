@@ -2,7 +2,7 @@
 
 {% block main %}
     {# Ajoutez les class max-w-8xl à la div/section la plus haute pour aligner avec la navbar #}
-    <section class="max-w-8xl m-auto">
-        <h1>Dashboard</h1>
+    <section class="max-w-8xl m-auto px-3 py-12">
+        <h1 class="text-3xl font-semibold">Bonjour{{user != null ? ', ' ~ user.getName : ''}} </h1>
     </section>
 {% endblock %}

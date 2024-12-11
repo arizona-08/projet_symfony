@@ -33,12 +33,25 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+    
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER]
+        ROLE_USER:
+        ROLE_AGENCY_HEAD:
+        ROLE_ORDER_MANAGER:
+        ROLE_SUPPLIER:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+
+        # Je commente tout pour l'instant en attendant de créer plusieurs users avec des rôles différent
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
+        # - { path: ^/vehicle, roles: [ROLE_ADMIN, ROLE_USER, ROLE_AGENCY_HEAD, ROLE_SUPPLIER, ROLE_ORDER_MANAGER] }
+        # - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
+        # - { path: ^/profile, roles: ROLE_USER } A créer
 
 when@test:
     security:
