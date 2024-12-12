@@ -37,8 +37,8 @@ final class Version20241210200403 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE vehicle DROP CONSTRAINT FK_1B80E48664D218E');
-        $this->addSql('DROP TABLE location');
         $this->addSql('DROP TABLE "user"');
+        $this->addSql('DROP TABLE location');
         $this->addSql('DROP TABLE vehicle');
     }
 }
