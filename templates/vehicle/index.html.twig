@@ -5,15 +5,12 @@
 {% block main %}
 <section class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Header Section -->
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Liste des véhicules</h2>
             <a href="{{ path('vehicle_create') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium">
                 Ajouter un véhicule
             </a>
         </div>
-
-        <!-- Filter Section -->
         <form action="{{ path('vehicle_index') }}" method="GET" class="flex flex-wrap gap-4 items-center mb-6">
             <div>
                 <label for="brand" class="mr-2 text-gray-700">Marque :</label>
@@ -34,8 +31,6 @@
                 Filtrer
             </button>
         </form>
-
-        <!-- Vehicles Table -->
         <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <table class="w-full border-collapse">
                 <thead class="bg-gray-200">
@@ -45,6 +40,7 @@
                         <th class="px-4 py-2 border text-center">Dernière maintenance</th>
                         <th class="px-4 py-2 border text-center">Nombre de kilomètres</th>
                         <th class="px-4 py-2 border text-center">Numéro de série</th>
+                        <th class="px-4 py-2 border text-center">Agence</th>
                         <th class="px-4 py-2 border text-center">Prix par jour</th>
                         <th class="px-4 py-2 border text-center">Action</th>
                     </tr>
@@ -62,21 +58,31 @@
                                 <td class="px-4 py-2 border text-center">{{ vehicle.lastMaintenance|date('d/m/Y') }}</td>
                                 <td class="px-4 py-2 border text-center">{{ vehicle.nbKilometrage }} Km</td>
                                 <td class="px-4 py-2 border text-center">{{ vehicle.nbSerie }}</td>
+                                <td class="px-4 py-2 border text-center">
+                                    {% if vehicle.agency %}
+                                        {{ vehicle.agency.label }}
+                                    {% else %}
+                                        Non assignée
+                                    {% endif %}
+                                </td>
                                 <td class="px-4 py-2 border text-center">{{ vehicle.pricePerDay }} €</td>
                                 <td class="px-4 py-2 border text-center">
-                                    <a href="{{ path('vehicle_show', { id: vehicle.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
-                                        Voir
-                                    </a>
-                                    <a href="{{ path('vehicle_edit', { id: vehicle.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
-                                        Modifier
-                                    </a>
-                                    <form action="{{ path('vehicle_delete', { id: vehicle.id }) }}" method="POST" class="inline">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="px-2 py-1 bg-red-600 rounded text-white font-medium hover:bg-red-700">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                </td>
+                                    <div class="flex justify-center gap-2">
+                                        <a href="{{ path('vehicle_show', { id: vehicle.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
+                                            Voir
+                                        </a>
+                                        <a href="{{ path('vehicle_edit', { id: vehicle.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
+                                            Modifier
+                                        </a>
+                                        <form action="{{ path('vehicle_delete', { id: vehicle.id }) }}" method="POST">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+
+                               </td>
                             </tr>
                         {% endfor %}
                     {% endif %}

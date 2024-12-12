@@ -1,0 +1,69 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Modifier une agence{% endblock %}
+
+{% block main %}
+<section class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 bg-white border-b border-gray-200">
+                <h2 class="text-2xl font-bold mb-4">Modifier l'agence : {{ agency.label }}</h2>
+
+                {% for message in app.flashes('error') %}
+                    <div class="bg-red-500 text-white p-4 rounded mb-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                <form action="{{ path('agency_update', {id: agency.id}) }}" method="post">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">Nom de l'agence</th>
+                                    <th class="px-4 py-2 text-left">Chef d'agence</th>
+                                    <th class="px-4 py-2 text-center">Adresse</th>
+                                    <th class="px-4 py-2 text-center">Ville</th>
+                                    <th class="px-4 py-2 text-center">Code postal</th>
+                                    <th class="px-4 py-2 text-left">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="label" value="{{ agency.label }}" placeholder="Nom de l'agence" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <select name="user_id" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                            {% for user in users %}
+                                                <option value="{{ user.id }}" {% if agency.user and agency.user.id == user.id %}selected{% endif %}>
+                                                    {{ user.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="address" value="{{ agency.address }}" placeholder="Adresse" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="text" name="city" value="{{ agency.city }}" placeholder="Ville" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    </td>
+                                    <td class="border px-4 py-2">
+                                        <input type="number" name="zip_code" value="{{ agency.zipCode }}" placeholder="Code postal" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    </td>
+                                    <td class="border px-4 py-2 text-center">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Valider
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
