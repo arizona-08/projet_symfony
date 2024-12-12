@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agency;
+use App\Entity\Supplier;
 use App\Entity\Vehicle;
 // use App\Entity\Status;
 // use App\Entity\Supplier;
@@ -60,11 +61,11 @@ class VehicleController extends AbstractController
 
             $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
             // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
-            // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
+            $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
 
             $vehicle->setAgency($agency);
             // $vehicle->setStatus($status);
-            // $vehicle->setSupplier($supplier);
+            $vehicle->setSupplier($supplier);
 
             $entityManager->persist($vehicle);
             $entityManager->flush();
@@ -74,12 +75,12 @@ class VehicleController extends AbstractController
 
         $agencies = $entityManager->getRepository(Agency::class)->findAll();
         // $statuses = $entityManager->getRepository(Status::class)->findAll();
-        // $suppliers = $entityManager->getRepository(Supplier::class)->findAll();
+        $suppliers = $entityManager->getRepository(Supplier::class)->findAll();
 
         return $this->render('vehicle/create.html.twig', [
             'agencies' => $agencies,
             // 'statuses' => $statuses,
-            // 'suppliers' => $suppliers,
+            'suppliers' => $suppliers,
         ]);
     }
 
@@ -103,11 +104,11 @@ class VehicleController extends AbstractController
 
         $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
         // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
-        // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
+        $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
 
         $vehicle->setAgency($agency);
         // $vehicle->setStatus($status);
-        // $vehicle->setSupplier($supplier);
+        $vehicle->setSupplier($supplier);
 
         $entityManager->persist($vehicle);
         $entityManager->flush();

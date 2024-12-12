@@ -1,9 +1,43 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Fournisseur{% endblock %}
+{% block title %}Fournisseur
+{% endblock %}
 
 {% block main %}
-    <section class="max-w-8xl m-auto">
-        <h1 class="4xl">Fournisseur</h1>
-    </section>
+	<section class="max-w-8xl m-auto py-12">
+		<div class="flex justify-between items-center mb-4">
+			<h1 class="text-3xl font-semibold">Listes des fournisseur</h1>
+			<a href="{{ path('supplier_new') }}" class="px-4 py-2 border-2 border-red-600 rounded font-medium">Ajouter un fournisseur</a>
+		</div>
+
+		<div class="w-full overflow-hidden rounded">
+			<table class="min-w-96 border-collapse border rounded">
+				<thead class="bg-slate-200 ">
+					<tr>
+						<th class="px-4 py-2 border text-center font-medium">Nom du Fournisseur</th>
+						<th class="px-4 py-2 border text-center font-medium">Date d'ajout</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if suppliers is not empty %}
+						{% for supplier in suppliers %}
+							<tr>
+								<td class="px-4 py-2 border text-center">
+									<a href="{{ path('supplier_show', {id: supplier.id}) }}" class="hover:text-blue-500 hover:underline">{{ supplier.label }}</a>
+								</td>
+								<td class="px-4 py-2 border text-center">{{ supplier.getCreatedAt|date('d/m/y') }}</td>
+							</tr>
+						{% endfor %}
+					{% else %}
+						<tr>
+							<td colspan="2" class="px-4 py-2 text-center">Aucun fournisseur</td>
+						</tr>
+					{% endif %}
+
+
+				</tbody>
+			</table>
+		</div>
+
+	</section>
 {% endblock %}

@@ -4,7 +4,7 @@
 
 {% block main %}
 <section class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Liste des véhicules</h2>
             <a href="{{ path('vehicle_create') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium">
@@ -41,6 +41,7 @@
                         <th class="px-4 py-2 border text-center">Nombre de kilomètres</th>
                         <th class="px-4 py-2 border text-center">Numéro de série</th>
                         <th class="px-4 py-2 border text-center">Agence</th>
+                        <th class="px-4 py-2 border text-center">Fournisseur</th>
                         <th class="px-4 py-2 border text-center">Prix par jour</th>
                         <th class="px-4 py-2 border text-center">Action</th>
                     </tr>
@@ -65,6 +66,7 @@
                                         Non assignée
                                     {% endif %}
                                 </td>
+                                <td class="px-4 py-2 border text-center">{{ vehicle.getSupplier.getLabel }}</td>
                                 <td class="px-4 py-2 border text-center">{{ vehicle.pricePerDay }} €</td>
                                 <td class="px-4 py-2 border text-center">
                                     <div class="flex justify-center gap-2">
