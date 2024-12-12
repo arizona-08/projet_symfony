@@ -5,25 +5,53 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users_in_memory: { memory: null }
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: dashboard
+                always_use_default_target_path: true
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                target: home
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
+    
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER]
+        ROLE_USER:
+        ROLE_AGENCY_HEAD:
+        ROLE_ORDER_MANAGER:
+        ROLE_SUPPLIER:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+
+        # Je commente tout pour l'instant en attendant de créer plusieurs users avec des rôles différent
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
+        # - { path: ^/vehicle, roles: [ROLE_ADMIN, ROLE_USER, ROLE_AGENCY_HEAD, ROLE_SUPPLIER, ROLE_ORDER_MANAGER] }
+        # - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
+        # - { path: ^/profile, roles: ROLE_USER } A créer
 
 when@test:
     security:

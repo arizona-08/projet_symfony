@@ -1,5 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
+    form_themes:
+        - 'form/base_form_style.html.twig'
 
 when@test:
     twig:
