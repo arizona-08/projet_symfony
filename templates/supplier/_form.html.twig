@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="inline-block mt-2 bg-red-600 rounded text-white font-medium px-4 py-2">{{ 
+        app.current_route == 'supplier_new' ? 'Ajouter' : 'Confirmer'
+     }}</button>
+{{ form_end(form) }}

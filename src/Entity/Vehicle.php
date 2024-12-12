@@ -74,15 +74,15 @@ class Vehicle
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $year = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $kilometer = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $vehicleType = null;
 
     #[ORM\ManyToOne(targetEntity: Agency::class, inversedBy: 'vehicles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Agency $agency = null;
+
+    #[ORM\ManyToOne(inversedBy: 'vehicles')]
+    private ?Supplier $supplier = null;
 
     public function getId(): ?int
     {
@@ -349,6 +349,18 @@ class Vehicle
     public function setAgency(?Agency $agency): self
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function getSupplier(): ?Supplier
+    {
+        return $this->supplier;
+    }
+
+    public function setSupplier(?Supplier $supplier): static
+    {
+        $this->supplier = $supplier;
 
         return $this;
     }

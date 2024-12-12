@@ -1,0 +1,13 @@
+{% extends "index.html.twig" %}
+
+{% block title %}Modifier un fournisseur{% endblock %}
+
+{% block main %}
+    <section class="max-w-8xl m-auto px-3 py-12">
+        <h1 class="text-3xl font-semibold mb-4">Modifier le fournisseur: {{ supplier.getId }} </h1>
+        <div class="max-w-96">
+            {% include "supplier/_form.html.twig" %}
+        </div>
+        
+    </section>
+{% endblock %}
