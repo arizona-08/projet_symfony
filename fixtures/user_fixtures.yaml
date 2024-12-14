@@ -1,0 +1,15 @@
+App\Entity\User:
+    user_1:
+        name: 'User One'
+        password: 'password1'
+        email: 'user1@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_USER']
+    user_2:
+        name: 'User Two'
+        password: 'password2'
+        email: 'user2@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_ADMIN']
