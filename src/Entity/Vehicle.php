@@ -63,9 +63,6 @@ class Vehicle
     private ?int $critair = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $fourWheel = null;
-
-    #[ORM\Column(nullable: true)]
     private ?int $hp = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -259,18 +256,6 @@ class Vehicle
     public function setCritair(?int $critair): static
     {
         $this->critair = $critair;
-
-        return $this;
-    }
-
-    public function isFourWheel(): ?bool
-    {
-        return $this->fourWheel;
-    }
-
-    public function setFourWheel(?bool $fourWheel): static
-    {
-        $this->fourWheel = $fourWheel;
 
         return $this;
     }
