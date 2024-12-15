@@ -5,7 +5,13 @@ namespace App\Entity;
 use App\Repository\VehicleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\InheritanceType;
 
+#[InheritanceType('JOINED')]
+#[DiscriminatorColumn(name: 'discr', type: 'string')]
+#[DiscriminatorMap(['car' => Car::class, 'motorcycle' => Motorcycle::class])]
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
 class Vehicle
 {
