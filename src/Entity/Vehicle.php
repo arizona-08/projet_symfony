@@ -23,8 +23,8 @@ class Vehicle
     #[ORM\Column(type: 'date')]
     private $lastMaintenance;
 
-    #[ORM\Column(type: 'integer')]
-    private $nbKilometrage;
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private $nbKilometrage = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $nbSerie;

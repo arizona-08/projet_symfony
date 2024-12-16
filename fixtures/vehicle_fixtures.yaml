@@ -27,6 +27,7 @@ App\Entity\Vehicle:
         equipment: <randomElements(["toit ouvrant", "attelage", "climatisation", "gps", "caméra de recul", "radar de recul", "cuir", "bluetooth", "toit panoramique", "régulateur", "carplay", "palette", "grip control"], 3 )>
         gearBoxType: <vehicleGearBoxType()>       # Type de boîte (manuelle/automatique)
         year: <biasedNumberBetween(1990, 2024, 'sqrt')> # Année du véhicule
-        kilometer: <numberBetween(0, 200000)>        # Kilométrage actuel
 
         vehicleType: <vehicleType()>    
+        agency: '@agency_1'
+        supplier: '@supplier_<numberBetween(1,3)>' # Associe un supplier aléatoire
