@@ -5,7 +5,13 @@ namespace App\Entity;
 use App\Repository\VehicleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\InheritanceType;
 
+#[InheritanceType('JOINED')]
+#[DiscriminatorColumn(name: 'discr', type: 'string')]
+#[DiscriminatorMap(['car' => Car::class, 'motorcycle' => Motorcycle::class])]
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
 class Vehicle
 {
@@ -55,9 +61,6 @@ class Vehicle
 
     #[ORM\Column(nullable: true)]
     private ?int $critair = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $fourWheel = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $hp = null;
@@ -253,18 +256,6 @@ class Vehicle
     public function setCritair(?int $critair): static
     {
         $this->critair = $critair;
-
-        return $this;
-    }
-
-    public function isFourWheel(): ?bool
-    {
-        return $this->fourWheel;
-    }
-
-    public function setFourWheel(?bool $fourWheel): static
-    {
-        $this->fourWheel = $fourWheel;
 
         return $this;
     }

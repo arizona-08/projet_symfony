@@ -28,6 +28,7 @@ class SupplierController extends AbstractController
         return $this->render('supplier/show.html.twig', ['supplier' => $supplier]);
     }
 
+
     #[Route(path: '/supplier/{id}/vehicles', name: 'supplier_showvehicle', methods: ['GET'])]
     public function showVehicle(Supplier $supplier): Response
     {
