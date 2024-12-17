@@ -83,40 +83,6 @@ class VehicleController extends AbstractController
         ]);
     }
 
-    #[Route('/vehicles/store', name: 'vehicle_store', methods: ['POST'])]
-    public function store(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $data = $request->request->all();
-
-        if (empty($data['marque']) || empty($data['model']) || empty($data['last_maintenance']) || empty($data['nb_kilometrage']) || empty($data['nb_serie']) || empty($data['price_per_day'])) {
-            $this->addFlash('error', 'Tous les champs requis doivent être remplis.');
-            return $this->redirectToRoute('vehicle_create');
-        }
-
-        $vehicle = new Vehicle();
-        $vehicle->setModel($data['model']);
-        $vehicle->setMarque($data['marque']);
-        $vehicle->setLastMaintenance(new \DateTime($data['last_maintenance']));
-        $vehicle->setNbKilometrage((int) $data['nb_kilometrage']);
-        $vehicle->setNbSerie($data['nb_serie']);
-        $vehicle->setPricePerDay((float) $data['price_per_day']);
-
-        $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
-        // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
-        $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
-
-        $vehicle->setAgency($agency);
-        // $vehicle->setStatus($status);
-        $vehicle->setSupplier($supplier);
-
-        $entityManager->persist($vehicle);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Le véhicule a été ajouté avec succès.');
-
-        return $this->redirectToRoute('vehicle_index');
-    }
-
     #[Route('/vehicles/{id}/update', name: 'vehicle_update', methods: ['POST', 'PUT'])]
     public function update(Request $request, Vehicle $vehicle, EntityManagerInterface $entityManager): Response
     {
@@ -138,7 +104,6 @@ class VehicleController extends AbstractController
 
         $entityManager->flush();
 
-        $this->addFlash('success', 'Le véhicule a été modifié avec succès.');
         return $this->redirectToRoute('vehicle_index');
     }
 
