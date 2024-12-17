@@ -15,20 +15,28 @@ use function Symfony\Component\Clock\now;
 
 class SupplierController extends AbstractController
 {
-    #[Route('/supplier', name: 'supplier_index')]
+    #[Route('/supplier', name: 'supplier_index', methods: ['GET'])]
     public function index(SupplierRepository $supplierRepository): Response
     {
         $suppliers = $supplierRepository->findAll();
         return $this->render('supplier/index.html.twig', ["suppliers" => $suppliers]);
     }
 
-    #[Route(path: '/supplier/{id}', name: 'supplier_show')]
-    public function show(Supplier $supplier): Response{
+    #[Route(path: '/supplier/{id}', name: 'supplier_show', methods: ['GET'])]
+    public function show(Supplier $supplier): Response
+    {
         return $this->render('supplier/show.html.twig', ['supplier' => $supplier]);
     }
 
-    #[Route(path: '/supplier/new', name: 'supplier_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response{
+    #[Route(path: '/supplier/{id}/vehicles', name: 'supplier_showvehicle', methods: ['GET'])]
+    public function showVehicle(Supplier $supplier): Response
+    {
+        return $this->render('supplier/showvehicle.html.twig', ['supplier' => $supplier]);
+    }
+
+    #[Route(path: '/supplier/create', name: 'supplier_create', methods: ['GET', 'POST'], priority: 10)]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    {
         $supplier = new Supplier();
         $form = $this->createForm(SupplierType::class, $supplier);
         $form->handleRequest($request);
@@ -42,8 +50,8 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('supplier_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('supplier/new.html.twig', [
-            'form' => $form,
+        return $this->render('supplier/create.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -61,7 +69,7 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('supplier_show', ['id' => $supplier->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('supplier/new.html.twig', [
+        return $this->render('supplier/create.html.twig', [
             'supplier' => $supplier,
             'form' => $form,
         ]);

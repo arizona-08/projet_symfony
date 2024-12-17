@@ -1,0 +1,54 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Détails du fournisseur{% endblock %}
+
+{% block main %}
+<section class="py-12">
+    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Fournisseur : {{ supplier.getLabel }}</h2>
+            <div class="flex gap-4">
+                <a href="{{ path('supplier_edit', { id: supplier.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
+                    Modifier
+                </a>
+                {% include 'supplier/_delete_form.html.twig' %}
+            </div>
+        </div>
+
+        <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <table class="w-full border-collapse">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2 border text-center">Marque</th>
+                        <th class="px-4 py-2 border text-center">Modèle</th>
+                        <th class="px-4 py-2 border text-center">Numéro de série</th>
+                        <th class="px-4 py-2 border text-center">Dernière maintenance</th>
+                        <th class="px-4 py-2 border text-center">Agence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if supplier.getVehicles is not empty %}
+                        {% for vehicle in supplier.getVehicles %}
+                            <tr class="hover:bg-gray-100">
+                                <td class="px-4 py-2 border text-center">{{ vehicle.marque }}</td>
+                                <td class="px-4 py-2 border text-center">{{ vehicle.model }}</td>
+                                <td class="px-4 py-2 border text-center">{{ vehicle.nbSerie }}</td>
+                                <td class="px-4 py-2 border text-center">{{ vehicle.lastMaintenance|date('d/m/Y') }}</td>
+                                <td class="px-4 py-2 border text-center">
+                                    <a href="{{ path('agency_show', { id: vehicle.agency.id }) }}" class="text-blue-600 hover:underline">
+                                        {{ vehicle.agency.label }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="px-4 py-2 text-center text-gray-500">Aucun véhicule associé à ce fournisseur.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,4 +1,7 @@
-<form method="post" action="{{ path('supplier_delete', {'id': supplier.id}) }}">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ supplier.id) }}">
-    <button class="px-4 py-2 font-medium text-white bg-red-600 rounded">Supprimer</button>
+<form action="{{ path('supplier_delete', { id: supplier.id }) }}" method="POST">
+	<input type="hidden" name="_method" value="DELETE">
+	<button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
+		Supprimer
+	</button>
 </form>
+

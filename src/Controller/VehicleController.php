@@ -6,7 +6,6 @@ use App\Entity\Agency;
 use App\Entity\Supplier;
 use App\Entity\Vehicle;
 // use App\Entity\Status;
-// use App\Entity\Supplier;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -132,10 +131,10 @@ class VehicleController extends AbstractController
 
         $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
         // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
-        // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
+        $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
         $vehicle->setAgency($agency);
         // $vehicle->setStatus($status);
-        // $vehicle->setSupplier($supplier);
+        $vehicle->setSupplier($supplier);
 
         $entityManager->flush();
 
@@ -159,11 +158,11 @@ class VehicleController extends AbstractController
 
             $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']); // Commenté
             // $status = $entityManager->getRepository(Status::class)->find($data['status_id']); // Commenté
-            // $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']); // Commenté
+            $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']); // Commenté
 
             $vehicle->setAgency($agency);
             // $vehicle->setStatus($status);
-            // $vehicle->setSupplier($supplier);
+            $vehicle->setSupplier($supplier);
 
             $entityManager->flush();
 
@@ -172,13 +171,13 @@ class VehicleController extends AbstractController
 
         $agencies = $entityManager->getRepository(Agency::class)->findAll(); // Commenté
         // $statuses = $entityManager->getRepository(Status::class)->findAll(); // Commenté
-        // $suppliers = $entityManager->getRepository(Supplier::class)->findAll(); // Commenté
+        $suppliers = $entityManager->getRepository(Supplier::class)->findAll(); // Commenté
 
         return $this->render('vehicle/edit.html.twig', [
             'vehicle' => $vehicle,
             'agencies' => $agencies,
             // 'statuses' => $statuses,
-            // 'suppliers' => $suppliers,
+            'suppliers' => $suppliers,
         ]);
     }
 

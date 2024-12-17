@@ -1,9 +1,72 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Utilisateur{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block main %}
-    <section class="max-w-8xl m-auto">
-        <h1 class="4xl">Utilisateur</h1>
-    </section>
+<section class="py-12">
+    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Liste des utilisateurs</h2>
+            <a href="{{ path('user_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
+                Ajouter un utilisateur
+            </a>
+        </div>
+
+        <!-- Flash messages -->
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <!-- Users Table -->
+        <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <table class="w-full border-collapse">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2 border text-center">Nom</th>
+                        <th class="px-4 py-2 border text-center">Email</th>
+                        <th class="px-4 py-2 border text-center">Rôle</th>
+                        <th class="px-4 py-2 border text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if users is empty %}
+                        <tr>
+                            <td colspan="4" class="px-4 py-2 text-center">Aucun utilisateur à afficher</td>
+                        </tr>
+                    {% else %}
+                        {% for user in users %}
+                            <tr class="hover:bg-gray-100">
+                                <td class="px-4 py-2 border text-center">{{ user.name }}</td>
+                                <td class="px-4 py-2 border text-center">{{ user.email }}</td>
+                                <td class="px-4 py-2 border text-center">
+                                    {{ user.roles|first|replace({'ROLE_': ''})|capitalize }}
+                                </td>
+                                <td class="px-4 py-2 border text-center">
+                                    <div class="flex justify-center gap-2">
+                                        <a href="{{ path('user_show', { id: user.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
+                                            Voir
+                                        </a>
+                                        <a href="{{ path('user_edit', { id: user.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
+                                            Modifier
+                                        </a>
+                                        <form action="{{ path('user_delete', { id: user.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                            <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 {% endblock %}
