@@ -44,12 +44,11 @@ class UserController extends AbstractController
             $user->setRoles([$data['role']]);
             $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
             $user->setCreatedAt(new \DateTimeImmutable());
-            $user->setEmailVerifiedAt(new \DateTimeImmutable()); // Ajout de la valeur
+            $user->setEmailVerifiedAt(new \DateTimeImmutable()); 
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Utilisateur créé avec succès.');
             return $this->redirectToRoute('user_index');
         }
 
@@ -92,7 +91,6 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Utilisateur créé avec succès.');
         return $this->redirectToRoute('user_index');
     }
 
@@ -133,7 +131,6 @@ class UserController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Utilisateur mis à jour avec succès.');
 
             return $this->redirectToRoute('user_index');
         }
@@ -165,7 +162,6 @@ class UserController extends AbstractController
 
         $entityManager->flush();
 
-        $this->addFlash('success', 'Utilisateur mis à jour avec succès.');
         return $this->redirectToRoute('user_index');
     }
 
@@ -176,7 +172,6 @@ class UserController extends AbstractController
             $entityManager->remove($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         }
 
         return $this->redirectToRoute('user_index');

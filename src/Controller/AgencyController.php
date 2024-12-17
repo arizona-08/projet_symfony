@@ -64,7 +64,6 @@ class AgencyController extends AbstractController
             $entityManager->persist($agency);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Agence créée avec succès.');
             return $this->redirectToRoute('agency_index');
         }
 
@@ -107,7 +106,6 @@ class AgencyController extends AbstractController
         $entityManager->persist($agency);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Agence créée avec succès.');
         return $this->redirectToRoute('agency_index');
     }
 
@@ -142,7 +140,6 @@ class AgencyController extends AbstractController
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'Agence mise à jour avec succès.');
             return $this->redirectToRoute('agency_index');
         }
 
@@ -187,7 +184,6 @@ class AgencyController extends AbstractController
 
         $entityManager->flush();
 
-        $this->addFlash('success', 'Agence mise à jour avec succès.');
         return $this->redirectToRoute('agency_index');
     }
 
@@ -198,7 +194,6 @@ class AgencyController extends AbstractController
         $entityManager->remove($agency);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Agence supprimée avec succès.');
         return $this->redirectToRoute('agency_index');
     }
 }
