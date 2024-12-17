@@ -23,6 +23,9 @@ services:
     App\DataFixtures\FakeCarProvider:
         arguments: ['@faker.generator']
         tags: ['nelmio_alice.faker.provider']
+
+    App\DataFixtures\MotorcycleProvider:
+        tags: ['nelmio_alice.faker.provider']
     
     Faker\Generator: '@faker'
     faker.generator:

@@ -1,4 +1,4 @@
-App\Entity\Vehicle:
+App\Entity\Car:
     car_{1..1000}:
         model: <vehicleModel()>
         marque: <vehicleBrand()>
