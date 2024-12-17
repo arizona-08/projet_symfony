@@ -1,45 +1,37 @@
 {% extends "index.html.twig" %}
 
-{% block title %}Fournisseur{% endblock %}
+{% block title %}Fournisseur: {{ supplier.getLabel }}{% endblock %}
 
 {% block main %}
-    <section class="max-w-8xl m-auto px-3 py-12">
-        <div class="w-full flex justify-between items-center">
-            <h1 class="text-3xl font-semibold mb-4">Fournisseur: {{supplier.getLabel}}</h1>
-            <div class="flex items-center gap-4">
-                <a href="{{ path('supplier_edit', {id: supplier.id}) }}" class="px-4 py-2 border-2 border-red-500 rounded font-medium">Modifier</a>
-                {% include "supplier/_delete_form.html.twig" %}
+<section class="max-w-8xl m-auto px-3 py-12">
+    <div class="w-full flex justify-between items-center">
+        <h1 class="text-3xl font-semibold mb-4">Fournisseur: {{ supplier.getLabel }}</h1>
+        <div class="flex items-center gap-4">
+            <a href="{{ path('supplier_edit', { id: supplier.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">Modifier</a>
+            {% include "supplier/_delete_form.html.twig" %}
+        </div>
+    </div>
+
+    <div class="bg-white p-6 shadow-md rounded-lg">
+        <div class="mb-4">
+            <h2 class="text-xl font-semibold">Détails du fournisseur</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Nom :</label>
+                <p class="mt-1 text-gray-800">{{ supplier.getLabel }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Date d'ajout :</label>
+                <p class="mt-1 text-gray-800">{{ supplier.getCreatedAt|date('d/m/Y') }}</p>
+            </div>
+            <div class="mt-6">
+                <a href="{{ path('vehicle_index', { id: supplier.id }) }}" class="px-4 py-2 border-2 border-blue-500 rounded font-medium text-blue-500 hover:bg-blue-500 hover:text-white">
+                    Voir les véhicules associés
+                </a>
             </div>
         </div>
-        
+    </div>
 
-        <h2 class="text-xl font-semibold mb-4">Véhicules:</h2>
-
-        <div class="w-full overflow-hidden rounded">
-            <table class="min-w-96 border-collapse rounded">
-                <thead class="bg-slate-200">
-                    <tr>
-                        <th class="px-4 py-2 border text-center font-medium">Marque</th>
-                        <th class="px-4 py-2 border text-center font-medium">Model</th>
-                        <th class="px-4 py-2 border text-center font-medium">Numéro de série</th>
-                        <th class="px-4 py-2 border text-center font-medium">Dernière maintenance</th>
-                        <th class="px-4 py-2 border text-center font-medium">Agence</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for vehicle in supplier.getVehicles %}
-                        <tr>
-                            <td class="px-4 py-2 border text-center">{{vehicle.marque}}</td>
-                            <td class="px-4 py-2 border text-center">{{vehicle.model}}</td>
-                            <td class="px-4 py-2 border text-center">{{vehicle.nbSerie}}</td>
-                            <td class="px-4 py-2 border text-center">{{vehicle.lastMaintenance|date('d/m/Y')}}</td>
-                            <td class="px-4 py-2 border text-center"><a href="{{ path('agency_show', {id: vehicle.agency.id}) }}" class="hover:text-blue-500 hover:underline">{{vehicle.agency.label}}</a></td>
-                        </tr>
-                    {% endfor %}
-                    
-                </tbody>
-            </table>
-        </div>
-        
-    </section>
+</section>
 {% endblock %}
