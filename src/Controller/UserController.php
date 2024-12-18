@@ -44,7 +44,7 @@ class UserController extends AbstractController
             $user->setRoles([$data['role']]);
             $user->setPassword($passwordHasher->hashPassword($user, $data['password']));
             $user->setCreatedAt(new \DateTimeImmutable());
-            $user->setEmailVerifiedAt(new \DateTimeImmutable()); 
+            $user->setEmailVerifiedAt(new \DateTimeImmutable());
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -75,7 +75,6 @@ class UserController extends AbstractController
     {
         $data = $request->request->all();
 
-        // Validation simple (ajoutez des règles plus robustes si nécessaire)
         if (empty($data['name']) || empty($data['email']) || empty($data['role']) || empty($data['password'])) {
             $this->addFlash('error', 'Tous les champs sont requis.');
             return $this->redirectToRoute('user_create');
@@ -106,27 +105,21 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        // Récupération des rôles disponibles
         $roles = $this->getAvailableRoles();
 
-        // Création du formulaire avec les données existantes de l'utilisateur
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Mise à jour du mot de passe s'il est fourni
             if ($form->get('plainPassword')->getData()) {
                 $user->setPassword(
                     $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData())
                 );
             }
 
-            // Assurer que email_verified_at est défini
             if ($user->getEmailVerifiedAt() === null) {
                 $user->setEmailVerifiedAt(new \DateTimeImmutable());
             }
-
-            // Mise à jour du champ updated_at
             $user->setUpdatedAt(new \DateTimeImmutable());
 
             $entityManager->flush();

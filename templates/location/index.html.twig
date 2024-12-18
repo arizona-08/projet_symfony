@@ -1,43 +1,70 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
-{% block title %}Location index{% endblock %}
+{% block title %}Liste des locations{% endblock %}
 
-{% block body %}
-{% include "components/navbar.html.twig" %}
-<h1>Location index</h1>
-<main class="relative">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Start_date</th>
-                <th>End_date</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for location in locations %}
-            <tr>
-                <td>{{ location.id }}</td>
-                <td>{{ location.startDate ? location.startDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ location.endDate ? location.endDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ location.createdAt ? location.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ location.updatedAt ? location.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_location_show', {'id': location.id}) }}">show</a>
-                    <a href="{{ path('app_location_edit', {'id': location.id}) }}">edit</a>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{% block main %}
+<section class="py-12">
+    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Liste des locations</h2>
+            <a href="{{ path('app_location_new') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
+                Ajouter une location
+            </a>
+        </div>
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-    <a href="{{ path('app_location_new') }}">Create new</a>
-</main>
+        <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <table class="w-full border-collapse">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-4 py-2 border text-center">Numéro de commande</th>
+                        <th class="px-4 py-2 border text-center">Date de début</th>
+                        <th class="px-4 py-2 border text-center">Date de fin</th>
+                        <th class="px-4 py-2 border text-center">Date de création</th>
+                        <th class="px-4 py-2 border text-center">Date de mise à jour</th>
+                        <th class="px-4 py-2 border text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if locations is empty %}
+                        <tr>
+                            <td colspan="6" class="px-4 py-2 text-center">Aucune location à afficher</td>
+                        </tr>
+                    {% else %}
+                        {% for location in locations %}
+                            <tr class="hover:bg-gray-100">
+                                <td class="px-4 py-2 border text-center">{{ location.id }}</td>
+                                <td class="px-4 py-2 border text-center">{{ location.startDate ? location.startDate|date('d/m/Y H:i') : 'Non définie' }}</td>
+                                <td class="px-4 py-2 border text-center">{{ location.endDate ? location.endDate|date('d/m/Y H:i') : 'Non définie' }}</td>
+                                <td class="px-4 py-2 border text-center">{{ location.createdAt ? location.createdAt|date('d/m/Y H:i') : 'Non définie' }}</td>
+                                <td class="px-4 py-2 border text-center">{{ location.updatedAt ? location.updatedAt|date('d/m/Y H:i') : 'Non définie' }}</td>
+                                <td class="px-4 py-2 border text-center">
+                                    <div class="flex justify-center gap-2">
+                                        <a href="{{ path('app_location_show', { id: location.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
+                                            Voir
+                                        </a>
+                                        <a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
+                                            Modifier
+                                        </a>
+                                        <form action="{{ path('app_location_delete', { id: location.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette location ?');">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.id) }}">
+                                            <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 {% endblock %}
