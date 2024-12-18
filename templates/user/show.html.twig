@@ -5,27 +5,22 @@
 {% block main %}
 <section class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Header Section -->
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Détails de l'utilisateur : {{ user.name }}</h2>
         </div>
 
-        <!-- User Details -->
         <div class="bg-white p-6 shadow-md rounded-lg">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <!-- Nom -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Nom :</label>
                     <p class="mt-1 text-gray-800">{{ user.name }}</p>
                 </div>
 
-                <!-- Email -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Email :</label>
                     <p class="mt-1 text-gray-800">{{ user.email }}</p>
                 </div>
 
-                <!-- Rôle -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Rôle :</label>
                     <p class="mt-1 text-gray-800">
@@ -37,13 +32,11 @@
                     </p>
                 </div>
 
-                <!-- Date de création -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Date de création :</label>
                     <p class="mt-1 text-gray-800">{{ user.createdAt|date('d/m/Y') }}</p>
                 </div>
 
-                <!-- Date de vérification de l'email -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Email vérifié le :</label>
                     <p class="mt-1 text-gray-800">
@@ -56,7 +49,6 @@
                 </div>
             </div>
 
-            <!-- Actions -->
             <div class="flex justify-end space-x-4">
                 <a href="{{ path('user_index') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium hover:bg-red-600 hover:text-white">
                     Retour
