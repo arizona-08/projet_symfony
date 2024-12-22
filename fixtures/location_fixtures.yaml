@@ -4,6 +4,7 @@ App\Entity\Location:
         end_date: <dateTimeBetween('-1 month', 'now')>
         created_at: <dateTime('now')>
         updated_at: ~
+        user: '@user_1'
         vehicle:
             - '@car_1'
             - '@car_2'
@@ -13,6 +14,7 @@ App\Entity\Location:
         end_date: <dateTimeBetween('-1 month', 'now')>
         created_at: <dateTime('now')>
         updated_at: ~
+        user: '@user_1'
         vehicle:
             - '@car_4'
             - '@car_5'
@@ -21,6 +23,7 @@ App\Entity\Location:
         end_date: <dateTimeBetween('-1 month', 'now')>
         created_at: <dateTime('now')>
         updated_at: ~
+        user: '@user_1'
         vehicle:
             - '@car_6'
             - '@car_7'

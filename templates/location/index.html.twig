@@ -3,68 +3,72 @@
 {% block title %}Liste des locations{% endblock %}
 
 {% block main %}
-<section class="py-12">
-    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Liste des locations</h2>
-            <a href="{{ path('app_location_new') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
-                Ajouter une location
-            </a>
-        </div>
-        {% for message in app.flashes('success') %}
-            <div class="bg-green-500 text-white p-4 rounded mb-4">
-                {{ message }}
-            </div>
-        {% endfor %}
+<section class="max-w-8xl m-auto px-3 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Liste des locations</h1>
+        <p class="text-lg text-gray-600 mt-3">Gérez vos commandes de véhicules avec facilité.</p>
+    </div>
 
-        <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <table class="w-full border-collapse">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="px-4 py-2 border text-center">Numéro de commande</th>
-                        <th class="px-4 py-2 border text-center">Date de début</th>
-                        <th class="px-4 py-2 border text-center">Date de fin</th>
-                        <th class="px-4 py-2 border text-center">Date de création</th>
-                        <th class="px-4 py-2 border text-center">Date de mise à jour</th>
-                        <th class="px-4 py-2 border text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if locations is empty %}
-                        <tr>
-                            <td colspan="6" class="px-4 py-2 text-center">Aucune location à afficher</td>
-                        </tr>
-                    {% else %}
-                        {% for location in locations %}
-                            <tr class="hover:bg-gray-100">
-                                <td class="px-4 py-2 border text-center">{{ location.id }}</td>
-                                <td class="px-4 py-2 border text-center">{{ location.startDate ? location.startDate|date('d/m/Y H:i') : 'Non définie' }}</td>
-                                <td class="px-4 py-2 border text-center">{{ location.endDate ? location.endDate|date('d/m/Y H:i') : 'Non définie' }}</td>
-                                <td class="px-4 py-2 border text-center">{{ location.createdAt ? location.createdAt|date('d/m/Y H:i') : 'Non définie' }}</td>
-                                <td class="px-4 py-2 border text-center">{{ location.updatedAt ? location.updatedAt|date('d/m/Y H:i') : 'Non définie' }}</td>
-                                <td class="px-4 py-2 border text-center">
-                                    <div class="flex justify-center gap-2">
-                                        <a href="{{ path('app_location_show', { id: location.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
-                                            Voir
-                                        </a>
-                                        <a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-2 py-1 border-2 border-yellow-600 rounded font-medium text-yellow-600 hover:bg-yellow-600 hover:text-white">
-                                            Modifier
-                                        </a>
-                                        <form action="{{ path('app_location_delete', { id: location.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette location ?');">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.id) }}">
-                                            <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
-                                                Supprimer
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
+    <div class="mb-10 text-center">
+        <a href="{{ path('app_location_new') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
+            Ajouter une location
+        </a>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-6">
+        {% if locationsWithTotalPrice is not empty %}
+            {% for item in locationsWithTotalPrice %}
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200 w-full sm:w-1/2 lg:w-1/3 max-w-xs flex flex-col">
+                    <div class="p-6 flex-1">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Commande n°{{ item.location.id }}</h3>
+                        <p class="text-gray-600">Utilisateur :
+                            <span class="font-medium">
+                                {{ item.location.user ? item.location.user.name : 'Utilisateur inconnu' }}
+                            </span>
+                        </p>
+                        <p class="text-gray-600 mt-2">Date :
+                            <span class="font-medium">
+                                {{ item.location.startDate ? item.location.startDate|date('d/m/Y') : 'Non définie' }}
+                            </span> -
+                            <span class="font-medium">
+                                {{ item.location.endDate ? item.location.endDate|date('d/m/Y') : 'Non définie' }}
+                            </span>
+                        </p>
+                        <p class="text-gray-600 mt-2">Prix total :
+                            <span class="font-bold text-blue-600">{{ item.totalPrice }}€</span>
+                        </p>
+                        <p class="text-gray-600 mt-4">Véhicules :</p>
+                        <ul class="list-disc list-inside">
+                            {% for vehicle in item.location.vehicle %}
+                                <li>{{ vehicle.marque }} - {{ vehicle.model }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-gray-50 flex justify-between gap-2">
+                        <a href="{{ path('app_location_show', { id: item.location.id }) }}" class="flex-1 px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors text-center">
+                            Voir
+                        </a>
+                        <a href="{{ path('app_location_edit', { id: item.location.id }) }}" class="flex-1 px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors text-center">
+                            Modifier
+                        </a>
+                        <form action="{{ path('app_location_delete', { id: item.location.id }) }}" method="POST" class="flex-1" onsubmit="return confirm('Voulez-vous vraiment supprimer cette location ?');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.location.id) }}">
+                            <button type="submit" class="w-full px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors text-center">
+                                Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center">
+                <p class="text-gray-500 text-lg">Aucune location à afficher.</p>
+            </div>
+        {% endif %}
+    </div>
+    <div class="mt-8 text-center">
+        {{ knp_pagination_render(locations) }}
     </div>
 </section>
 {% endblock %}

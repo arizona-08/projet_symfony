@@ -3,67 +3,55 @@
 {% block title %}Détails de l'utilisateur{% endblock %}
 
 {% block main %}
-<section class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Détails de l'utilisateur : {{ user.name }}</h2>
+<section class="max-w-4xl m-auto px-4 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Détails de l'utilisateur</h1>
+        <p class="text-lg text-gray-600 mt-3">Visualisez les informations détaillées de l'utilisateur sélectionné.</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 text-center mx-auto">
+        <div class="p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ user.name }}</h2>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Email :</span> {{ user.email }}
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Rôle :</span>
+                {% if user.roles is not empty %}
+                    {{ user.roles[0]|replace({'ROLE_': ''})|capitalize }}
+                {% else %}
+                    Aucun rôle attribué
+                {% endif %}
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Créé le :</span>
+                {{ user.createdAt ? user.createdAt|date('d/m/Y H:i') : 'Non défini' }}
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Email vérifié :</span>
+                {% if user.emailVerifiedAt %}
+                    {{ user.emailVerifiedAt|date('d/m/Y') }}
+                {% else %}
+                    Non vérifié
+                {% endif %}
+            </p>
         </div>
+    </div>
 
-        <div class="bg-white p-6 shadow-md rounded-lg">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Nom :</label>
-                    <p class="mt-1 text-gray-800">{{ user.name }}</p>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Email :</label>
-                    <p class="mt-1 text-gray-800">{{ user.email }}</p>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Rôle :</label>
-                    <p class="mt-1 text-gray-800">
-                        {% if user.roles is not empty %}
-                            {{ user.roles[0] }}
-                        {% else %}
-                            Aucun rôle attribué
-                        {% endif %}
-                    </p>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Date de création :</label>
-                    <p class="mt-1 text-gray-800">{{ user.createdAt|date('d/m/Y') }}</p>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Email vérifié le :</label>
-                    <p class="mt-1 text-gray-800">
-                        {% if user.emailVerifiedAt %}
-                            {{ user.emailVerifiedAt|date('d/m/Y') }}
-                        {% else %}
-                            Non vérifié
-                        {% endif %}
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-4">
-                <a href="{{ path('user_index') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium hover:bg-red-600 hover:text-white">
-                    Retour
-                </a>
-                <a href="{{ path('user_edit', { id: user.id }) }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium text-blue-600 hover:bg-blue-600 hover:text-white">
-                    Modifier
-                </a>
-                <form action="{{ path('user_delete', { id: user.id }) }}" method="POST" class="inline">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium text-red-600 hover:bg-red-600 hover:text-white">
-                        Supprimer
-                    </button>
-                </form>
-            </div>
-        </div>
+    <div class="mt-6 text-center flex justify-center gap-4">
+        <a href="{{ path('user_index') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+            Retour à la liste
+        </a>
+        <a href="{{ path('user_edit', { id: user.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+            Modifier
+        </a>
+        <form action="{{ path('user_delete', { id: user.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+            <button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
+                Supprimer
+            </button>
+        </form>
     </div>
 </section>
 {% endblock %}

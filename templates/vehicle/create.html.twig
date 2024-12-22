@@ -11,6 +11,13 @@
         <form action="{{ path('vehicle_create') }}" method="POST" class="bg-white p-6 shadow-md rounded-lg">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700">Type de véhicule</label>
+                    <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="car">Voiture</option>
+                        <option value="motorcycle">Moto</option>
+                    </select>
+                </div>
+                <div>
                     <label for="marque" class="block text-sm font-medium text-gray-700">Marque</label>
                     <input type="text" name="marque" id="marque" placeholder="Marque" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
@@ -30,14 +37,6 @@
                     <label for="nb_serie" class="block text-sm font-medium text-gray-700">Numéro de série</label>
                     <input type="text" name="nb_serie" id="nb_serie" placeholder="N° de série" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-                {# Commenté car lié à Status #}
-                {# <div>
-                    <label for="status_id" class="block text-sm font-medium text-gray-700">Statut</label>
-                    <select name="status_id" id="status_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        // Boucle sur les statuts ici
-                    </select>
-                </div> #}
-
                 <div>
                     <label for="supplier_id" class="block text-sm font-medium text-gray-700">Fournisseur</label>
                     <select name="supplier_id" id="supplier_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">

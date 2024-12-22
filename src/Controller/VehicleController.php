@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Agency;
+use App\Entity\Car;
 use App\Entity\Supplier;
 use App\Entity\Vehicle;
 // use App\Entity\Status;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class VehicleController extends AbstractController
 {
     #[Route('/vehicles', name: 'vehicle_index', methods: ['GET'])]
-    public function index(VehicleRepository $vehicleRepository, Request $request): Response
-    {
+    public function index(
+        VehicleRepository $vehicleRepository,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $brand = $request->query->get('brand');
         $sortKm = $request->query->get('sort_km');
+        $agency = $request->query->get('agency');
 
         $queryBuilder = $vehicleRepository->createQueryBuilder('v');
 
@@ -28,20 +35,39 @@ class VehicleController extends AbstractController
                 ->setParameter('brand', $brand);
         }
 
+        if ($agency) {
+            $queryBuilder->andWhere('v.agency = :agency')
+                ->setParameter('agency', $agency);
+        }
+
         if ($sortKm && in_array($sortKm, ['asc', 'desc'])) {
             $queryBuilder->orderBy('v.nbKilometrage', $sortKm);
         }
 
-        $vehicles = $queryBuilder->getQuery()->getResult();
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            8
+        );
 
-        if (empty($vehicles)) {
-            $this->addFlash('info', 'Aucun véhicule trouvé. Ajoutez des véhicules pour les afficher.');
-        }
+        $brands = $entityManager->getRepository(Vehicle::class)
+            ->createQueryBuilder('v')
+            ->select('v.marque')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        $brands = array_map(fn($item) => $item['marque'], $brands);
+
+        $agencies = $entityManager->getRepository(Agency::class)->findAll();
 
         return $this->render('vehicle/index.html.twig', [
-            'vehicles' => $vehicles,
+            'vehicles' => $pagination,
+            'brands' => $brands,
+            'agencies' => $agencies,
         ]);
     }
+
 
 
     #[Route('/vehicles/create', name: 'vehicle_create', methods: ['GET', 'POST'])]
@@ -50,20 +76,18 @@ class VehicleController extends AbstractController
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
 
-            $vehicle = new Vehicle();
+            $vehicle = new Car();
             $vehicle->setModel($data['model']);
             $vehicle->setMarque($data['marque']);
             $vehicle->setLastMaintenance(new \DateTime($data['last_maintenance']));
-            $vehicle->setNbKilometrage($data['nb_kilometrage']);
+            $vehicle->setNbKilometrage((int) $data['nb_kilometrage']);
             $vehicle->setNbSerie($data['nb_serie']);
-            $vehicle->setPricePerDay($data['price_per_day']);
+            $vehicle->setPricePerDay((float) $data['price_per_day']);
 
             $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
-            // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
             $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
 
             $vehicle->setAgency($agency);
-            // $vehicle->setStatus($status);
             $vehicle->setSupplier($supplier);
 
             $entityManager->persist($vehicle);
@@ -73,15 +97,15 @@ class VehicleController extends AbstractController
         }
 
         $agencies = $entityManager->getRepository(Agency::class)->findAll();
-        // $statuses = $entityManager->getRepository(Status::class)->findAll();
         $suppliers = $entityManager->getRepository(Supplier::class)->findAll();
 
         return $this->render('vehicle/create.html.twig', [
             'agencies' => $agencies,
-            // 'statuses' => $statuses,
             'suppliers' => $suppliers,
         ]);
     }
+
+
 
     #[Route('/vehicles/{id}/update', name: 'vehicle_update', methods: ['POST', 'PUT'])]
     public function update(Request $request, Vehicle $vehicle, EntityManagerInterface $entityManager): Response
@@ -163,5 +187,4 @@ class VehicleController extends AbstractController
 
         return $this->redirectToRoute('vehicle_index');
     }
-
 }

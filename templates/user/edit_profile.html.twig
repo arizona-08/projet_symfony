@@ -1,0 +1,26 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Modifier mon profil{% endblock %}
+
+{% block main %}
+<section class="max-w-4xl m-auto px-4 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Modifier mon profil</h1>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        {{ form_start(form) }}
+        <div class="grid grid-cols-1 gap-6">
+            {{ form_row(form.name, {'label': 'Nom'}) }}
+            {{ form_row(form.email, {'label': 'Email'}) }}
+            {{ form_row(form.plainPassword, {'label': 'Mot de passe (laisser vide si inchangé)'}) }}
+        </div>
+        <div class="mt-6 text-right">
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                Sauvegarder
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</section>
+{% endblock %}

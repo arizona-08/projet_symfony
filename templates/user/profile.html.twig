@@ -1,0 +1,50 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Mon profil
+{% endblock %}
+
+{% block main %}
+<section class="max-w-4xl m-auto px-4 py-12">
+	<div class="mb-10 text-center">
+		<h1 class="text-4xl font-bold text-gray-800">Mon profil</h1>
+		<p class="text-lg text-gray-600 mt-3">Consultez les informations de votre compte.</p>
+	</div>
+
+	<div class="bg-white shadow-md rounded-lg p-6">
+		<h2 class="text-2xl font-semibold text-gray-800 mb-4">Informations personnelles</h2>
+		<p class="text-gray-600 mb-2">
+			<span class="font-medium">Nom :</span>
+			{{ user.name }}
+		</p>
+		<p class="text-gray-600 mb-2">
+			<span class="font-medium">Email :</span>
+			{{ user.email }}
+		</p>
+		<p class="text-gray-600 mb-2">
+			<span class="font-medium">Rôle :</span>
+			{% set roleMapping = {
+                                    'ROLE_USER': 'Utilisateur standard',
+                                    'ROLE_USER_VIP': 'Utilisateur VIP',
+                                    'ROLE_ORDER_MANAGER': 'Gestionnaire de commande',
+                                    'ROLE_SUPPLIER': 'Fournisseur',
+                                    'ROLE_AGENCY_HEAD': 'Chef d\'agence'
+                                } %}
+                                {{ roleMapping[user.roles|first] ?? 'Rôle inconnu' }}
+
+        </p>
+        <p class="text-gray-600 mb-2">
+            <span class="font-medium">Créé le :</span> {{ user.createdAt|date('d/m/Y H:i') }}
+        </p>
+    </div>
+
+    <div class="mt-6 text-center">
+        <a href="{{ path('user_profile_edit') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+    Modifier mes informations
+</a>
+
+
+    </div>
+</section>
+{% endblock %}
+
+

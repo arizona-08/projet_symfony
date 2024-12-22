@@ -1,84 +1,81 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Modifier un véhicule{% endblock %}
+{% block title %}Modifier le véhicule - {{ vehicle.marque }} {{ vehicle.model }}{% endblock %}
 
 {% block main %}
-<section class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<section class="max-w-7xl mx-auto px-6 py-12">
+    <div class="mb-8 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Modifier le véhicule</h1>
+        <p class="text-lg text-gray-600 mt-2">Apportez des modifications aux informations de ce véhicule.</p>
+    </div>
 
-        <div class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Modification de {{ vehicle.marque }} - {{ vehicle.model }}</h2>
-        </div>
-
-
-        <form action="{{ path('vehicle_update', { id: vehicle.id }) }}" method="POST" class="bg-white p-6 shadow-md rounded-lg">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <form action="{{ path('vehicle_update', { id: vehicle.id }) }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-
-                <div>
-                    <label for="model" class="block text-sm font-medium text-gray-700">Modèle</label>
-                    <input type="text" name="model" id="model" value="{{ vehicle.model }}" placeholder="Modèle"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
                     <label for="marque" class="block text-sm font-medium text-gray-700">Marque</label>
                     <input type="text" name="marque" id="marque" value="{{ vehicle.marque }}" placeholder="Marque"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-
+                <div>
+                    <label for="model" class="block text-sm font-medium text-gray-700">Modèle</label>
+                    <input type="text" name="model" id="model" value="{{ vehicle.model }}" placeholder="Modèle"
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700">Type de véhicule</label>
+                    <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="car">Voiture</option>
+                        <option value="motorcycle">Moto</option>
+                    </select>
+                </div>
                 <div>
                     <label for="last_maintenance" class="block text-sm font-medium text-gray-700">Dernière maintenance</label>
                     <input type="date" name="last_maintenance" id="last_maintenance" value="{{ vehicle.lastMaintenance|date('Y-m-d') }}"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-
                 <div>
                     <label for="nb_kilometrage" class="block text-sm font-medium text-gray-700">Nombre de kilomètres</label>
-                    <input type="number" name="nb_kilometrage" id="nb_kilometrage" value="{{ vehicle.nbKilometrage }}" placeholder="Kilomètres"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <input type="number" name="nb_kilometrage" id="nb_kilometrage" value="{{ vehicle.nbKilometrage }}" placeholder="Kilométrage"
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-
                 <div>
                     <label for="nb_serie" class="block text-sm font-medium text-gray-700">Numéro de série</label>
-                    <input type="text" name="nb_serie" id="nb_serie" value="{{ vehicle.nbSerie }}" placeholder="N° de série"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <input type="text" name="nb_serie" id="nb_serie" value="{{ vehicle.nbSerie }}" placeholder="Numéro de série"
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-
                 <div>
                     <label for="agency_id" class="block text-sm font-medium text-gray-700">Agence</label>
                     <select name="agency_id" id="agency_id"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         {% for agency in agencies %}
-                            <option value="{{ agency.id }}" {% if agency.id == vehicle.agency.id %}selected{% endif %}>
+                            <option value="{{ agency.id }}" {% if vehicle.agency and agency.id == vehicle.agency.id %}selected{% endif %}>
                                 {{ agency.label }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
-
                 <div>
                     <label for="supplier_id" class="block text-sm font-medium text-gray-700">Fournisseur</label>
                     <select name="supplier_id" id="supplier_id"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                         {% for supplier in suppliers %}
-                            <option value="{{ supplier.id }}" {% if supplier.id == vehicle.supplier.id %}selected{% endif %}>
+                            <option value="{{ supplier.id }}" {% if vehicle.supplier and supplier.id == vehicle.supplier.id %}selected{% endif %}>
                                 {{ supplier.getLabel }}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
-
                 <div>
                     <label for="price_per_day" class="block text-sm font-medium text-gray-700">Prix par jour</label>
                     <input type="number" name="price_per_day" id="price_per_day" value="{{ vehicle.pricePerDay }}" placeholder="Prix par jour"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
             </div>
-
-            <div class="flex justify-end">
-                <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium hover:bg-red-600 hover:text-white">
-                    Valider
+            <div class="mt-6 flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                    Enregistrer les modifications
                 </button>
             </div>
         </form>
