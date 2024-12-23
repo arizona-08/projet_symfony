@@ -5,5 +5,19 @@
 {% block main %}
     <section class="max-w-8xl m-auto">
         <h1 class="4xl">Admin</h1>
+
+        <div class="flex flex-wrap justify-center gap-6">
+            <a href="{{ path('admin_user_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                Gérer les utilisateurs
+            </a>
+            {# <a href="{{ path('admin_category_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                Gérer les catégories
+            </a>
+            <a href="{{ path('admin_product_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                Gérer les produits
+            </a>
+            <a href="{{ path('admin_order_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                Gérer les commandes
+            </a> #}
     </section>
 {% endblock %}

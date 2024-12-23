@@ -27,6 +27,9 @@ services:
     App\DataFixtures\MotorcycleProvider:
         tags: ['nelmio_alice.faker.provider']
     
+    App\DataFixtures\UserProcessor:
+        tags: ['fidry_alice_data_fixtures.processor']
+    
     Faker\Generator: '@faker'
     faker.generator:
         class: Faker\Generator

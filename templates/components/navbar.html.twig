@@ -7,27 +7,16 @@
 			</a>
 
 			<ul class="hidden xl:flex xl:items-center xl:gap-8 text-gray-500">
-				<li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('dashboard') }}">Dashboard</a>
-				</li>
-				<li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('admin') }}">Admin</a>
-				</li>
-				<li class="{{ app.current_route == 'user_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('user_index') }}">Utilisateur</a>
-				</li>
-				<li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('agency_index') }}">Agence</a>
-				</li>
-				<li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('vehicle_index') }}">Vehicule</a>
-				</li>
-				<li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('supplier_index') }}">Fournisseur</a>
-				</li>
-				<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-					<a href="{{ path('app_location_index') }}">Commandes</a>
-				</li>
+				
+				<li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('dashboard') }}">Dashboard</a></li>
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('admin') }}">Admin</a></li>
+				{% endif %}
+				<li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('agency_index') }}">Agence</a></li>
+				<li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('vehicle_index') }}">Vehicule</a></li>
+				<li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
+				<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_location_index') }}">Commandes</a></li>
+
 				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
 					<li class="{{ app.request.attributes.get('_route') == 'config_index' ? 'font-medium text-red-800' : 'hover:text-gray-800 hover:font-medium' }}">
 						<a href="{{ path('config_index') }}">VIP</a>
@@ -47,7 +36,7 @@
 		<ul class="hidden xl:flex xl:gap-3">
 			{% if app.user is defined and app.user is not null %}
                 <li class="px-2 py-1 border-2 border-blue-600 rounded font-medium">
-                    <a href="{{ path('user_profile') }}">Mon profil</a>
+                    <a href="{{ path('profile') }}">Mon profil</a>
                 </li>
 				<li class="px-2 py-1 border-2 border-red-600 rounded font-medium"><a href="{{ path('app_logout') }}">Déconnexion</a></li>
 			{% else %}
@@ -65,27 +54,12 @@
 		<ul class="flex flex-col">
 
 			<div class="flex flex-col gap-2 py-2 border-b">
-				<li>
-					<a href="{{ path('dashboard') }}">Dashboard</a>
-				</li>
-				<li>
-					<a href="{{ path('admin') }}">Admin</a>
-				</li>
-				<li>
-					<a href="{{ path('user_index') }}">Utilisateur</a>
-				</li>
-				<li>
-					<a href="{{ path('agency_index') }}">Agence</a>
-				</li>
-				<li>
-					<a href="{{ path('vehicle_index') }}">Vehicle</a>
-				</li>
-				<li>
-					<a href="{{ path('supplier_index') }}">Fournisseur</a>
-				</li>
-				<li>
-					<a href="{{ path('app_location_index') }}">Commandes</a>
-				</li>
+				<li><a href="{{ path('dashboard') }}">Accueil</a></li>
+				<li><a href="{{ path('admin') }}">Admin</a></li>
+				<li><a href="{{ path('agency_index') }}">Agence</a></li>
+				<li><a href="{{ path('vehicle_index') }}">Vehicle</a></li>
+				<li><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
+				<li><a href="{{ path('app_location_index') }}">Commandes</a></li>
 				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
 					<li>
 						<a href="{{ path('config_index') }}">VIP</a>
