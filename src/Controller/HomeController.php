@@ -15,6 +15,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HomeController extends AbstractController
 {
+
+    #[Route('/', name: 'home', methods: ['GET'])]
+    public function index(): Response
+    {
+        return $this->render('index.html.twig');
+    }
+
     #[Route('/dashboard/commande/{id}', name: 'dashboard_add_to_order', methods: ['GET'])]
     public function addToOrder(
         Vehicle $vehicle,
