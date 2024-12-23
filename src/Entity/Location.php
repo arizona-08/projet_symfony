@@ -34,12 +34,16 @@ class Location
     #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'location')]
     private Collection $vehicle;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'locations')]
+    #[ORM\JoinColumn(nullable: false)] // Si chaque commande doit obligatoirement être associée à un utilisateur
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->vehicle = new ArrayCollection();
     }
 
-    
+
 
     public function getId(): ?int
     {
@@ -120,6 +124,19 @@ class Location
                 $vehicle->setLocation(null);
             }
         }
+
+        return $this;
+    }
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

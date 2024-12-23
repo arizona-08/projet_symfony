@@ -3,47 +3,48 @@
 {% block title %}Créer une agence{% endblock %}
 
 {% block main %}
-<section class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Créer une agence</h2>
-        </div>
-        <form action="{{ path('agency_store') }}" method="POST" class="bg-white p-6 shadow-md rounded-lg">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+<section class="max-w-8xl m-auto px-3 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Créer une agence</h1>
+        <p class="text-lg text-gray-600 mt-3">Veuillez renseigner les informations pour ajouter une nouvelle agence.</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <form action="{{ path('agency_create') }}" method="POST">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label for="label" class="block text-sm font-medium text-gray-700">Nom de l'agence</label>
+                    <label for="label" class="block text-sm font-medium text-gray-700 mb-2">Nom de l'agence :</label>
                     <input type="text" name="label" id="label" placeholder="Nom de l'agence"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div>
-                    <label for="user_id" class="block text-sm font-medium text-gray-700">Chef d'agence</label>
-                    <select name="user_id" id="user_id"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Adresse :</label>
+                    <input type="text" name="address" id="address" placeholder="Adresse"
+                        class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="city" class="block text-sm font-medium text-gray-700 mb-2">Ville :</label>
+                    <input type="text" name="city" id="city" placeholder="Ville"
+                        class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="zip_code" class="block text-sm font-medium text-gray-700 mb-2">Code postal :</label>
+                    <input type="number" name="zip_code" id="zip_code" placeholder="Code postal"
+                        class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2">Utilisateur (Chef d'agence) :</label>
+                    <select name="user_id" id="user_id" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         {% for user in users %}
                             <option value="{{ user.id }}">{{ user.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div>
-                    <label for="address" class="block text-sm font-medium text-gray-700">Adresse</label>
-                    <input type="text" name="address" id="address" placeholder="Adresse"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="city" class="block text-sm font-medium text-gray-700">Ville</label>
-                    <input type="text" name="city" id="city" placeholder="Ville"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="zip_code" class="block text-sm font-medium text-gray-700">Code postal</label>
-                    <input type="number" name="zip_code" id="zip_code" placeholder="Code postal"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
             </div>
 
             <div class="flex justify-end">
-                <button type="submit" class="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                    Ajouter
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                    Créer l'agence
                 </button>
             </div>
         </form>

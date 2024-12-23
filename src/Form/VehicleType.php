@@ -13,7 +13,6 @@ class VehicleType extends AbstractType
         $builder
             ->add('model')
             ->add('marque')
-            // Ajoutez les champs nécessaires pour Vehicle
         ;
     }
 
