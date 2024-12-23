@@ -10,11 +10,14 @@
 			<p class="text-lg text-gray-600 mt-3">Consultez et gérez tous les véhicules disponibles.</p>
 		</div>
 
-		<div class="mb-10 text-center">
-			<a href="{{ path('vehicle_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white ">
-				Ajouter un vehicule
-			</a>
-		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="mb-10 text-center">
+				<a href="{{ path('vehicle_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white ">
+					Ajouter un vehicule
+				</a>
+			</div>
+		{% endif %}
+		
 
 		<form action="{{ path('vehicle_index') }}" method="GET" class="bg-white shadow-md rounded-lg p-6 mb-10">
 			<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -87,15 +90,18 @@
 							<a href="{{ path('vehicle_show', { id: vehicle.id }) }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
 								Voir
 							</a>
-							<a href="{{ path('vehicle_edit', { id: vehicle.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
-								Modifier
-							</a>
-							<form action="{{ path('vehicle_delete', { id: vehicle.id }) }}" method="POST" class="inline-block">
-								<input type="hidden" name="_method" value="DELETE">
-								<button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
-									Supprimer
-								</button>
-							</form>
+							{% if is_granted('ROLE_ADMIN') %}
+								<a href="{{ path('vehicle_edit', { id: vehicle.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+									Modifier
+								</a>
+								<form action="{{ path('vehicle_delete', { id: vehicle.id }) }}" method="POST" class="inline-block">
+									<input type="hidden" name="_method" value="DELETE">
+									<button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
+										Supprimer
+									</button>
+								</form>
+							{% endif %}
+							
 						</div>
 					</div>
 				{% endfor %}

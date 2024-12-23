@@ -12,9 +12,16 @@
 				{% if is_granted('ROLE_ADMIN') %}
 					<li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('admin') }}">Admin</a></li>
 				{% endif %}
-				<li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('agency_index') }}">Agence</a></li>
+
+				{% if is_granted('ROLE_AGENCY_HEAD') %}
+					<li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('agency_index') }}">Agence</a></li>
+				{% endif %}
+
 				<li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('vehicle_index') }}">Vehicule</a></li>
-				<li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
+
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="{{ app.current_route == 'admin_supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('admin_supplier_index') }}">Fournisseur</a></li>
+				{% endif %}
 				<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_location_index') }}">Commandes</a></li>
 
 				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
@@ -55,10 +62,14 @@
 
 			<div class="flex flex-col gap-2 py-2 border-b">
 				<li><a href="{{ path('dashboard') }}">Accueil</a></li>
-				<li><a href="{{ path('admin') }}">Admin</a></li>
+				{% if is_granted('ROLE_ADMIN') %}
+					<li><a href="{{ path('admin') }}">Admin</a></li>
+				{% endif %}
 				<li><a href="{{ path('agency_index') }}">Agence</a></li>
 				<li><a href="{{ path('vehicle_index') }}">Vehicle</a></li>
-				<li><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
+				{% if is_granted('ROLE_ADMIN') %}
+					<li><a href="{{ path('admin_supplier_index') }}">Fournisseur</a></li>
+				{% endif %}
 				<li><a href="{{ path('app_location_index') }}">Commandes</a></li>
 				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
 					<li>
