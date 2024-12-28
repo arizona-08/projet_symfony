@@ -1,0 +1,12 @@
+{% extends 'index.html.twig' %}
+
+{% block main %}
+<section class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <h1>Create a Vehicle Configuration</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+    </div>
+</section>
+{% endblock %}

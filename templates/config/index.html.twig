@@ -1,0 +1,32 @@
+{% extends 'index.html.twig' %}
+
+{% block main %}
+    <h1>Configurations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Vehicle</th>
+                <th>Equipments</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for config in configs %}
+                <tr>
+                    <td>{{ config.id }}</td>
+                    <td>{{ config.vehicle.model }}</td>
+                    <td>
+                        {% for equipment in config.equipments %}
+                            {{ equipment.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No configurations found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

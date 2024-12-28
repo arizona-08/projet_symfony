@@ -14,69 +14,53 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/config')]
 class ConfigController extends AbstractController
 {
-    #[Route('/', name: 'config_index', methods: ['GET'])]
-    public function index(ConfigRepository $configRepository): Response
+    #[Route('/create', name: 'config_create')]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('config/index.html.twig', [
-            'configs' => $configRepository->findAll(),
-        ]);
-    }
+        $user = $this->getUser();
 
-    #[Route('/new', name: 'config_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+        // Vérifiez si l'utilisateur est VIP
+        if (!$user || !in_array('ROLE_VIP', $user->getRoles())) {
+            throw $this->createAccessDeniedException('You are not allowed to create a configuration.');
+        }
+
         $config = new Config();
+        $config->setClient($user);
+
         $form = $this->createForm(ConfigType::class, $config);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $config->setUser($this->getUser());
             $entityManager->persist($config);
             $entityManager->flush();
 
-            return $this->redirectToRoute('config_index');
+            $this->addFlash('success', 'Configuration created successfully!');
+
+            return $this->redirectToRoute('config_list'); // Remplacez par la route appropriée
         }
 
-        return $this->render('config/new.html.twig', [
-            'config' => $config,
+        return $this->render('config/create.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/{id}', name: 'config_show', methods: ['GET'])]
-    public function show(Config $config): Response
+    #[Route('/', name: 'config_index')]
+    public function index(ConfigRepository $configRepository): Response
     {
-        return $this->render('config/show.html.twig', [
-            'config' => $config,
+        $user = $this->getUser();
+
+        // Vérifiez si l'utilisateur est VIP
+        if (!$user || !in_array('ROLE_VIP', $user->getRoles())) {
+            throw $this->createAccessDeniedException('You are not allowed to view configurations.');
+        }
+
+        $configs = $configRepository->findBy(['client' => $user]);
+
+        return $this->render('config/index.html.twig', [
+            'configs' => $configs,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'config_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Config $config, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ConfigType::class, $config);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
 
-            return $this->redirectToRoute('config_index');
-        }
-
-        return $this->render('config/edit.html.twig', [
-            'config' => $config,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/{id}', name: 'config_delete', methods: ['POST'])]
-    public function delete(Request $request, Config $config, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$config->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($config);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('config_index');
-    }
 }
