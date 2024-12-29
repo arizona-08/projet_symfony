@@ -6,7 +6,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Vehicle</th>
                 <th>Kit</th>
                 <th>Accessory</th>
@@ -15,7 +14,6 @@
         <tbody>
             {% for config in configs %}
                 <tr>
-                    <td>{{ config.id }}</td>
                     <td>{{ config.vehicle.model }}</td>
                     <td>{{ config.kit.name }}</td>
                     <td>

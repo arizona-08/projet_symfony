@@ -85,6 +85,11 @@
 				<li>
 					<a href="{{ path('app_location_index') }}">Commandes</a>
 				</li>
+				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
+					<li>
+						<a href="{{ path('config_index') }}">VIP</a>
+					</li>
+				{% endif %}
 			</div>
 
 			<div class="flex flex-col gap-2 py-2">
