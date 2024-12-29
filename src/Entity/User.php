@@ -44,9 +44,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    /**
+     * @var Collection<int, Config>
+     */
+    #[ORM\OneToMany(targetEntity: Config::class, mappedBy: 'client')]
+    private Collection $configs;
+
     public function __construct()
     {
         $this->agencies = new ArrayCollection();
+        $this->configs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,5 +193,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Config>
+     */
+    public function getConfigs(): Collection
+    {
+        return $this->configs;
+    }
+
+    public function addConfig(Config $config): static
+    {
+        if (!$this->configs->contains($config)) {
+            $this->configs->add($config);
+            $config->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfig(Config $config): static
+    {
+        if ($this->configs->removeElement($config)) {
+            // set the owning side to null (unless already changed)
+            if ($config->getClient() === $this) {
+                $config->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }

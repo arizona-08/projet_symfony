@@ -1,0 +1,5 @@
+App\Entity\Config:
+    config_1:
+        client: '@user_1'
+        vehicle: '@car_1'
+        kit: '@kit_1'

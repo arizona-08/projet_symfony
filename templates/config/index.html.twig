@@ -8,7 +8,8 @@
             <tr>
                 <th>ID</th>
                 <th>Vehicle</th>
-                <th>Equipments</th>
+                <th>Kit</th>
+                <th>Accessory</th>
             </tr>
         </thead>
         <tbody>
@@ -16,11 +17,14 @@
                 <tr>
                     <td>{{ config.id }}</td>
                     <td>{{ config.vehicle.model }}</td>
+                    <td>{{ config.kit.name }}</td>
                     <td>
-                        {% for equipment in config.equipments %}
-                            {{ equipment.name }}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
+                        <ul>
+                            {% for accessory in config.kit.accessory %}
+                                <li>{{ accessory }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td> 
                 </tr>
             {% else %}
                 <tr>
@@ -28,5 +32,9 @@
                 </tr>
             {% endfor %}
         </tbody>
+        
     </table>
+    <td>
+    <a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
+</td>
 {% endblock %}

@@ -1,0 +1,4 @@
+App\Entity\Kit:
+    kit_1:
+        name: 'Kit 1'
+        accessory: [glock 17]

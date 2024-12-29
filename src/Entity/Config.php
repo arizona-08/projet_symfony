@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ConfigRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConfigRepository::class)]
@@ -15,23 +13,15 @@ class Config
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'configs')]
     private ?User $client = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\OneToOne(inversedBy: 'config', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Vehicle $vehicle = null;
 
-    /**
-     * @var Collection<int, Equipment>
-     */
-    #[ORM\ManyToMany(targetEntity: Equipment::class)]
-    private Collection $equipments;
-
-    public function __construct()
-    {
-        $this->equipments = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'configs')]
+    private ?Kit $kit = null;
 
     public function getId(): ?int
     {
@@ -55,34 +45,23 @@ class Config
         return $this->vehicle;
     }
 
-    public function setVehicle(?Vehicle $vehicle): static
+    public function setVehicle(Vehicle $vehicle): static
     {
         $this->vehicle = $vehicle;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Equipment>
-     */
-    public function getEquipments(): Collection
+    public function getKit(): ?Kit
     {
-        return $this->equipments;
+        return $this->kit;
     }
 
-    public function addEquipment(Equipment $equipment): static
+    public function setKit(?Kit $kit): static
     {
-        if (!$this->equipments->contains($equipment)) {
-            $this->equipments->add($equipment);
-        }
+        $this->kit = $kit;
 
         return $this;
     }
 
-    public function removeEquipment(Equipment $equipment): static
-    {
-        $this->equipments->removeElement($equipment);
-
-        return $this;
-    }
 }
