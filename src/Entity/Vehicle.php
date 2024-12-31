@@ -87,6 +87,9 @@ class Vehicle
     #[ORM\ManyToOne(inversedBy: 'vehicles')]
     private ?Supplier $supplier = null;
 
+    #[ORM\OneToOne(mappedBy: 'vehicle', cascade: ['persist', 'remove'])]
+    private ?Config $config = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -357,6 +360,24 @@ class Vehicle
     public function setSupplier(?Supplier $supplier): static
     {
         $this->supplier = $supplier;
+
+        return $this;
+    }
+
+
+    public function getConfig(): ?Config
+    {
+        return $this->config;
+    }
+
+    public function setConfig(Config $config): static
+    {
+        // set the owning side of the relation if necessary
+        if ($config->getVehicle() !== $this) {
+            $config->setVehicle($this);
+        }
+
+        $this->config = $config;
 
         return $this;
     }

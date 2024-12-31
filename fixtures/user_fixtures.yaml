@@ -13,3 +13,10 @@ App\Entity\User:
         email_verified_at: <dateTime('now')>
         created_at: <dateTime('now')>
         roles: ['ROLE_ADMIN']
+    user_3:
+        name: 'User Three'
+        password: 'password3'
+        email: 'user3@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_VIP']
