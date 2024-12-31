@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\AgencyRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class AgencyController extends AbstractController
 {
     #[Route('/agencies', name: 'agency_index', methods: ['GET'])]
-    public function index(AgencyRepository $agencyRepository): Response
-    {
+    public function index(
+        AgencyRepository $agencyRepository,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
         $user = $this->getUser();
 
         // Commenté pour ignorer les rôles
@@ -26,8 +30,17 @@ class AgencyController extends AbstractController
 
         $agencies = $agencyRepository->findAll();
 
+        $queryBuilder = $agencyRepository->createQueryBuilder('a');
+
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            8
+        );
+
         return $this->render('agency/index.html.twig', [
             'agencies' => $agencies,
+            'agencies' => $pagination,
         ]);
     }
 

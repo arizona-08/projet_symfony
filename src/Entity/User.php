@@ -50,10 +50,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Config::class, mappedBy: 'client')]
     private Collection $configs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Location::class, cascade: ['persist', 'remove'])]
+    private Collection $locations;
+
+
     public function __construct()
     {
         $this->agencies = new ArrayCollection();
+
         $this->configs = new ArrayCollection();
+
+        $this->locations = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -182,6 +190,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->removeElement($location)) {
+            // Set the owning side to null (unless already changed)
+            if ($location->getUser() === $this) {
+                $location->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -172,12 +172,17 @@ class Vehicle
         return $this->location;
     }
 
-    public function setLocation(?Location $location): static
-    {
-        $this->location = $location;
+    public function setLocation(?Location $location): self
+{
+    $this->location = $location;
 
-        return $this;
+    if ($location && !$location->getVehicle()->contains($this)) {
+        $location->addVehicle($this);
     }
+
+    return $this;
+}
+
 
     public function getVehicleFuelType(): ?string
     {
@@ -358,6 +363,7 @@ class Vehicle
 
         return $this;
     }
+
 
     public function getConfig(): ?Config
     {

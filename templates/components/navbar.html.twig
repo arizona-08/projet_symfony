@@ -46,9 +46,10 @@
 		</div>
 		<ul class="hidden xl:flex xl:gap-3">
 			{% if app.user is defined and app.user is not null %}
-				<li class="px-2 py-1 border-2 border-red-600 rounded font-medium">
-					<a href="{{ path('app_logout') }}">Déconnexion</a>
-				</li>
+                <li class="px-2 py-1 border-2 border-blue-600 rounded font-medium">
+                    <a href="{{ path('user_profile') }}">Mon profil</a>
+                </li>
+				<li class="px-2 py-1 border-2 border-red-600 rounded font-medium"><a href="{{ path('app_logout') }}">Déconnexion</a></li>
 			{% else %}
 				<li class="px-2 py-1 bg-red-600 rounded text-white font-medium">
 					<a href="{{ path('app_register') }}">Inscription</a>
