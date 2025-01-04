@@ -25,7 +25,7 @@ class AgencyController extends AbstractController
         $user = $this->getUser();
 
         // Commenté pour ignorer les rôles
-        if ($this->isGranted('ROLE_AGENCY_HEAD')) {
+        if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $agencies = $agencyRepository->findBy(['user' => $user->getId()]);
 
             $queryBuilder = $agencyRepository->createQueryBuilder('a')
@@ -95,7 +95,7 @@ class AgencyController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        if ($this->isGranted('ROLE_AGENCY_HEAD')) {
+        if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $users = $userRepository->findBy(['id' => $user->getId()]);
         } else {
             $users = $userRepository->findAll();

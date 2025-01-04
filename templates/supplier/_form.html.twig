@@ -1,4 +1,4 @@
-{{ form_start(form, { 'action': isEdit ? path('admin_supplier_edit', { id: supplier.id }) : path('admin_supplier_create') }) }}
+{{ form_start(form, { 'action': isEdit ? path('supplier_edit', { id: supplier.id }) : path('supplier_create') }) }}
     {{ form_widget(form) }}
     <button class="inline-block mt-2 bg-red-600 rounded text-white font-medium px-4 py-2">
         {{ isEdit ? 'Confirmer' : 'Ajouter' }}

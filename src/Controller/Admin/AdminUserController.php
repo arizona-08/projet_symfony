@@ -67,7 +67,8 @@ class AdminUserController extends AbstractController
             'Utilisateur' => 'ROLE_USER',
             'Chef d\'agence' => 'ROLE_AGENCY_HEAD',
             'Gestionnaire de commandes' => 'ROLE_ORDER_MANAGER',
-            'Fournisseur' => 'ROLE_SUPPLIER'
+            'Gestionnaire de fournisseurs' => 'ROLE_SUPPLIER_MANAGER',
+            "Gestionnaire d'agences" => 'ROLE_AGENCY_MANAGER',
         ];
     }
 
@@ -174,7 +175,7 @@ class AdminUserController extends AbstractController
             $entityManager->flush();
 
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('admin_user_index');
         }
 
         return $this->render('admin/user/edit.html.twig', [
@@ -204,7 +205,7 @@ class AdminUserController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('admin_user_index');
     }
 
     #[Route('/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
@@ -215,6 +216,6 @@ class AdminUserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('admin_user_index');
     }
 }
