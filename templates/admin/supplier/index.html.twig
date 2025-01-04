@@ -9,14 +9,19 @@
         <p class="text-lg text-gray-600 mt-3">Gérez vos fournisseurs et consultez leurs informations.</p>
     </div>
 
-    <div class="mb-10 flex justify-around items-center ">
-        <a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
-            Retour à la page d'administration
-        </a>
-        <a href="{{ path('admin_supplier_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
-            Ajouter un fournisseur
-        </a>
-    </div>
+    {% if is_granted('ROLE_SUPPLIER_MANAGER') %}
+        <div class="mb-10 flex justify-around items-center ">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+                    Retour à la page d'administration
+                </a>
+            {% endif %}
+            <a href="{{ path('admin_supplier_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
+                Ajouter un fournisseur
+            </a>
+        </div>
+    {% endif %}
+    
 
     <div class="flex flex-wrap justify-center gap-6">
         {% if suppliers is not empty %}

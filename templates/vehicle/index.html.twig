@@ -10,11 +10,14 @@
 			<p class="text-lg text-gray-600 mt-3">Consultez et gérez tous les véhicules disponibles.</p>
 		</div>
 
-		{% if is_granted('ROLE_ADMIN') %}
+		{% if is_granted('ROLE_SUPPLIER') %}
 			<div class="mb-10 flex justify-around items-center">
-				<a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
-					Retour à la page d'administration
-				</a>
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+						Retour à la page d'administration
+					</a>
+				{% endif %}
+				
 				<a href="{{ path('vehicle_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white ">
 					Ajouter un vehicule
 				</a>
