@@ -1,6 +1,7 @@
 {% extends 'index.html.twig' %}
 
 {% block main %}
+<section class="max-w-8xl m-auto">
     <h1>Configurations</h1>
 
     <table class="table">
@@ -33,6 +34,8 @@
         
     </table>
     <td>
-    <a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
-</td>
+        <a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
+    </td>
+</section>
+
 {% endblock %}

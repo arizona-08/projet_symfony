@@ -35,11 +35,13 @@ security:
             # switch_user: true
     
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER, ROLE_VIP, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER]
+        ROLE_ADMIN: [ROLE_USER, ROLE_VIP, ROLE_AGENCY_HEAD, ROLE_AGENCY_MANAGER, ROLE_ORDER_MANAGER, ROLE_SUPPLIER_MANAGER, ROLE_SUPPLIER]
         ROLE_VIP: [ROLE_USER]
         ROLE_USER:
         ROLE_AGENCY_HEAD:
+        ROLE_AGENCY_MANAGER:
         ROLE_ORDER_MANAGER:
+        ROLE_SUPPLIER_MANAGER: [ROLE_SUPPLIER]
         ROLE_SUPPLIER:
 
     # Easy way to control access for large sections of your site
