@@ -24,8 +24,8 @@
 				{% endif %}
 				<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_location_index') }}">Commandes</a></li>
 
-				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
-					<li class="{{ app.request.attributes.get('_route') == 'config_index' ? 'font-medium text-red-800' : 'hover:text-gray-800 hover:font-medium' }}">
+				{% if is_granted('ROLE_VIP') %}
+					<li>
 						<a href="{{ path('config_index') }}">VIP</a>
 					</li>
 				{% endif %}
@@ -71,7 +71,7 @@
 					<li><a href="{{ path('admin_supplier_index') }}">Fournisseur</a></li>
 				{% endif %}
 				<li><a href="{{ path('app_location_index') }}">Commandes</a></li>
-				{% if app.user is defined and app.user is not null and 'ROLE_VIP' in app.user.roles %}
+				{% if is_granted('ROLE_VIP') %}
 					<li>
 						<a href="{{ path('config_index') }}">VIP</a>
 					</li>

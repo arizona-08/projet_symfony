@@ -35,8 +35,8 @@ security:
             # switch_user: true
     
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER]
-        ROLE_USER_VIP: [ROLE_USER]
+        ROLE_ADMIN: [ROLE_USER, ROLE_VIP, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER]
+        ROLE_VIP: [ROLE_USER]
         ROLE_USER:
         ROLE_AGENCY_HEAD:
         ROLE_ORDER_MANAGER:
@@ -55,6 +55,7 @@ security:
         - { path: ^/profile, roles: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER] }
         - { path: ^/location, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD, ROLE_USER] }
         - { path: ^/supplier, roles: ROLE_ADMIN }
+        - { path: ^/config, roles: [ROLE_ADMIN, ROLE_VIP] }
 
 
 when@test:
