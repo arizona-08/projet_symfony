@@ -19,6 +19,36 @@ use Knp\Component\Pager\PaginatorInterface;
 #[Route('/location')]
 final class LocationController extends AbstractController
 {
+
+    #[Route('/location/my-locations', name: 'app_my_locations', methods: ['GET'])]
+    public function myLocations(LocationRepository $locationRepository): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour voir vos commandes.');
+        }
+
+        $locations = $locationRepository->findBy(['user' => $user]);
+
+        $locationsWithTotalPrice = [];
+        foreach ($locations as $location) {
+            $totalPrice = 0;
+            foreach ($location->getVehicle() as $vehicle) {
+                $totalPrice += $vehicle->getPricePerDay();
+            }
+
+            $locationsWithTotalPrice[] = [
+                'location' => $location,
+                'totalPrice' => $totalPrice,
+            ];
+        }
+
+        return $this->render('location/my_locations.html.twig', [
+            'locationsWithTotalPrice' => $locationsWithTotalPrice,
+        ]);
+    }
+
     #[Route(name: 'app_location_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -176,6 +206,10 @@ final class LocationController extends AbstractController
             'totalPrice' => $totalPrice,
         ]);
     }
+
+
+
+
 
 
 
