@@ -35,12 +35,13 @@ security:
             # switch_user: true
     
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER, ROLE_VIP, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER]
+        ROLE_ADMIN: [ROLE_USER, ROLE_VIP, ROLE_AGENCY_HEAD, ROLE_AGENCY_MANAGER, ROLE_ORDER_MANAGER, ROLE_SUPPLIER_MANAGER]
         ROLE_VIP: [ROLE_USER]
         ROLE_USER:
+        ROLE_AGENCY_MANAGER: [ROLE_AGENCY_HEAD]
         ROLE_AGENCY_HEAD:
         ROLE_ORDER_MANAGER:
-        ROLE_SUPPLIER:
+        ROLE_SUPPLIER_MANAGER:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -50,11 +51,10 @@ security:
 
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
-        - { path: ^/vehicle, roles: [ROLE_ADMIN, ROLE_USER, ROLE_AGENCY_HEAD, ROLE_SUPPLIER, ROLE_ORDER_MANAGER] }
-        - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
-        - { path: ^/profile, roles: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER] }
-        - { path: ^/location, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD, ROLE_USER] }
-        - { path: ^/supplier, roles: ROLE_ADMIN }
+        - { path: ^/vehicle, roles: [ROLE_ADMIN, ROLE_USER, ROLE_AGENCY_HEAD, ROLE_SUPPLIER_MANAGER, ROLE_ORDER_MANAGER] }
+        - { path: ^/profile, roles: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER_MANAGER] }
+        - { path: ^/location, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD, ROLE_USER, ROLE_ORDER_MANAGER] }
+        - { path: ^/supplier, roles: [ROLE_ADMIN, ROLE_SUPPLIER_MANAGER] }
         - { path: ^/config, roles: [ROLE_ADMIN, ROLE_VIP] }
 
 

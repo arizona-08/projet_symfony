@@ -5,15 +5,31 @@
 {% block main %}
 <section class="max-w-8xl m-auto px-3 py-12">
     <div class="mb-10 text-center">
-        <h1 class="text-4xl font-bold text-gray-800">Liste des agences</h1>
+
+        {# user.hasRole() pour appliquer des règles à un rôle spécifique #}
+        {% if user.hasRole('ROLE_AGENCY_HEAD') %}
+            <h1 class="text-4xl font-bold text-gray-800">Mon agence</h1>
+        {% else %}
+            <h1 class="text-4xl font-bold text-gray-800">Liste des agences</h1>
+        {% endif %}
         <p class="text-lg text-gray-600 mt-3">Gérez les agences de votre organisation avec facilité.</p>
     </div>
 
-    <div class="text-center mb-6">
-        <a href="{{ path('agency_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
-            Ajouter une agence
-        </a>
-    </div>
+    {# is_granted pour utiliser la hierarchie de permission (security.yml) #}
+    {% if is_granted('ROLE_AGENCY_HEAD') %}
+        <div class="mb-10 flex justify-around items-center">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+                    Retour à la page d'administration
+                </a>
+            {% endif %}
+            
+            <a href="{{ path('agency_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
+                Ajouter une agence
+            </a>
+        </div>
+    {% endif %}
+    
 
     <div class="flex flex-wrap justify-center gap-6">
         {% if agencies is not empty %}
@@ -25,20 +41,23 @@
                             <span class="font-medium">Chef d'agence :</span> {{ agency.user.name }}
                         </p>
                     </div>
-                    <div class="p-4 bg-gray-50 text-center flex justify-center gap-4">
-                        <a href="{{ path('agency_show', { id: agency.id }) }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
-                            Voir
-                        </a>
-                        <a href="{{ path('agency_edit', { id: agency.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
-                            Modifier
-                        </a>
-                        <form action="{{ path('agency_delete', { id: agency.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette agence ?');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
-                                Supprimer
-                            </button>
-                        </form>
-                    </div>
+                    {% if is_granted('ROLE_AGENCY_HEAD') %}
+                        <div class="p-4 bg-gray-50 text-center flex justify-center gap-4">
+                            <a href="{{ path('agency_show', { id: agency.id }) }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+                                Voir
+                            </a>
+                            <a href="{{ path('agency_edit', { id: agency.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+                                Modifier
+                            </a>
+                            <form action="{{ path('agency_delete', { id: agency.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette agence ?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                    
                 </div>
             {% endfor %}
         {% else %}

@@ -1,5 +1,5 @@
 App\Entity\Config:
     config_1:
-        client: '@user_1'
+        client: '@user_client_vip'
         vehicle: '@car_1'
         kit: '@kit_1'

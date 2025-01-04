@@ -21,24 +21,36 @@ class AgencyController extends AbstractController
         Request $request,
         PaginatorInterface $paginator
     ): Response {
+        /** @var \App\Entity\User */
         $user = $this->getUser();
 
         // Commenté pour ignorer les rôles
-        // $agencies = $this->isGranted('ROLE_AGENCY_HEAD')
-        //     ? $agencyRepository->findBy(['user' => $user])
-        //     : $agencyRepository->findAll();
+        if ($user->hasRole('ROLE_AGENCY_HEAD')) {
+            $agencies = $agencyRepository->findBy(['user' => $user->getId()]);
 
-        $agencies = $agencyRepository->findAll();
+            $queryBuilder = $agencyRepository->createQueryBuilder('a')
+                ->where('a.user = :user')
+                ->setParameter('user', $user->getId());
 
-        $queryBuilder = $agencyRepository->createQueryBuilder('a');
+            $pagination = $paginator->paginate(
+                $queryBuilder,
+                $request->query->getInt('page', 1),
+                8
+            );
+        } else {
+            $agencies = $agencyRepository->findAll();
 
-        $pagination = $paginator->paginate(
-            $queryBuilder,
-            $request->query->getInt('page', 1),
-            8
-        );
+            $queryBuilder = $agencyRepository->createQueryBuilder('a');
+
+            $pagination = $paginator->paginate(
+                $queryBuilder,
+                $request->query->getInt('page', 1),
+                8
+            );
+        }
 
         return $this->render('agency/index.html.twig', [
+            'user' => $user,
             'agencies' => $agencies,
             'agencies' => $pagination,
         ]);
@@ -80,7 +92,14 @@ class AgencyController extends AbstractController
             return $this->redirectToRoute('agency_index');
         }
 
-        $users = $userRepository->findAll();
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        if ($user->hasRole('ROLE_AGENCY_HEAD')) {
+            $users = $userRepository->findBy(['id' => $user->getId()]);
+        } else {
+            $users = $userRepository->findAll();
+        }
 
         return $this->render('agency/create.html.twig', [
             'users' => $users,

@@ -10,7 +10,13 @@
     </div>
 
     {% if is_granted('ROLE_ORDER_MANAGER') %}
-        <div class="mb-10 text-center">
+        <div class="mb-10 flex justify-around items-center">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+                    Retour à la page d'administration
+                </a>
+            {% endif %}
+            
             <a href="{{ path('app_location_new') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
                 Ajouter une location
             </a>

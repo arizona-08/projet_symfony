@@ -4,10 +4,10 @@ App\Entity\Agency:
         address: '123 Rue de Paris'
         city: 'Paris'
         zipCode: 75001
-        user: '@user_1'
+        user: '@user_agency_head_1'
     agency_2:
         label: 'Agency Lyon'
         address: '456 Rue de Lyon'
         city: 'Lyon'
         zipCode: 69001
-        user: '@user_2'
+        user: '@user_agency_head_2'
