@@ -20,7 +20,7 @@ use Knp\Component\Pager\PaginatorInterface;
 final class LocationController extends AbstractController
 {
 
-    #[Route('/location/my-locations', name: 'app_my_locations', methods: ['GET'])]
+    #[Route('/my-locations', name: 'app_my_locations', methods: ['GET'])]
     public function myLocations(LocationRepository $locationRepository): Response
     {
         $user = $this->getUser();

@@ -53,7 +53,7 @@ security:
         - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
         - { path: ^/vehicle, roles: [ROLE_ADMIN, ROLE_USER, ROLE_AGENCY_HEAD, ROLE_SUPPLIER_MANAGER, ROLE_ORDER_MANAGER] }
         - { path: ^/profile, roles: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER_MANAGER] }
-        - { path: ^/location, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD, ROLE_USER] }
+        - { path: ^/location, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD, ROLE_USER, ROLE_ORDER_MANAGER] }
         - { path: ^/supplier, roles: [ROLE_ADMIN, ROLE_SUPPLIER_MANAGER] }
         - { path: ^/config, roles: [ROLE_ADMIN, ROLE_VIP] }
 

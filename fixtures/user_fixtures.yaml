@@ -1,8 +1,15 @@
 App\Entity\User:
-    user_client:
-        name: 'Client'
+    user_client_1:
+        name: 'Client1'
         password: 'password'
-        email: 'client@example.com'
+        email: 'client1@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_USER']
+    user_client_2:
+        name: 'Client2'
+        password: 'password'
+        email: 'client2@example.com'
         email_verified_at: <dateTime('now')>
         created_at: <dateTime('now')>
         roles: ['ROLE_USER']
