@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\UserFormType;
@@ -12,20 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/users')]
-class UserController extends AbstractController
+#[Route('/admin/users')]
+class AdminUserController extends AbstractController
 {
-    #[Route('/', name: 'user_index', methods: ['GET'])]
+
+    #[Route('/', name: 'admin_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
 
-        return $this->render('user/index.html.twig', [
+        return $this->render('admin/user/index.html.twig', [
             'users' => $users,
         ]);
     }
 
-    #[Route('/create', name: 'user_create', methods: ['GET', 'POST'])]
+    #[Route('/create', name: 'admin_user_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $roles = $this->getAvailableRoles();
@@ -35,7 +36,7 @@ class UserController extends AbstractController
 
             if (empty($data['name']) || empty($data['email']) || empty($data['role']) || empty($data['password'])) {
                 $this->addFlash('error', 'Tous les champs sont requis.');
-                return $this->redirectToRoute('user_create');
+                return $this->redirectToRoute('admin_user_create');
             }
 
             $user = new User();
@@ -49,10 +50,10 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('admin_user_index');
         }
 
-        return $this->render('user/create.html.twig', [
+        return $this->render('admin/user/create.html.twig', [
             'roles' => $roles
         ]);
     }
@@ -70,7 +71,7 @@ class UserController extends AbstractController
         ];
     }
 
-    #[Route('/users/store', name: 'user_store', methods: ['POST'])]
+    #[Route('/users/store', name: 'admin_user_store', methods: ['POST'])]
     public function store(Request $request, EntityManagerInterface $entityManager): Response
     {
         $data = $request->request->all();
@@ -90,67 +91,68 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('admin_user_index');
     }
 
 
-    #[Route('/{id<\d+>}', name: 'user_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'admin_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-        return $this->render('user/show.html.twig', [
+        return $this->render('admin/user/show.html.twig', [
             'user' => $user,
         ]);
     }
 
 
-    #[Route('/profile', name: 'user_profile', methods: ['GET'])]
-    public function profile(): Response
-    {
-        $user = $this->getUser();
-        return $this->render('user/profile.html.twig', [
-            'user' => $user,
-        ]);
-    }
+    // #[Route('/profile', name: 'user_profile', methods: ['GET'])]
+    // public function profile(): Response
+    // {
+    //     $user = $this->getUser();
+    //     return $this->render('admin/user/profile.html.twig', [
+    //         'user' => $user,
+    //     ]);
+    // }
 
 
-    #[Route('/profile/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
-    public function editProfile(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
-    ): Response {
-        $user = $this->getUser();
+    // #[Route('/profile/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
+    // public function editProfile(
+    //     Request $request,
+    //     EntityManagerInterface $entityManager,
+    //     UserPasswordHasherInterface $passwordHasher
+    // ): Response {
+    //     /** @var \App\Entity\User */
+    //     $user = $this->getUser();
 
-        if (!$user) {
-            throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
-        }
+    //     if (!$user) {
+    //         throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
+    //     }
 
-        $form = $this->createForm(UserFormType::class, $user);
-        $form->handleRequest($request);
+    //     $form = $this->createForm(UserFormType::class, $user);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('plainPassword')->getData()) {
-                $user->setPassword(
-                    $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData())
-                );
-            }
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         if ($form->get('plainPassword')->getData()) {
+    //             $user->setPassword(
+    //                 $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData())
+    //             );
+    //         }
 
-            $user->setCreatedAt(new \DateTimeImmutable());
-            $entityManager->flush();
+    //         $user->setCreatedAt(new \DateTimeImmutable());
+    //         $entityManager->flush();
 
-            $this->addFlash('success', 'Votre profil a été mis à jour.');
+    //         $this->addFlash('success', 'Votre profil a été mis à jour.');
 
-            return $this->redirectToRoute('user_profile');
-        }
+    //         return $this->redirectToRoute('user_profile');
+    //     }
 
-        return $this->render('user/edit_profile.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
-        ]);
-    }
+    //     return $this->render('admin/user/edit_profile.html.twig', [
+    //         'form' => $form->createView(),
+    //         'user' => $user,
+    //     ]);
+    // }
 
 
-    #[Route('/{id}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'admin_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $roles = $this->getAvailableRoles();
@@ -168,7 +170,6 @@ class UserController extends AbstractController
             if ($user->getEmailVerifiedAt() === null) {
                 $user->setEmailVerifiedAt(new \DateTimeImmutable());
             }
-            $user->setUpdatedAt(new \DateTimeImmutable());
 
             $entityManager->flush();
 
@@ -176,14 +177,14 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
-        return $this->render('user/edit.html.twig', [
+        return $this->render('admin/user/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
             'roles' => $roles,
         ]);
     }
 
-    #[Route('/users/{id}/update', name: 'user_update', methods: ['POST', 'PUT'])]
+    #[Route('/users/{id}/update', name: 'admin_user_update', methods: ['POST', 'PUT'])]
     public function update(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $data = $request->request->all();
@@ -206,7 +207,7 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index');
     }
 
-    #[Route('/{id}/delete', name: 'user_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {

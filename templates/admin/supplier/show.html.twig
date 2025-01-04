@@ -60,13 +60,13 @@
     </div>
 
     <div class="mt-6 flex justify-end gap-4">
-        <a href="{{ path('supplier_index') }}" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+        <a href="{{ path('admin_supplier_index') }}" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
             Retour
         </a>
-        <a href="{{ path('supplier_edit', { id: supplier.id }) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        <a href="{{ path('admin_supplier_edit', { id: supplier.id }) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
             Modifier
         </a>
-        <form action="{{ path('supplier_delete', { id: supplier.id }) }}" method="POST" class="inline">
+        <form action="{{ path('admin_supplier_delete', { id: supplier.id }) }}" method="POST" class="inline">
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
                 Supprimer

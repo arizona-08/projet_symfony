@@ -1,9 +1,27 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Admin{% endblock %}
+{% block title %}Admin
+{% endblock %}
 
 {% block main %}
-    <section class="max-w-8xl m-auto">
-        <h1 class="4xl">Admin</h1>
-    </section>
-{% endblock %}
+	<section class="max-w-8xl m-auto">
+		<h1 class="text-4xl mt-12">Administrateur</h1>
+
+		<div class="flex flex-wrap justify-center gap-6">
+			<a href="{{ path('admin_user_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+				Gérer les utilisateurs
+			</a>
+			<a href="{{ path('vehicle_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+				Gérer les véhicules
+			</a>
+			<a href="{{ path('admin_supplier_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+				Gérer les fournisseurs
+			</a>
+			<a href="{{ path('agency_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+				Gérer les agences
+			</a>
+			<a href="{{ path('app_location_index') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+				Gérer les commandes
+			</a>
+		</section>
+	{% endblock %}

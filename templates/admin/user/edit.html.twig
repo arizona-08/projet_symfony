@@ -10,7 +10,7 @@
     </div>
 
     <div class="bg-white shadow-md rounded-lg p-6">
-        <form action="{{ path('user_update', { id: user.id }) }}" method="POST">
+        <form action="{{ path('admin_user_update', { id: user.id }) }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
@@ -51,7 +51,7 @@
             </div>
 
             <div class="flex justify-end gap-4">
-                <a href="{{ path('user_index') }}" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
+                <a href="{{ path('admin_user_index') }}" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
                     Annuler
                 </a>
                 <button type="submit" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
