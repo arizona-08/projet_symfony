@@ -9,7 +9,10 @@
         <p class="text-lg text-gray-600 mt-3">Gérez vos fournisseurs et consultez leurs informations.</p>
     </div>
 
-    <div class="text-center mb-6">
+    <div class="mb-10 flex justify-around items-center ">
+        <a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+            Retour à la page d'administration
+        </a>
         <a href="{{ path('admin_supplier_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
             Ajouter un fournisseur
         </a>
