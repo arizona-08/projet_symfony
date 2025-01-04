@@ -51,7 +51,6 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
         - { path: ^/vehicle, roles: [ROLE_ADMIN, ROLE_USER, ROLE_AGENCY_HEAD, ROLE_SUPPLIER, ROLE_ORDER_MANAGER] }
-        - { path: ^/agency, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD] }
         - { path: ^/profile, roles: [ROLE_USER, ROLE_AGENCY_HEAD, ROLE_ORDER_MANAGER, ROLE_SUPPLIER] }
         - { path: ^/location, roles: [ROLE_ADMIN, ROLE_AGENCY_HEAD, ROLE_USER] }
         - { path: ^/supplier, roles: ROLE_ADMIN }
