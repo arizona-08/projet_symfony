@@ -41,20 +41,23 @@
                             <span class="font-medium">Chef d'agence :</span> {{ agency.user.name }}
                         </p>
                     </div>
-                    <div class="p-4 bg-gray-50 text-center flex justify-center gap-4">
-                        <a href="{{ path('agency_show', { id: agency.id }) }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
-                            Voir
-                        </a>
-                        <a href="{{ path('agency_edit', { id: agency.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
-                            Modifier
-                        </a>
-                        <form action="{{ path('agency_delete', { id: agency.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette agence ?');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
-                                Supprimer
-                            </button>
-                        </form>
-                    </div>
+                    {% if is_granted('ROLE_AGENCY_HEAD') %}
+                        <div class="p-4 bg-gray-50 text-center flex justify-center gap-4">
+                            <a href="{{ path('agency_show', { id: agency.id }) }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+                                Voir
+                            </a>
+                            <a href="{{ path('agency_edit', { id: agency.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+                                Modifier
+                            </a>
+                            <form action="{{ path('agency_delete', { id: agency.id }) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette agence ?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                    
                 </div>
             {% endfor %}
         {% else %}

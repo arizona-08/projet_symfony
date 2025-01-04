@@ -19,8 +19,8 @@
 
 				<li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('vehicle_index') }}">Vehicule</a></li>
 
-				{% if is_granted('ROLE_ADMIN') %}
-					<li class="{{ app.current_route == 'admin_supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('admin_supplier_index') }}">Fournisseur</a></li>
+				{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
+					<li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
 				{% endif %}
 				<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_location_index') }}">Commandes</a></li>
                 <li class="{{ app.request.attributes.get('_route') == 'app_my_locations' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_my_locations') }}">Mes commandes</a></li>
@@ -67,8 +67,8 @@
 				{% endif %}
 				<li><a href="{{ path('agency_index') }}">Agence</a></li>
 				<li><a href="{{ path('vehicle_index') }}">Vehicle</a></li>
-				{% if is_granted('ROLE_ADMIN') %}
-					<li><a href="{{ path('admin_supplier_index') }}">Fournisseur</a></li>
+				{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
+					<li><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
 				{% endif %}
 				<li><a href="{{ path('app_location_index') }}">Commandes</a></li>
                 <li><a href="{{ path('app_my_locations') }}">Mes commandes</a></li>

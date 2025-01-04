@@ -10,7 +10,7 @@
 			<p class="text-lg text-gray-600 mt-3">Consultez et gérez tous les véhicules disponibles.</p>
 		</div>
 
-		{% if is_granted('ROLE_SUPPLIER') %}
+		{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
 			<div class="mb-10 flex justify-around items-center">
 				{% if is_granted('ROLE_ADMIN') %}
 					<a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
