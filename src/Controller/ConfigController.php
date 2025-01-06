@@ -20,6 +20,39 @@ use App\Repository\EquipmentRepository;
 #[Route('/config')]
 class ConfigController extends AbstractController
 {
+    #[Route('/edit/{id}', name: 'config_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Config $config, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ConfigType::class, $config);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Configuration mise à jour avec succès.');
+
+            return $this->redirectToRoute('config_index');
+        }
+
+        return $this->render('config/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/config/{id}/delete', name: 'config_delete', methods: ['POST'])]
+    public function delete(Config $config, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $config->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($config);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Configuration supprimée avec succès.');
+        }
+    
+        return $this->redirectToRoute('config_index');
+    }
+    
+
     #[Route('/get-kit-accessories', name: 'config_get_kit_accessories', methods: ['GET'])]
     public function getKitAccessories(Request $request, KitRepository $kitRepository): JsonResponse
     {
