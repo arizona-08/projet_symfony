@@ -3,3 +3,11 @@ App\Entity\Config:
         client: '@user_1'
         vehicle: '@car_1'
         kit: '@kit_1'
+    config_2:
+        client: '@user_1'
+        vehicle: '@car_4'
+        kit: '@kit_2'
+    config_3:
+        client: '@user_1'
+        vehicle: '@car_6'
+        kit: '@kit_3'

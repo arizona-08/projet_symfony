@@ -1,38 +1,51 @@
 {% extends 'index.html.twig' %}
 
 {% block main %}
-    <h1>Configurations</h1>
+	<h1>Configurations</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Vehicle</th>
-                <th>Kit</th>
-                <th>Accessory</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for config in configs %}
-                <tr>
-                    <td>{{ config.vehicle.model }}</td>
-                    <td>{{ config.kit.name }}</td>
-                    <td>
-                        <ul>
-                            {% for accessory in config.kit.accessory %}
-                                <li>{{ accessory }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td> 
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">No configurations found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        
-    </table>
-    <td>
-    <a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
-</td>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Vehicle</th>
+				<th>Kit</th>
+				<th>Accessory</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for config in configs %}
+				<tr>
+					<td>{{ config.vehicle.model }}</td>
+					<td>{{ config.kit.name }}</td>
+					<td>
+						<ul>
+							{% for accessory in config.kit.accessory %}
+								<li>{{ accessory }}</li>
+							{% endfor %}
+						</ul>
+					</td>
+					<td>
+						<a href="{{ path('app_location_new_vip', { id: config.vehicle.id }) }}" class="btn btn-primary">
+							Créer une location VIP
+						</a>
+						<a href="{{ path('config_edit', { id: config.id }) }}" class="btn btn-warning">
+							Modifier
+						</a>
+						<form action="{{ path('config_delete', { id: config.id }) }}" method="post" style="display:inline-block;" onsubmit="return confirm('Voulez-vous vraiment supprimer cette configuration ?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ config.id) }}">
+							<button type="submit" class="btn btn-danger">Supprimer</button>
+						</form>
+
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">No configurations found.</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+
+	</table>
+	<td>
+		<a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
+	</td>
 {% endblock %}

@@ -9,6 +9,8 @@ App\Entity\Location:
             - '@car_1'
             - '@car_2'
             - '@car_3'
+        config: '@config_1'
+        
     location_2:
         start_date: <dateTimeBetween('-2 months', '-1 month')>
         end_date: <dateTimeBetween('-1 month', 'now')>
@@ -18,6 +20,7 @@ App\Entity\Location:
         vehicle:
             - '@car_4'
             - '@car_5'
+        config: '@config_2'
     location_3:
         start_date: <dateTimeBetween('-2 months', '-1 month')>
         end_date: <dateTimeBetween('-1 month', 'now')>
@@ -30,3 +33,4 @@ App\Entity\Location:
             - '@car_8'
             - '@car_9'
             - '@car_10'
+        config: '@config_3'

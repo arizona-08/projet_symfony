@@ -1,0 +1,16 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Créer une Location VIP{% endblock %}
+
+{% block main %}
+<h1>Créer une Location VIP</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.start_date) }}
+    {{ form_row(form.end_date) }}
+    {{ form_row(form.vehicle) }}
+    <button class="btn btn-primary">Créer</button>
+{{ form_end(form) }}
+
+<a href="{{ path('app_location_index') }}" class="btn btn-secondary">Retour à la liste</a>
+{% endblock %}

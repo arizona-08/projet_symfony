@@ -38,6 +38,13 @@ class Location
     #[ORM\JoinColumn(nullable: false)] // Si chaque commande doit obligatoirement être associée à un utilisateur
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $vip = null;
+
+    #[ORM\ManyToOne(inversedBy: 'locations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Config $config = null;
+
     public function __construct()
     {
         $this->vehicle = new ArrayCollection();
@@ -137,6 +144,30 @@ class Location
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function isVip(): ?bool
+    {
+        return $this->vip;
+    }
+
+    public function setVip(?bool $vip): static
+    {
+        $this->vip = $vip;
+
+        return $this;
+    }
+
+    public function getConfig(): ?Config
+    {
+        return $this->config;
+    }
+
+    public function setConfig(?Config $config): static
+    {
+        $this->config = $config;
 
         return $this;
     }
