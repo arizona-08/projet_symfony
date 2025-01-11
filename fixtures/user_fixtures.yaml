@@ -21,9 +21,23 @@ App\Entity\User:
         created_at: <dateTime('now')>
         roles: ['ROLE_ADMIN']
     user_client_vip:
-        name: 'Client VIP'
+        name: 'Client VIP 1'
         password: 'password'
         email: 'clientvip@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_VIP']
+    user_client_vip_2:
+        name: 'Client VIP 2'
+        password: 'password'
+        email: 'clientvip2@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_VIP']
+    user_client_vip_3:
+        name: 'Client VIP 3'
+        password: 'password'
+        email: 'clientvip3@example.com'
         email_verified_at: <dateTime('now')>
         created_at: <dateTime('now')>
         roles: ['ROLE_VIP']

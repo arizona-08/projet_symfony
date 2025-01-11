@@ -2,3 +2,9 @@ App\Entity\Kit:
     kit_1:
         name: 'Kit 1'
         accessory: [glock 17]
+    kit_2:
+        name: 'Kit 2'
+        accessory: ["49.3"]
+    kit_3:
+        name: 'Kit 3'
+        accessory: [Les recettes de grand-mère Special Edition Marechal Pétain]

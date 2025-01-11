@@ -1,0 +1,66 @@
+{% extends 'index.html.twig' %}
+
+{% block main %}
+<section>
+    <div class="container">
+        <h1>Edit Vehicle Configuration</h1>
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_row(form.vehicle) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.kit) }}
+        </div>
+        <div id="kit_accessories">
+            <p>Select a kit to see its accessories.</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Configuration</button>
+        {{ form_end(form) }}
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const kitSelect = document.querySelector('select[name="config[kit]"]');
+        const accessoriesContainer = document.querySelector('#kit_accessories');
+
+        // Function to load accessories for the selected kit
+        const loadAccessories = (kitId) => {
+            if (!kitId) {
+                accessoriesContainer.innerHTML = '<p>Select a kit to see its accessories.</p>';
+                return;
+            }
+
+            fetch(`/config/get-kit-accessories?kit=${encodeURIComponent(kitId)}`)
+                .then(response => response.json())
+                .then(data => {
+                    accessoriesContainer.innerHTML = '';
+
+                    if (data.length === 0) {
+                        accessoriesContainer.innerHTML = '<p>No accessories found for the selected kit.</p>';
+                        return;
+                    }
+
+                    const ul = document.createElement('ul');
+                    data.forEach(accessory => {
+                        const li = document.createElement('li');
+                        li.textContent = accessory.name;
+                        ul.appendChild(li);
+                    });
+                    accessoriesContainer.appendChild(ul);
+                })
+                .catch(() => {
+                    accessoriesContainer.innerHTML = '<p>Error loading accessories. Please try again.</p>';
+                });
+        };
+
+        // Load accessories for the initially selected kit
+        loadAccessories(kitSelect.value);
+
+        // Load accessories when the kit selection changes
+        kitSelect.addEventListener('change', () => {
+            loadAccessories(kitSelect.value);
+        });
+    });
+</script>
+{% endblock %}

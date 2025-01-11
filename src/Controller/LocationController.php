@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Form\VipLocationType;
+use App\Entity\Config;
+
 
 #[Route('/location')]
 final class LocationController extends AbstractController
@@ -64,6 +67,7 @@ final class LocationController extends AbstractController
             $locationsWithTotalPrice[] = [
                 'location' => $location,
                 'totalPrice' => $totalPrice,
+                'vip' => $location->isVip(), // Ajoutez le champ VIP ici
             ];
         }
 
@@ -81,6 +85,7 @@ final class LocationController extends AbstractController
             'locations' => $pagination,
         ]);
     }
+
     #[Route('/new', name: 'app_location_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -91,6 +96,8 @@ final class LocationController extends AbstractController
         $location = new Location();
 
         $users = $entityManager->getRepository(User::class)->findAll();
+
+        
 
         $vehiclesQuery = $entityManager->getRepository(Vehicle::class)->createQueryBuilder('v');
         $vehicles = $paginator->paginate(
@@ -135,6 +142,7 @@ final class LocationController extends AbstractController
             $session->remove('new_location_vehicles');
 
             $this->addFlash('success', 'Location créée avec succès.');
+            
             return $this->redirectToRoute('app_location_index');
         }
 
@@ -373,4 +381,57 @@ final class LocationController extends AbstractController
 
         return $this->redirectToRoute('app_location_edit', ['id' => $id]);
     }
+
+    #[Route('/new/vip/{id}', name: 'app_location_new_vip', methods: ['GET', 'POST'])]
+    public function newVipLocation(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour créer une location VIP.');
+        }
+    
+        $vehicle = $entityManager->getRepository(Vehicle::class)->find($id);
+        if (!$vehicle) {
+            throw $this->createNotFoundException('Véhicule non trouvé.');
+        }
+    
+        // Supposons que la configuration est liée au véhicule
+        $config = $vehicle->getConfig();
+        if (!$config) {
+            throw $this->createNotFoundException('Configuration non trouvée pour ce véhicule.');
+        }
+    
+        $location = new Location();
+        $location->setUser($user);
+        $location->setConfig($config);
+        $location->setVip(true);
+        $location->setCreatedAt(new \DateTimeImmutable());
+    
+        // Utiliser setLocation pour définir la relation
+        $vehicle->setLocation($location);
+    
+        $form = $this->createForm(VipLocationType::class, $location);
+    
+        $form->handleRequest($request);
+
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($location);
+            $entityManager->flush();
+    
+            $this->addFlash('success', 'Location VIP créée avec succès.');
+            
+            if ($user->hasRole('ROLE_VIP')) {
+                return $this->redirectToRoute('app_my_locations');
+            }
+            return $this->redirectToRoute('app_location_index');
+        }
+    
+        return $this->render('location/new_vip.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }
