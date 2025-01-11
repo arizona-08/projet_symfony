@@ -85,6 +85,7 @@ final class LocationController extends AbstractController
             'locations' => $pagination,
         ]);
     }
+
     #[Route('/new', name: 'app_location_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -95,6 +96,8 @@ final class LocationController extends AbstractController
         $location = new Location();
 
         $users = $entityManager->getRepository(User::class)->findAll();
+
+        
 
         $vehiclesQuery = $entityManager->getRepository(Vehicle::class)->createQueryBuilder('v');
         $vehicles = $paginator->paginate(
@@ -139,6 +142,7 @@ final class LocationController extends AbstractController
             $session->remove('new_location_vehicles');
 
             $this->addFlash('success', 'Location créée avec succès.');
+            
             return $this->redirectToRoute('app_location_index');
         }
 
@@ -409,13 +413,19 @@ final class LocationController extends AbstractController
         $form = $this->createForm(VipLocationType::class, $location);
     
         $form->handleRequest($request);
+
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
     
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($location);
             $entityManager->flush();
     
             $this->addFlash('success', 'Location VIP créée avec succès.');
-    
+            
+            if ($user->hasRole('ROLE_VIP')) {
+                return $this->redirectToRoute('app_my_locations');
+            }
             return $this->redirectToRoute('app_location_index');
         }
     
