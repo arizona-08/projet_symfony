@@ -42,7 +42,7 @@ class Location
     private ?bool $vip = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Config $config = null;
 
     public function __construct()
