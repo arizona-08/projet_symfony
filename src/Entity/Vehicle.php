@@ -38,8 +38,10 @@ class Vehicle
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $pricePerDay;
 
-    #[ORM\ManyToOne(inversedBy: 'vehicle')]
+    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'vehicle')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Location $location = null;
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $vehicleFuelType = null;
