@@ -1,46 +1,9 @@
 {% extends 'index.html.twig' %}
 
 {% block main %}
-<<<<<<< HEAD
+
 <section class="max-w-8xl m-auto">
-    <h1>Configurations</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Vehicle</th>
-                <th>Kit</th>
-                <th>Accessory</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for config in configs %}
-                <tr>
-                    <td>{{ config.vehicle.model }}</td>
-                    <td>{{ config.kit.name }}</td>
-                    <td>
-                        <ul>
-                            {% for accessory in config.kit.accessory %}
-                                <li>{{ accessory }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td> 
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">No configurations found.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        
-    </table>
-    <td>
-        <a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
-    </td>
-</section>
-
-=======
-	<h1>Configurations</h1>
+<h1>Configurations</h1>
 
 	<table class="table">
 		<thead>
@@ -87,5 +50,5 @@
 	<td>
 		<a href="{{ path('config_create') }}" class="btn btn-info">Créer une nouvelle config</a>
 	</td>
->>>>>>> 60ff30d (CRUD CONFIG + location link + fixtures)
+</section>
 {% endblock %}
