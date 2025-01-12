@@ -6,7 +6,6 @@
 <section class="max-w-8xl m-auto px-3 py-12">
     <div class="mb-10 text-center">
 
-        {# user.hasRole() pour appliquer des règles à un rôle spécifique #}
         {% if user.hasRole('ROLE_AGENCY_HEAD') %}
             <h1 class="text-4xl font-bold text-gray-800">Mon agence</h1>
         {% else %}
@@ -15,21 +14,20 @@
         <p class="text-lg text-gray-600 mt-3">Gérez les agences de votre organisation avec facilité.</p>
     </div>
 
-    {# is_granted pour utiliser la hierarchie de permission (security.yml) #}
     {% if is_granted('ROLE_AGENCY_HEAD') %}
         <div class="mb-10 flex justify-around items-center">
             {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+                <a href="{{ path('admin') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700">
                     Retour à la page d'administration
                 </a>
             {% endif %}
-            
+
             <a href="{{ path('agency_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white">
                 Ajouter une agence
             </a>
         </div>
     {% endif %}
-    
+
 
     <div class="flex flex-wrap justify-center gap-6">
         {% if agencies is not empty %}
@@ -57,7 +55,7 @@
                             </form>
                         </div>
                     {% endif %}
-                    
+
                 </div>
             {% endfor %}
         {% else %}

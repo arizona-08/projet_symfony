@@ -13,17 +13,17 @@
 		{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
 			<div class="mb-10 flex justify-around items-center">
 				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('admin') }}" class="px-2 py-1 bg-blue-600 rounded font-medium text-white">
+					<a href="{{ path('admin') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700">
 						Retour à la page d'administration
 					</a>
 				{% endif %}
-				
+
 				<a href="{{ path('vehicle_create') }}" class="px-2 py-1 border-2 border-blue-600 rounded font-medium hover:bg-blue-600 hover:text-white ">
 					Ajouter un vehicule
 				</a>
 			</div>
 		{% endif %}
-		
+
 
 		<form action="{{ path('vehicle_index') }}" method="GET" class="bg-white shadow-md rounded-lg p-6 mb-10">
 			<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -107,7 +107,7 @@
 									</button>
 								</form>
 							{% endif %}
-							
+
 						</div>
 					</div>
 				{% endfor %}

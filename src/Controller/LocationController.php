@@ -55,23 +55,7 @@ final class LocationController extends AbstractController
     #[Route(name: 'app_location_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        $locations = $locationRepository->findAll();
-
-        $locationsWithTotalPrice = [];
-        foreach ($locations as $location) {
-            $totalPrice = 0;
-            foreach ($location->getVehicle() as $vehicle) {
-                $totalPrice += $vehicle->getPricePerDay();
-            }
-
-            $locationsWithTotalPrice[] = [
-                'location' => $location,
-                'totalPrice' => $totalPrice,
-                'vip' => $location->isVip(), // Ajoutez le champ VIP ici
-            ];
-        }
-
-        $queryBuilder = $locationRepository->createQueryBuilder('a');
+        $queryBuilder = $locationRepository->createQueryBuilder('l');
 
         $pagination = $paginator->paginate(
             $queryBuilder,
@@ -79,12 +63,19 @@ final class LocationController extends AbstractController
             8
         );
 
+        foreach ($pagination as $location) {
+            $totalPrice = 0;
+            foreach ($location->getVehicle() as $vehicle) {
+                $totalPrice += $vehicle->getPricePerDay();
+            }
+            $location->totalPrice = $totalPrice;
+        }
+
         return $this->render('location/index.html.twig', [
-            'locationsWithTotalPrice' => $locationsWithTotalPrice,
-            'locations' => $locations,
-            'locations' => $pagination,
+            'pagination' => $pagination,
         ]);
     }
+
 
     #[Route('/new', name: 'app_location_new', methods: ['GET', 'POST'])]
     public function new(
@@ -97,9 +88,32 @@ final class LocationController extends AbstractController
 
         $users = $entityManager->getRepository(User::class)->findAll();
 
-        
-
         $vehiclesQuery = $entityManager->getRepository(Vehicle::class)->createQueryBuilder('v');
+
+        $brands = array_unique(array_map(
+            fn($vehicle) => $vehicle->getMarque(),
+            $entityManager->getRepository(Vehicle::class)->findAll()
+        ));
+
+        $search = $request->query->get('search');
+        $brand = $request->query->get('brand');
+        $price = $request->query->get('price');
+
+        if ($search) {
+            $vehiclesQuery->andWhere('v.model LIKE :search OR v.marque LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($brand) {
+            $vehiclesQuery->andWhere('v.marque = :brand')
+                ->setParameter('brand', $brand);
+        }
+
+        if ($price) {
+            $vehiclesQuery->andWhere('v.pricePerDay <= :price')
+                ->setParameter('price', $price);
+        }
+
         $vehicles = $paginator->paginate(
             $vehiclesQuery->getQuery(),
             $request->query->getInt('page', 1),
@@ -129,7 +143,6 @@ final class LocationController extends AbstractController
             $location->setUser($user);
             $location->setStartDate(new \DateTime($startDate));
             $location->setEndDate(new \DateTime($endDate));
-
             $location->setCreatedAt(new \DateTimeImmutable());
 
             foreach ($selectedVehicles as $vehicle) {
@@ -142,7 +155,6 @@ final class LocationController extends AbstractController
             $session->remove('new_location_vehicles');
 
             $this->addFlash('success', 'Location créée avec succès.');
-            
             return $this->redirectToRoute('app_location_index');
         }
 
@@ -152,11 +164,9 @@ final class LocationController extends AbstractController
             'vehicles' => $vehicles->getItems(),
             'users' => $users,
             'selectedVehicles' => $selectedVehicles,
+            'brands' => $brands,
         ]);
     }
-
-
-
 
     #[Route('/locations/new/{id}', name: 'app_location_new_for_vehicle', methods: ['GET', 'POST'])]
     public function newForVehicle(
@@ -383,55 +393,50 @@ final class LocationController extends AbstractController
     }
 
     #[Route('/new/vip/{id}', name: 'app_location_new_vip', methods: ['GET', 'POST'])]
-    public function newVipLocation(int $id, Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function newVipLocation(
+        int $id,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
         $user = $this->getUser();
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour créer une location VIP.');
         }
-    
-        $vehicle = $entityManager->getRepository(Vehicle::class)->find($id);
-        if (!$vehicle) {
-            throw $this->createNotFoundException('Véhicule non trouvé.');
-        }
-    
-        // Supposons que la configuration est liée au véhicule
-        $config = $vehicle->getConfig();
+
+        $config = $entityManager->getRepository(Config::class)->find($id);
         if (!$config) {
-            throw $this->createNotFoundException('Configuration non trouvée pour ce véhicule.');
+            throw $this->createNotFoundException('Configuration non trouvée.');
         }
-    
+
         $location = new Location();
         $location->setUser($user);
         $location->setConfig($config);
         $location->setVip(true);
         $location->setCreatedAt(new \DateTimeImmutable());
-    
-        // Utiliser setLocation pour définir la relation
-        $vehicle->setLocation($location);
-    
-        $form = $this->createForm(VipLocationType::class, $location);
-    
+
+        $location->addVehicle($config->getVehicle());
+
+        $form = $this->createForm(VipLocationType::class, $location, [
+            'include_vehicle' => false,
+        ]);
+
         $form->handleRequest($request);
 
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser();
-    
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($location);
             $entityManager->flush();
-    
+
             $this->addFlash('success', 'Location VIP créée avec succès.');
-            
-            if ($user->hasRole('ROLE_VIP')) {
-                return $this->redirectToRoute('app_my_locations');
-            }
+
             return $this->redirectToRoute('app_location_index');
         }
-    
+
         return $this->render('location/new_vip.html.twig', [
             'form' => $form->createView(),
+            'config' => $config,
         ]);
+
     }
+
 
 }

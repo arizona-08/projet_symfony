@@ -19,7 +19,7 @@ class Config
     private ?User $client = null;
 
     #[ORM\OneToOne(inversedBy: 'config', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Vehicle $vehicle = null;
 
     #[ORM\ManyToOne(inversedBy: 'configs')]
