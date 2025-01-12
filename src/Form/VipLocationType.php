@@ -22,21 +22,25 @@ class VipLocationType extends AbstractType
             ->add('end_date', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de fin',
-            ])
-            ->add('vehicle', EntityType::class, [
+            ]);
+
+        if ($options['include_vehicle']) {
+            $builder->add('vehicle', EntityType::class, [
                 'class' => Vehicle::class,
                 'choice_label' => 'model',
                 'multiple' => true,
                 'expanded' => false,
                 'by_reference' => false,
+                'label' => 'Véhicule(s)',
             ]);
+        }
     }
-
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Location::class,
+            'include_vehicle' => true,
         ]);
     }
 }

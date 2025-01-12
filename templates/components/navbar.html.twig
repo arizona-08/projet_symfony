@@ -8,7 +8,7 @@
 
 			<ul class="hidden xl:flex xl:items-center xl:gap-8 text-gray-500">
 
-				<li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('dashboard') }}">Dashboard</a></li>
+				<li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('dashboard') }}">Accueil</a></li>
 				{% if is_granted('ROLE_ADMIN') %}
 					<li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('admin') }}">Admin</a></li>
 				{% endif %}
@@ -26,7 +26,7 @@
 				{% if is_granted('ROLE_ORDER_MANAGER') %}
 					<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_location_index') }}">Commandes</a></li>
 				{% endif %}
-				
+
                 <li class="{{ app.request.attributes.get('_route') == 'app_my_locations' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_my_locations') }}">Mes commandes</a></li>
                 {% if is_granted('ROLE_VIP') %}
 					<li>
