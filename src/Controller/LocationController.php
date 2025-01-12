@@ -55,6 +55,12 @@ final class LocationController extends AbstractController
     #[Route(name: 'app_location_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        if(!$this->isGranted('ROLE_AGENCY_HEAD')){
+            if(!$this->isGranted('ROLE_ORDER_MANAGER')){
+                throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page.');
+            }
+        }
+
         $queryBuilder = $locationRepository->createQueryBuilder('l');
 
         $pagination = $paginator->paginate(
@@ -214,6 +220,16 @@ final class LocationController extends AbstractController
     #[Route('/{id}', name: 'app_location_show', methods: ['GET'])]
     public function show(Location $location): Response
     {
+        /** @var \App\Entity\User user */
+        $user = $this->getUser();
+
+        if(!$this->isGranted('ROLE_ORDER_MANAGER') && !$this->isGranted('ROLE_AGENCY_HEAD')){
+            if(!$user->getLocations()->contains($location)){
+                return $this->redirectToRoute('app_my_locations');
+            }
+        }
+       
+
         $totalPrice = 0;
         foreach ($location->getVehicle() as $vehicle) {
             $totalPrice += $vehicle->getPricePerDay();
@@ -238,6 +254,13 @@ final class LocationController extends AbstractController
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     ): Response {
+
+        if(!$this->isGranted('ROLE_AGENCY_HEAD')){
+            if(!$this->isGranted('ROLE_ORDER_MANAGER')){
+                throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page.');
+            }
+        }
+
         $vehiclesQuery = $entityManager->getRepository(Vehicle::class)->createQueryBuilder('v');
         $search = $request->query->get('search');
         $brand = $request->query->get('brand');
@@ -314,6 +337,7 @@ final class LocationController extends AbstractController
 
         return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
     }
+
     #[Route('/new/add-vehicle/{vehicle_id}', name: 'app_location_add_vehicle', methods: ['GET', 'POST'])]
     public function addVehicle(
         Request $request,
@@ -398,9 +422,15 @@ final class LocationController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour créer une location VIP.');
+        }
+
+        if(!$this->isGranted('ROLE_VIP')){
+            throw $this->createAccessDeniedException("Vous devez être VIP pour accéder à cette page.");
         }
 
         $config = $entityManager->getRepository(Config::class)->find($id);
@@ -428,6 +458,9 @@ final class LocationController extends AbstractController
 
             $this->addFlash('success', 'Location VIP créée avec succès.');
 
+            if($user->hasRole('ROLE_VIP')){
+                return $this->redirectToRoute('app_my_locations');
+            }
             return $this->redirectToRoute('app_location_index');
         }
 

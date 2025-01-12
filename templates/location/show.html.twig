@@ -49,13 +49,20 @@
     </div>
 
     <div class="mt-6 text-center flex justify-center gap-4">
-        <a href="{{ path('app_location_index') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+        {% if is_granted('ROLE_ORDER_MANAGER') %}
+            
+            <a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+                Modifier
+            </a>
+            {{ include('location/_delete_form.html.twig') }}
+        {% endif %}
+
+        <a href="{{ is_granted('ROLE_ORDER_MANAGER') ? path('app_location_index') : path('app_my_locations') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
             Retour à la liste
         </a>
-        <a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
-            Modifier
-        </a>
-        {{ include('location/_delete_form.html.twig') }}
+        
+        
+        
     </div>
 </section>
 {% endblock %}
