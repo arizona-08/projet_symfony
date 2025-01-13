@@ -53,6 +53,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Location::class, cascade: ['persist', 'remove'])]
     private Collection $locations;
 
+    /**
+     * @var Collection<int, Feedback>
+     */
+    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'client')]
+    private Collection $feedback;
+
 
     public function __construct()
     {
@@ -61,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->configs = new ArrayCollection();
 
         $this->locations = new ArrayCollection();
+        $this->feedback = new ArrayCollection();
 
     }
 
@@ -266,5 +273,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->roles);
+    }
+
+    /**
+     * @return Collection<int, Feedback>
+     */
+    public function getFeedback(): Collection
+    {
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): static
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback->add($feedback);
+            $feedback->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): static
+    {
+        if ($this->feedback->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getClient() === $this) {
+                $feedback->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }

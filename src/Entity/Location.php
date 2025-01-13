@@ -45,9 +45,16 @@ class Location
     #[ORM\JoinColumn(nullable: true)]
     private ?Config $config = null;
 
+    /**
+     * @var Collection<int, Feedback>
+     */
+    #[ORM\OneToMany(targetEntity: Feedback::class, mappedBy: 'location')]
+    private Collection $feedback;
+
     public function __construct()
     {
         $this->vehicle = new ArrayCollection();
+        $this->feedback = new ArrayCollection();
     }
 
 
@@ -168,6 +175,36 @@ class Location
     public function setConfig(?Config $config): static
     {
         $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Feedback>
+     */
+    public function getFeedback(): Collection
+    {
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): static
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback->add($feedback);
+            $feedback->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): static
+    {
+        if ($this->feedback->removeElement($feedback)) {
+            // set the owning side to null (unless already changed)
+            if ($feedback->getLocation() === $this) {
+                $feedback->setLocation(null);
+            }
+        }
 
         return $this;
     }
