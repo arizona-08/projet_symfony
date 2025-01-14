@@ -11,6 +11,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location
 {
+    public function calculateTotalPriceWithDiff(): float
+    {
+        $totalPrice = 0;
+        $startDate = $this->getStartDate();
+        $endDate = $this->getEndDate();
+
+        if ($startDate && $endDate) {
+            foreach ($this->getVehicle() as $vehicle) {
+                $totalPrice += $startDate->diff($endDate)->days * $vehicle->getPricePerDay();
+            }
+        }
+
+        return $totalPrice;
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

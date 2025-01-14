@@ -149,7 +149,7 @@ class HomeController extends AbstractController
         $session->remove('selected_vehicles');
 
         $this->addFlash('success', 'Votre commande a été validée avec succès.');
-        return $this->redirectToRoute('app_location_index');
+        return $this->redirectToRoute('app_my_locations');
     }
 
 
