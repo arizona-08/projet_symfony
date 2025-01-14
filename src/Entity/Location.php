@@ -6,6 +6,7 @@ use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Entity\Feedback;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
@@ -50,14 +51,14 @@ class Location
     private Collection $vehicle;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'locations')]
-    #[ORM\JoinColumn(nullable: false)] // Si chaque commande doit obligatoirement être associée à un utilisateur
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $vip = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Config $config = null;
 
     /**
@@ -148,7 +149,6 @@ class Location
     public function removeVehicle(Vehicle $vehicle): static
     {
         if ($this->vehicle->removeElement($vehicle)) {
-            // set the owning side to null (unless already changed)
             if ($vehicle->getLocation() === $this) {
                 $vehicle->setLocation(null);
             }
@@ -215,7 +215,6 @@ class Location
     public function removeFeedback(Feedback $feedback): static
     {
         if ($this->feedback->removeElement($feedback)) {
-            // set the owning side to null (unless already changed)
             if ($feedback->getLocation() === $this) {
                 $feedback->setLocation(null);
             }

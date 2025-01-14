@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FeedbackRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Feedback
 {
     #[ORM\Id]
@@ -15,6 +16,7 @@ class Feedback
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'feedback')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Location $location = null;
 
     #[ORM\ManyToOne(inversedBy: 'feedback')]
@@ -92,5 +94,13 @@ class Feedback
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setDefaultCreatedAt(): void
+    {
+        if ($this->createdAt === null) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
     }
 }

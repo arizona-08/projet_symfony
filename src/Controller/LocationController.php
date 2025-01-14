@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\VipLocationType;
 use App\Entity\Config;
+use App\Entity\Feedback;
 use Symfony\Component\Validator\Constraints\Collection;
 
 #[Route('/location')]
@@ -24,33 +25,45 @@ final class LocationController extends AbstractController
 {
 
     #[Route('/my-locations', name: 'app_my_locations', methods: ['GET'])]
-    public function myLocations(LocationRepository $locationRepository): Response
+    public function myLocations(Request $request, LocationRepository $locationRepository): Response
     {
+        $filter = $request->query->get('filter', 'all');
         $user = $this->getUser();
 
-        if (!$user) {
-            throw $this->createAccessDeniedException('Vous devez être connecté pour voir vos commandes.');
-        }
+        $locations = match ($filter) {
+            'finished' => $locationRepository->findFinishedByUser($user),
+            'ongoing' => $locationRepository->findOngoingByUser($user),
+            'upcoming' => $locationRepository->findUpcomingByUser($user),
+            default => $locationRepository->findAllByUser($user),
+        };
 
-        $locations = $locationRepository->findBy(['user' => $user]);
+        $locationsWithTotalPrice = array_map(function ($location) {
+            $totalPrice = array_reduce(
+                $location->getVehicle()->toArray(),
+                fn($carry, $vehicle) => $carry + $vehicle->getPricePerDay(),
+                0
+            );
 
-        $locationsWithTotalPrice = [];
-        foreach ($locations as $location) {
-            $totalPrice = 0;
-            foreach ($location->getVehicle() as $vehicle) {
-                $totalPrice += $vehicle->getPricePerDay();
-            }
+            $feedback = $location->getFeedback()->first();
 
-            $locationsWithTotalPrice[] = [
+            return [
                 'location' => $location,
                 'totalPrice' => $totalPrice,
+                'isFinished' => $location->getEndDate() <= new \DateTime(),
+                'feedbackExists' => $feedback !== null,
+                'feedbackRating' => $feedback ? $feedback->getRating() : null,
+                'feedbackComment' => $feedback ? $feedback->getComment() : null,
             ];
-        }
+        }, $locations);
 
         return $this->render('location/my_locations.html.twig', [
             'locationsWithTotalPrice' => $locationsWithTotalPrice,
+            'filter' => $filter,
         ]);
     }
+
+
+
 
     #[Route(name: 'app_location_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository, PaginatorInterface $paginator, Request $request): Response
@@ -62,7 +75,7 @@ final class LocationController extends AbstractController
         }
 
         // if the user is an agency head, we only show the locations of the vehicles of his agency
-        
+
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
@@ -98,8 +111,14 @@ final class LocationController extends AbstractController
             foreach ($location->getVehicle() as $vehicle) {
                 $totalPrice += $vehicle->getPricePerDay();
             }
+
+            $feedback = $location->getFeedback()->first();
+
             $location->totalPrice = $totalPrice;
+            $location->feedbackRating = $feedback ? $feedback->getRating() : null;
+            $location->feedbackComment = $feedback ? $feedback->getComment() : null;
         }
+
 
         return $this->render('location/index.html.twig', [
             'pagination' => $pagination,
@@ -252,7 +271,7 @@ final class LocationController extends AbstractController
                 return $this->redirectToRoute('app_my_locations');
             }
         }
-       
+
 
         $totalPrice = 0;
         foreach ($location->getVehicle() as $vehicle) {
@@ -354,7 +373,11 @@ final class LocationController extends AbstractController
     #[Route('/{id}', name: 'app_location_delete', methods: ['POST'])]
     public function delete(Request $request, Location $location, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->request->get('_token'))) {
+            foreach ($location->getFeedback() as $feedback) {
+                $entityManager->remove($feedback);
+            }
+
             $entityManager->remove($location);
             $entityManager->flush();
         }
@@ -492,8 +515,5 @@ final class LocationController extends AbstractController
             'form' => $form->createView(),
             'config' => $config,
         ]);
-
     }
-
-
 }
