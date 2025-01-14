@@ -88,6 +88,7 @@
         "fakerphp/faker": "^1.24",
         "hautelook/alice-bundle": "^2.14",
         "pelmered/fake-car": "^2.1",
+        "phpunit/phpunit": "^11.5",
         "symfony/maker-bundle": "^1.61",
         "symfony/stopwatch": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*"

@@ -33,6 +33,13 @@
 						<a href="{{ path('config_index') }}">VIP</a>
 					</li>
 				{% endif %}
+
+				 <li class="{{ app.request.attributes.get('_route') == 'app_my_locations' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_my_locations') }}"></a></li>
+                {% if is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('app_kit_index') }}">DARK ADMIN</a>
+					</li>
+				{% endif %}
 			</ul>
 		</div>
 

@@ -69,3 +69,10 @@ App\Entity\User:
         email_verified_at: <dateTime('now')>
         created_at: <dateTime('now')>
         roles: ['ROLE_SUPPLIER_MANAGER']
+    user_dark_admin:
+        name: 'Dark Admin'
+        password: 'password'
+        email: 'dark@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_DARK_ADMIN']
