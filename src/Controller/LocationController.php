@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\VipLocationType;
 use App\Entity\Config;
-
+use Symfony\Component\Validator\Constraints\Collection;
 
 #[Route('/location')]
 final class LocationController extends AbstractController
@@ -61,10 +61,34 @@ final class LocationController extends AbstractController
             }
         }
 
-        $queryBuilder = $locationRepository->createQueryBuilder('l');
+        // if the user is an agency head, we only show the locations of the vehicles of his agency
+        
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        $locations = $locationRepository->findAll();
+        $collection = $locations;
+        $userAgencyVehiclesLocation = [];
+
+        if($user->hasRole('ROLE_AGENCY_HEAD')){
+            $agencyLabel = $user->getAgencies()[0]->getLabel();
+
+            foreach($locations as $location){
+                foreach($location->getVehicle() as $vehicle){
+                    if($vehicle->getAgency()->getLabel() == $agencyLabel){
+                        if (!in_array($location->getId(), array_map(fn($loc) => $loc->getId(), $userAgencyVehiclesLocation))) {
+                            $userAgencyVehiclesLocation[] = $location;
+                        }
+                    }
+                }
+            }
+
+            $collection = $userAgencyVehiclesLocation;
+        }
+
 
         $pagination = $paginator->paginate(
-            $queryBuilder,
+            $collection,
             $request->query->getInt('page', 1),
             8
         );
