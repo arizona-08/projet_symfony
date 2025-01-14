@@ -142,10 +142,19 @@ class AgencyController extends AbstractController
     }
 
     #[Route('/agencies/{id}', name: 'agency_show', methods: ['GET'])]
-    public function show(Agency $agency): Response
+    public function show(Request $request, Agency $agency, PaginatorInterface $paginator): Response
     {
+        $vehicles = $agency->getVehicles();
+
+        $pagination = $paginator->paginate(
+            $vehicles,
+            $request->query->getInt('page', 1),
+            8
+        );
+
         return $this->render('agency/show.html.twig', [
             'agency' => $agency,
+            'pagination' => $pagination,
         ]);
     }
 
