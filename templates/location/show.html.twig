@@ -1,68 +1,103 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Détails de la location{% endblock %}
+{% block title %}Détails de la location
+{% endblock %}
 
 {% block main %}
-<section class="max-w-4xl m-auto px-4 py-12">
-    <div class="mb-10 text-center">
-        <h1 class="text-4xl font-bold text-gray-800">Détails de la location</h1>
-        <p class="text-lg text-gray-600 mt-3">Visualisez les informations détaillées de la commande.</p>
-    </div>
+	<section class="max-w-4xl m-auto px-4 py-12">
+		<div class="mb-10 text-center">
+			<h1 class="text-4xl font-bold text-gray-800">Détails de la location</h1>
+			<p class="text-lg text-gray-600 mt-3">Visualisez les informations détaillées de la commande.</p>
+		</div>
 
-    <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 text-center mx-auto">
-        <div class="p-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Commande n°{{ location.id }}</h2>
-            <p class="text-gray-600 mb-4">
-                <span class="font-medium">Utilisateur :</span>
-                {{ location.user ? location.user.name : 'Utilisateur inconnu' }}
-            </p>
-            <p class="text-gray-600 mb-4">
-                <span class="font-medium">Date :</span>
-                {{ location.startDate ? location.startDate|date('d/m/Y') : 'Non définie' }} -
-                {{ location.endDate ? location.endDate|date('d/m/Y') : 'Non définie' }}
-            </p>
-            <p class="text-gray-600 mb-4">
-                <span class="font-medium">Prix total :</span>
-                <span class="text-blue-600 font-bold">{{ totalPrice }}€</span>
-            </p>
-            <p class="text-gray-600 mb-4">
-                <span class="font-medium">Créé le :</span>
-                {{ location.createdAt ? location.createdAt|date('d/m/Y H:i') : 'Non défini' }}
-            </p>
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Véhicules :</h3>
+		<div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 text-center mx-auto">
+			<div class="p-6">
+				<h2 class="text-2xl font-semibold text-gray-800 mb-4">Commande n°{{ location.id }}</h2>
+				<p class="text-gray-600 mb-4">
+					<span class="font-medium">Utilisateur :</span>
+					{{ location.user ? location.user.name : 'Utilisateur inconnu' }}
+				</p>
+				<p class="text-gray-600 mb-4">
+					<span class="font-medium">Date :</span>
+					{{ location.startDate ? location.startDate|date('d/m/Y') : 'Non définie' }}
+					-
+					{{ location.endDate ? location.endDate|date('d/m/Y') : 'Non définie' }}
+				</p>
+				<p class="text-gray-600 mb-4">
+					<span class="font-medium">Prix total :</span>
+					<span class="text-blue-600 font-bold">{{ totalPrice }}€</span>
+				</p>
+				<p class="text-gray-600 mb-4">
+					<span class="font-medium">Créé le :</span>
+					{{ location.createdAt ? location.createdAt|date('d/m/Y H:i') : 'Non défini' }}
+				</p>
 
-            <div class="flex flex-wrap justify-center gap-6">
-                {% for vehicle in location.vehicle %}
-                    <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200 w-full sm:w-1/2 lg:w-1/3 max-w-xs">
-                        <div class="p-6">
-                            <h4 class="text-xl font-semibold text-gray-800">{{ vehicle.marque }} - {{ vehicle.model }}</h4>
-                            <p class="text-gray-600 mt-3">
-                                <span class="font-bold">{{ vehicle.pricePerDay }}€</span> par jour
-                            </p>
-                            <p class="text-gray-500 mt-2">Kilométrage : <span class="font-medium">{{ vehicle.nbKilometrage }} km</span></p>
-                            <p class="text-gray-500">Agence : {{ vehicle.agency ? vehicle.agency.label : 'Non assignée' }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+				{% if location.feedback|length > 0 %}
+					<p class="text-gray-600 mb-4">
+						<span class="font-medium">Note :</span>
+						<span class="text-yellow-500 text-lg font-bold">
+							{{ location.feedback.first.rating }}
+							/ 5 ⭐
+						</span>
+					</p>
+					{% if location.feedback.first.comment %}
+						<p class="text-gray-600 italic mt-2">
+							"{{ location.feedback.first.comment }}"
+						</p>
+					{% endif %}
+				{% endif %}
+
+				<div class="mt-6 text-center flex justify-center gap-4">
+					{% if is_granted('ROLE_ORDER_MANAGER') %}
+
+						<a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+							Modifier
+						</a>
+						{{ include('location/_delete_form.html.twig') }}
+					{% endif %}
+
+					<a href="{{ is_granted('ROLE_ORDER_MANAGER') ? path('app_location_index') : path('app_my_locations') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+						Retour à la liste
+					</a>
+
+
+				</div>
+			</section>
+			<h3 class="text-lg font-semibold text-gray-800 mb-4">Véhicules :</h3>
+
+			<div class="flex flex-wrap justify-center gap-6">
+				{% for vehicle in location.vehicle %}
+					<div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200 w-full sm:w-1/2 lg:w-1/3 max-w-xs">
+						<div class="p-6">
+							<h4 class="text-xl font-semibold text-gray-800">{{ vehicle.marque }}
+								-
+								{{ vehicle.model }}</h4>
+							<p class="text-gray-600 mt-3">
+								<span class="font-bold">{{ vehicle.pricePerDay }}€</span>
+								par jour
+							</p>
+							<p class="text-gray-500 mt-2">Kilométrage :
+								<span class="font-medium">{{ vehicle.nbKilometrage }}
+									km</span>
+							</p>
+							<p class="text-gray-500">Agence :
+								{{ vehicle.agency ? vehicle.agency.label : 'Non assignée' }}</p>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 
     <div class="mt-6 text-center flex justify-center gap-4">
-        {% if is_granted('ROLE_ORDER_MANAGER') %}
-            
-            <a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
-                Modifier
-            </a>
-            {{ include('location/_delete_form.html.twig') }}
-        {% endif %}
-
-        <a href="{{ is_granted('ROLE_ORDER_MANAGER') ? path('app_location_index') : path('app_my_locations') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+        <a href="{{ path('app_location_index') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
             Retour à la liste
         </a>
-        
-        
-        
+        <a href="{{ path('app_location_edit', { id: location.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+            Modifier
+        </a>
+        {{ include('location/_delete_form.html.twig') }}
     </div>
 </section>
 {% endblock %}
+
