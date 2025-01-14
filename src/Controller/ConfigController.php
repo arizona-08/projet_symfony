@@ -52,28 +52,28 @@ class ConfigController extends AbstractController
         return $this->redirectToRoute('config_index');
     }
     
-
     #[Route('/get-kit-accessories', name: 'config_get_kit_accessories', methods: ['GET'])]
     public function getKitAccessories(Request $request, KitRepository $kitRepository): JsonResponse
     {
         $kitId = $request->query->get('kit');
-
+    
         if (!$kitId) {
             return new JsonResponse([]);
         }
-
+    
         $kit = $kitRepository->find($kitId);
-
+    
         if (!$kit) {
             return new JsonResponse(['error' => 'Kit not found'], 404);
         }
-
+    
         $accessories = $kit->getAccessory();
-
+    
         $response = array_map(fn($accessory) => [
-            'name' => $accessory,
-        ], $accessories);
-
+            'id' => $accessory->getId(),
+            'name' => $accessory->getName(),
+        ], $accessories->toArray());
+    
         return new JsonResponse($response);
     }
 
@@ -125,6 +125,7 @@ class ConfigController extends AbstractController
         // }
 
         $configs = $configRepository->findBy(['client' => $user]);
+    
 
         return $this->render('config/index.html.twig', [
             'configs' => $configs,

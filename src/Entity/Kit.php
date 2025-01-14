@@ -18,18 +18,22 @@ class Kit
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private array $accessory = [];
-
     /**
      * @var Collection<int, Config>
      */
     #[ORM\OneToMany(targetEntity: Config::class, mappedBy: 'kit')]
     private Collection $configs;
 
+    /**
+     * @var Collection<int, Accessory>
+     */
+    #[ORM\ManyToMany(targetEntity: Accessory::class, inversedBy: 'kits')]
+    private Collection $accessory;
+
     public function __construct()
     {
         $this->configs = new ArrayCollection();
+        $this->accessory = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -45,18 +49,6 @@ class Kit
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getAccessory(): array
-    {
-        return $this->accessory;
-    }
-
-    public function setAccessory(array $accessory): static
-    {
-        $this->accessory = $accessory;
 
         return $this;
     }
@@ -87,6 +79,30 @@ class Kit
                 $config->setKit(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Accessory>
+     */
+    public function getAccessory(): Collection
+    {
+        return $this->accessory;
+    }
+
+    public function addAccessory(Accessory $accessory): static
+    {
+        if (!$this->accessory->contains($accessory)) {
+            $this->accessory->add($accessory);
+        }
+
+        return $this;
+    }
+
+    public function removeAccessory(Accessory $accessory): static
+    {
+        $this->accessory->removeElement($accessory);
 
         return $this;
     }

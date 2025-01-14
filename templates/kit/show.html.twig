@@ -1,0 +1,41 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Kit{% endblock %}
+
+{% block main %}
+    <h1>Kit</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ kit.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ kit.name }}</td>
+            </tr>
+         <tr>
+                <th>Accessoires</th>
+                <td>
+                    {% if kit.accessory|length > 0 %}
+                        <ul>
+                            {% for accessory in kit.accessory %}
+                                <li>{{ accessory.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Aucun accessoire associé</p>
+                    {% endif %}
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_kit_index') }}">back to list</a>
+
+    <a href="{{ path('app_kit_edit', {'id': kit.id}) }}">edit</a>
+
+    {{ include('kit/_delete_form.html.twig') }}
+{% endblock %}

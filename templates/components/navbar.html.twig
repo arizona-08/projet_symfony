@@ -8,32 +8,58 @@
 
 			<ul class="hidden xl:flex xl:items-center xl:gap-8 text-gray-500">
 
-				<li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('dashboard') }}">Accueil</a></li>
+				<li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+					<a href="{{ path('dashboard') }}">Accueil</a>
+				</li>
 				{% if is_granted('ROLE_ADMIN') %}
-					<li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('admin') }}">Admin</a></li>
+					<li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+						<a href="{{ path('admin') }}">Admin</a>
+					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_AGENCY_HEAD') %}
-					<li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('agency_index') }}">Agence</a></li>
+					<li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+						<a href="{{ path('agency_index') }}">Agence</a>
+					</li>
 				{% endif %}
 
-				<li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('vehicle_index') }}">Vehicule</a></li>
+				<li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+					<a href="{{ path('vehicle_index') }}">Vehicule</a>
+				</li>
 
 				{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
-					<li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
+					<li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+						<a href="{{ path('supplier_index') }}">Fournisseur</a>
+					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_ORDER_MANAGER') or is_granted('ROLE_AGENCY_HEAD') %}
-					<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_location_index') }}">Commandes</a></li>
+					<li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+						<a href="{{ path('app_location_index') }}">Commandes</a>
+					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_USER') %}
-					<li class="{{ app.request.attributes.get('_route') == 'app_my_locations' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}"><a href="{{ path('app_my_locations') }}">Mes commandes</a></li>
+					<li class="{{ app.request.attributes.get('_route') == 'app_my_locations' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+						<a href="{{ path('app_my_locations') }}">Mes commandes</a>
+					</li>
 				{% endif %}
 
-                {% if is_granted('ROLE_VIP') %}
+				{% if is_granted('ROLE_VIP') %}
 					<li>
 						<a href="{{ path('config_index') }}">VIP</a>
+					</li>
+				{% endif %}
+
+				{% if is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('app_accessory_index') }}">Accessoires</a>
+					</li>
+				{% endif %}
+
+				{% if is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('app_kit_index') }}">Kit</a>
 					</li>
 				{% endif %}
 			</ul>
@@ -49,10 +75,12 @@
 		</div>
 		<ul class="hidden xl:flex xl:gap-3">
 			{% if app.user is defined and app.user is not null %}
-                <li class="px-2 py-1 border-2 border-blue-600 rounded font-medium">
-                    <a href="{{ path('profile') }}">Mon profil</a>
-                </li>
-				<li class="px-2 py-1 border-2 border-red-600 rounded font-medium"><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+				<li class="px-2 py-1 border-2 border-blue-600 rounded font-medium">
+					<a href="{{ path('profile') }}">Mon profil</a>
+				</li>
+				<li class="px-2 py-1 border-2 border-red-600 rounded font-medium">
+					<a href="{{ path('app_logout') }}">Déconnexion</a>
+				</li>
 			{% else %}
 				<li class="px-2 py-1 bg-red-600 rounded text-white font-medium">
 					<a href="{{ path('app_register') }}">Inscription</a>
@@ -68,31 +96,57 @@
 		<ul class="flex flex-col">
 
 			<div class="flex flex-col gap-2 py-2 border-b">
-				<li><a href="{{ path('dashboard') }}">Accueil</a></li>
+				<li>
+					<a href="{{ path('dashboard') }}">Accueil</a>
+				</li>
 
 				{% if is_granted('ROLE_ADMIN') %}
-					<li><a href="{{ path('admin') }}">Admin</a></li>
+					<li>
+						<a href="{{ path('admin') }}">Admin</a>
+					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_AGENCY_HEAD') %}
-					<li><a href="{{ path('agency_index') }}">Agence</a></li>
+					<li>
+						<a href="{{ path('agency_index') }}">Agence</a>
+					</li>
 				{% endif %}
 
-				<li><a href="{{ path('vehicle_index') }}">Vehicule</a></li>
+				<li>
+					<a href="{{ path('vehicle_index') }}">Vehicule</a>
+				</li>
 
 				{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
-					<li><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
+					<li>
+						<a href="{{ path('supplier_index') }}">Fournisseur</a>
+					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_ORDER_MANAGER') %}
-					<li><a href="{{ path('app_location_index') }}">Commandes</a></li>
+					<li>
+						<a href="{{ path('app_location_index') }}">Commandes</a>
+					</li>
 				{% endif %}
 
-                <li><a href="{{ path('app_my_locations') }}">Mes commandes</a></li>
+				<li>
+					<a href="{{ path('app_my_locations') }}">Mes commandes</a>
+				</li>
 
 				{% if is_granted('ROLE_VIP') %}
 					<li>
 						<a href="{{ path('config_index') }}">VIP</a>
+					</li>
+				{% endif %}
+
+				{% if is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('app_accessory_index') }}">Accessoires</a>
+					</li>
+				{% endif %}
+
+				{% if is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('app_kit_index') }}">Kit</a>
 					</li>
 				{% endif %}
 			</div>
