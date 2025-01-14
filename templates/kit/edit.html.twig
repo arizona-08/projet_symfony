@@ -1,0 +1,13 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Edit Kit{% endblock %}
+
+{% block main %}
+    <h1>Edit Kit</h1>
+
+    {{ include('kit/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_kit_index') }}">back to list</a>
+
+    {{ include('kit/_delete_form.html.twig') }}
+{% endblock %}
