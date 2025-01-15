@@ -25,42 +25,54 @@ final class LocationController extends AbstractController
 {
 
     #[Route('/my-locations', name: 'app_my_locations', methods: ['GET'])]
-    public function myLocations(Request $request, LocationRepository $locationRepository): Response
-    {
-        $filter = $request->query->get('filter', 'all');
-        $user = $this->getUser();
+public function myLocations(Request $request, LocationRepository $locationRepository): Response
+{
+    $filter = $request->query->get('filter', 'all');
+    $user = $this->getUser();
 
-        $locations = match ($filter) {
-            'finished' => $locationRepository->findFinishedByUser($user),
-            'ongoing' => $locationRepository->findOngoingByUser($user),
-            'upcoming' => $locationRepository->findUpcomingByUser($user),
-            default => $locationRepository->findAllByUser($user),
-        };
+    // Récupération des locations selon le filtre
+    $locations = match ($filter) {
+        'finished' => $locationRepository->findFinishedByUser($user),
+        'ongoing' => $locationRepository->findOngoingByUser($user),
+        'upcoming' => $locationRepository->findUpcomingByUser($user),
+        default => $locationRepository->findAllByUser($user),
+    };
 
-        $locationsWithTotalPrice = array_map(function ($location) {
-            $totalPrice = array_reduce(
-                $location->getVehicle()->toArray(),
-                fn($carry, $vehicle) => $carry + $vehicle->getPricePerDay(),
-                0
+    // Transformation et vérification des véhicules dans les locations
+    $locationsWithTotalPrice = array_map(function ($location) {
+        $totalPrice = array_reduce(
+            $location->getVehicle()->toArray(),
+            fn($carry, $vehicle) => $carry + $vehicle->getPricePerDay(),
+            0
+        );
+
+        $feedback = $location->getFeedback()->first();
+
+        return [
+            'location' => $location,
+            'totalPrice' => $totalPrice,
+            'isFinished' => $location->getEndDate() <= new \DateTime(),
+            'feedbackExists' => $feedback !== null,
+            'feedbackRating' => $feedback ? $feedback->getRating() : null,
+            'feedbackComment' => $feedback ? $feedback->getComment() : null,
+        ];
+    }, $locations);
+
+    // Ajout des messages flash pour les locations sans véhicule
+    foreach ($locationsWithTotalPrice as $locationData) {
+        if (empty($locationData['location']->getVehicle()->toArray())) {
+            $this->addFlash(
+                'warning',
+                "Votre commande n°{$locationData['location']->getId()} ne contient pas de véhicule."
             );
-
-            $feedback = $location->getFeedback()->first();
-
-            return [
-                'location' => $location,
-                'totalPrice' => $totalPrice,
-                'isFinished' => $location->getEndDate() <= new \DateTime(),
-                'feedbackExists' => $feedback !== null,
-                'feedbackRating' => $feedback ? $feedback->getRating() : null,
-                'feedbackComment' => $feedback ? $feedback->getComment() : null,
-            ];
-        }, $locations);
-
-        return $this->render('location/my_locations.html.twig', [
-            'locationsWithTotalPrice' => $locationsWithTotalPrice,
-            'filter' => $filter,
-        ]);
+        }
     }
+
+    return $this->render('location/my_locations.html.twig', [
+        'locationsWithTotalPrice' => $locationsWithTotalPrice,
+        'filter' => $filter,
+    ]);
+}
 
 
 
@@ -96,8 +108,10 @@ final class LocationController extends AbstractController
                 }
             }
 
+            
             $collection = $userAgencyVehiclesLocation;
         }
+        
 
 
         $pagination = $paginator->paginate(
