@@ -79,6 +79,7 @@ final class LocationController extends AbstractController
             'locationsWithTotalPrice' => $locationsWithTotalPrice,
             'filter' => $filter,
             'pagination' => $pagination,
+            'filter' => $filter,
         ]);
     }
 
