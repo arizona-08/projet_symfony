@@ -53,6 +53,11 @@
 										-
 										{{ vehicle.model }}</li>
 								{% endfor %}
+								{% if item.vehicle is empty %}
+									<li>Aucun véhicule</li>
+									<br>
+									<p>Cliquer sur modifier pour ajouter un véhicule</p>
+								{% endif %}
 							</ul>
 							{% if item.vip %}
 								<p class="text-gray-600 mt-4">
@@ -119,4 +124,3 @@
 		</div>
 	</section>
 {% endblock %}
-
