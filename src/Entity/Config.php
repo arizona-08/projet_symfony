@@ -22,8 +22,10 @@ class Config
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Vehicle $vehicle = null;
 
-    #[ORM\ManyToOne(inversedBy: 'configs')]
+    #[ORM\ManyToOne(targetEntity: Kit::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Kit $kit = null;
+
 
     /**
      * @var Collection<int, Location>

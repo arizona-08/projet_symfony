@@ -46,22 +46,25 @@
 				{% endif %}
 
 				{% if is_granted('ROLE_VIP') %}
-					<li>
+					<li class="{{ app.request.attributes.get('_route') == 'config_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
 						<a href="{{ path('config_index') }}">VIP</a>
 					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_DARK_ADMIN') %}
-					<li>
+					<li class="{{ app.request.attributes.get('_route') == 'app_accessory_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
 						<a href="{{ path('app_accessory_index') }}">Accessoires</a>
 					</li>
 				{% endif %}
 
 				{% if is_granted('ROLE_DARK_ADMIN') %}
-					<li>
+					<li class="{{ app.request.attributes.get('_route') == 'app_kit_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
 						<a href="{{ path('app_kit_index') }}">Kit</a>
 					</li>
 				{% endif %}
+                <li class="{{ app.current_route == 'app_weather' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
+					<a href="{{ path('app_weather') }}">Météo</a>
+				</li>
 			</ul>
 		</div>
 

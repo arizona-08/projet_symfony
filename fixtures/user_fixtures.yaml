@@ -21,7 +21,7 @@ App\Entity\User:
         created_at: <dateTime('now')>
         roles: ['ROLE_ADMIN']
     user_client_vip:
-        name: 'Client VIP 1'
+        name: 'Client VIP 1'    
         password: 'password'
         email: 'clientvip@example.com'
         email_verified_at: <dateTime('now')>

@@ -22,21 +22,25 @@ class WeatherController extends AbstractController
     #[Route('/weather', name: 'app_weather')]
     public function index(Request $request): Response
     {
-        // Récupérer la ville de la query string, par défaut Paris
-        $city = $request->query->get('city', 'Paris');  
+        $city = $request->query->get('city', 'Paris');
 
         try {
-            // Récupérer les données météo pour la ville
             $weatherData = $this->weatherService->getWeatherData($city);
 
+            if (!$weatherData) {
+                throw new \Exception('City not found');
+            }
 
             return $this->render('weather/index.html.twig', [
                 'city' => $city,
-                'weather' => $weatherData,  // Passer les données météo à la vue
+                'weather' => $weatherData,
             ]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Could not fetch weather data.');
-            return $this->redirectToRoute('app_home');  // Redirige vers la page d'accueil si erreur
+            $this->addFlash('error', 'La ville n\'a pas été trouvée.');
+            return $this->render('weather/index.html.twig', [
+                'city' => $city,
+                'weather' => null,
+            ]);
         }
     }
 }
