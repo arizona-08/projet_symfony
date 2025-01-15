@@ -5,6 +5,8 @@
     {% include "components/navbar.html.twig" %}
     <main class="relative">
         {% block main %}
+            {% include 'weather/index.html.twig' with {'city': 'Paris', 'weather': weather} %}
+
             <section class="w-full min-h-[calc(100vh-65px)] sm:min-h-[calc(100vh-69px)] bg-hero-car bg-center bg-cover px-3 py-6 custom-2xl:px-0">
                 <div id="cover" class="absolute top-0 left-0 w-full h-full bg-black/75"></div>
 
