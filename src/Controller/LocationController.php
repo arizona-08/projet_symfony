@@ -19,6 +19,7 @@ use App\Form\VipLocationType;
 use App\Entity\Config;
 use App\Entity\Feedback;
 use Symfony\Component\Validator\Constraints\Collection;
+use App\Service\EmailService;
 
 #[Route('/location')]
 final class LocationController extends AbstractController
@@ -385,9 +386,20 @@ public function myLocations(Request $request, LocationRepository $locationReposi
 
 
     #[Route('/{id}', name: 'app_location_delete', methods: ['POST'])]
-    public function delete(Request $request, Location $location, EntityManagerInterface $entityManager): Response
+    public function delete(
+        Request $request, 
+        Location $location, 
+        EntityManagerInterface $entityManager,
+        EmailService $emailService
+    ): Response
     {
         if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->request->get('_token'))) {
+            // Envoyer l'email avant la suppression
+            $emailService->sendLocationDeletedNotification(
+                $location->getUser()->getEmail(),
+                $location->getId()
+            );
+
             foreach ($location->getFeedback() as $feedback) {
                 $entityManager->remove($feedback);
             }
