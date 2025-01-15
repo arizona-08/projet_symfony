@@ -12,14 +12,25 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Service\WeatherService;
 
 class HomeController extends AbstractController
 {
+    private $weatherService;
+
+    public function __construct(WeatherService $weatherService)
+    {
+        $this->weatherService = $weatherService;
+    }
+
 
     #[Route('/', name: 'home', methods: ['GET'])]
-    public function index(): Response
+    public function index(WeatherService $weatherService): Response
     {
-        return $this->render('index.html.twig');
+        $weatherData = $weatherService->getWeatherData('Paris');
+        return $this->render('index.html.twig',[
+            'weather' => $weatherData,
+        ]);
     }
 
     #[Route('/dashboard/commande/{id}', name: 'dashboard_add_to_order', methods: ['GET'])]
