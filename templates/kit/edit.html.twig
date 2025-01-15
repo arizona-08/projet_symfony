@@ -1,13 +1,44 @@
 {% extends 'index.html.twig' %}
 
-{% block title %}Edit Kit{% endblock %}
+{% block title %}Modifier un Kit
+{% endblock %}
 
 {% block main %}
-    <h1>Edit Kit</h1>
+	<section class="max-w-8xl m-auto px-3 py-12 bg-gray-900 h-screen text-gray-100">
+		<div class="mb-10 text-center">
+			<h1 class="text-4xl font-bold text-gray-200">Modifier le kit</h1>
+			<p class="text-lg text-gray-400 mt-3">Apportez des modifications aux informations du kit ci-dessous.</p>
+		</div>
 
-    {{ include('kit/_form.html.twig', {'button_label': 'Update'}) }}
+		<div class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md">
+			{{ form_start(form, { 'attr': {'class': 'space-y-6'} }) }}
 
-    <a href="{{ path('app_kit_index') }}">back to list</a>
+			<div>
+				<label for="kit_name" class="block text-sm font-medium text-gray-200">Nom du Kit</label>
+				{{ form_widget(form.name, { 'attr': {'class': 'mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500'} }) }}
+				{{ form_errors(form.name) }}
+			</div>
 
-    {{ include('kit/_delete_form.html.twig') }}
+			<div>
+				<label for="kit_accessory" class="block text-sm font-medium text-gray-200">Accessoires</label>
+				{{ form_widget(form.accessory, { 'attr': {'class': 'mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500'} }) }}
+				{{ form_errors(form.accessory) }}
+			</div>
+
+			<div class="flex justify-between items-center mt-6">
+				<a href="{{ path('app_kit_index') }}" class="px-4 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600 mr-4">
+					Annuler
+				</a>
+				<button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+					Mettre à jour
+				</button>
+			</div>
+
+			{{ form_end(form) }}
+
+
+		</div>
+
+	</section>
 {% endblock %}
+

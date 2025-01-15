@@ -1,16 +1,54 @@
+{% extends 'index.html.twig' %}
 
+{% block title %}Météo{% endblock %}
 
-{% block title %}Weather Information{% endblock %}
+{% block main %}
+<section class="max-w-4xl m-auto px-4 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Météo</h1>
+        <p class="text-lg text-gray-600 mt-3">Voici la météo afin de choisir un véhicule adapté en fonction des conditions climatiques.</p>
+    </div>
 
-{% block main_content %}
-    <h1>Weather in {{ city }}</h1>
     {% if weather %}
-        <p>Temperature: {{ weather.main.temp }} °C</p>
-        <p>Weather: {{ weather.weather[0].description | capitalize }}</p>
-        <p>Humidity: {{ weather.main.humidity }}%</p>
-        <p>Wind Speed: {{ weather.wind.speed }} m/s</p>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 text-center mx-auto">
+            <div class="p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Météo à {{ city | capitalize }}</h2>
+                <p class="text-gray-600 mb-4">
+                    <span class="font-medium">Température :</span>
+                    <span class="text-blue-600 font-bold">{{ weather.main.temp }} °C</span>
+                </p>
+                <p class="text-gray-600 mb-4">
+                    <span class="font-medium">Description :</span> {{ weather.weather[0].description | capitalize }}
+                </p>
+                <p class="text-gray-600 mb-4">
+                    <span class="font-medium">Humidité :</span> {{ weather.main.humidity }} %
+                </p>
+                <p class="text-gray-600 mb-4">
+                    <span class="font-medium">Vitesse du vent :</span> {{ weather.wind.speed }} m/s
+                </p>
+            </div>
+        </div>
     {% else %}
-        <p>Weather information not available.</p>
+        <div class="bg-red-50 text-red-600 p-6 rounded-lg shadow-md text-center mt-6">
+            <p>Les informations météo ne sont pas disponibles actuellement.</p>
+        </div>
     {% endif %}
-    <a href="{{ path('app_weather') }}?city=Paris">Check weather in Paris</a>
+
+    <div class="mt-6 text-center flex justify-center gap-4">
+        <a href="{{ path('app_weather') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+            Voir la météo à Paris
+        </a>
+        <form action="{{ path('app_weather') }}" method="GET" class="flex items-center gap-4">
+            <input
+                type="text"
+                name="city"
+                placeholder="Entrez une ville..."
+                class="px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                Rechercher
+            </button>
+        </form>
+    </div>
+</section>
 {% endblock %}
