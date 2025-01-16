@@ -67,6 +67,9 @@ final class Version20250115112857 extends AbstractMigration
         $this->addSql('ALTER TABLE vehicle ADD CONSTRAINT FK_1B80E48664D218E FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE SET NULL NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE vehicle ADD CONSTRAINT FK_1B80E486CDEADB2A FOREIGN KEY (agency_id) REFERENCES agency (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE vehicle ADD CONSTRAINT FK_1B80E4862ADD6D8C FOREIGN KEY (supplier_id) REFERENCES supplier (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE config DROP CONSTRAINT FK_D48A2F7C3A8E60EF');
+        $this->addSql('ALTER TABLE config ALTER kit_id SET NOT NULL');
+        $this->addSql('ALTER TABLE config ADD CONSTRAINT FK_D48A2F7C3A8E60EF FOREIGN KEY (kit_id) REFERENCES kit (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -100,5 +103,7 @@ final class Version20250115112857 extends AbstractMigration
         $this->addSql('DROP TABLE supplier');
         $this->addSql('DROP TABLE "user"');
         $this->addSql('DROP TABLE vehicle');
+        $this->addSql('CREATE SCHEMA public');
+        $this->addSql('ALTER TABLE config ALTER kit_id DROP NOT NULL');
     }
 }
