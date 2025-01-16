@@ -98,12 +98,26 @@ class AgencyController extends AbstractController
         if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $users = $userRepository->findBy(['id' => $user->getId()]);
         } else {
-            $users = $userRepository->findAll();
+            $users = $this->getUsersAgenciesHead($userRepository);
         }
 
         return $this->render('agency/create.html.twig', [
             'users' => $users,
         ]);
+    }
+
+    public function getUsersAgenciesHead(UserRepository $userRepository): array
+    {
+        
+        $users = $userRepository->findAll();
+        $agenciesHead = [];
+        foreach ($users as $user) {
+            if ($user->hasRole('ROLE_AGENCY_HEAD')) {
+                $agenciesHead[] = $user;
+            }
+        }
+
+        return $agenciesHead;
     }
 
     #[Route('/agencies/store', name: 'agency_store', methods: ['POST'])]
@@ -142,10 +156,19 @@ class AgencyController extends AbstractController
     }
 
     #[Route('/agencies/{id}', name: 'agency_show', methods: ['GET'])]
-    public function show(Agency $agency): Response
+    public function show(Request $request, Agency $agency, PaginatorInterface $paginator): Response
     {
+        $vehicles = $agency->getVehicles();
+
+        $pagination = $paginator->paginate(
+            $vehicles,
+            $request->query->getInt('page', 1),
+            8
+        );
+
         return $this->render('agency/show.html.twig', [
             'agency' => $agency,
+            'pagination' => $pagination,
         ]);
     }
 
