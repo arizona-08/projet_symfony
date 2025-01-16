@@ -98,12 +98,26 @@ class AgencyController extends AbstractController
         if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $users = $userRepository->findBy(['id' => $user->getId()]);
         } else {
-            $users = $userRepository->findAll();
+            $users = $this->getUsersAgenciesHead($userRepository);
         }
 
         return $this->render('agency/create.html.twig', [
             'users' => $users,
         ]);
+    }
+
+    public function getUsersAgenciesHead(UserRepository $userRepository): array
+    {
+        
+        $users = $userRepository->findAll();
+        $agenciesHead = [];
+        foreach ($users as $user) {
+            if ($user->hasRole('ROLE_AGENCY_HEAD')) {
+                $agenciesHead[] = $user;
+            }
+        }
+
+        return $agenciesHead;
     }
 
     #[Route('/agencies/store', name: 'agency_store', methods: ['POST'])]
