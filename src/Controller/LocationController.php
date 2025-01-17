@@ -18,6 +18,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use App\Form\VipLocationType;
 use App\Entity\Config;
 use App\Entity\Feedback;
+use App\Entity\Status;
 use Symfony\Component\Validator\Constraints\Collection;
 use App\Service\EmailService;
 
@@ -42,7 +43,7 @@ final class LocationController extends AbstractController
         // Transformation et vérification des véhicules dans les locations
         $locationsWithTotalPrice = array_map(function ($location) {
             $totalPrice = array_reduce(
-                $location->getVehicle()->toArray(),
+                $location->getVehicles()->toArray(),
                 fn($carry, $vehicle) => $carry + $vehicle->getPricePerDay(),
                 0
             );
@@ -61,7 +62,7 @@ final class LocationController extends AbstractController
 
         // Ajout des messages flash pour les locations sans véhicule
         foreach ($locationsWithTotalPrice as $locationData) {
-            if (empty($locationData['location']->getVehicle()->toArray())) {
+            if (empty($locationData['location']->getVehicles()->toArray())) {
                 $this->addFlash(
                     'warning',
                     "Votre commande n°{$locationData['location']->getId()} ne contient pas de véhicule."
@@ -87,8 +88,8 @@ final class LocationController extends AbstractController
     #[Route(name: 'app_location_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if(!$this->isGranted('ROLE_AGENCY_HEAD')){
-            if(!$this->isGranted('ROLE_ORDER_MANAGER')){
+        if (!$this->isGranted('ROLE_AGENCY_HEAD')) {
+            if (!$this->isGranted('ROLE_ORDER_MANAGER')) {
                 throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page.');
             }
         }
@@ -102,12 +103,12 @@ final class LocationController extends AbstractController
         $collection = $locations;
         $userAgencyVehiclesLocation = [];
 
-        if($user->hasRole('ROLE_AGENCY_HEAD')){
+        if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $agencyLabel = $user->getAgencies()[0]->getLabel();
 
-            foreach($locations as $location){
-                foreach($location->getVehicle() as $vehicle){
-                    if($vehicle->getAgency()->getLabel() == $agencyLabel){
+            foreach ($locations as $location) {
+                foreach ($location->getVehicles() as $vehicle) {
+                    if ($vehicle->getAgency()->getLabel() == $agencyLabel) {
                         if (!in_array($location->getId(), array_map(fn($loc) => $loc->getId(), $userAgencyVehiclesLocation))) {
                             $userAgencyVehiclesLocation[] = $location;
                         }
@@ -115,10 +116,10 @@ final class LocationController extends AbstractController
                 }
             }
 
-            
+
             $collection = $userAgencyVehiclesLocation;
         }
-        
+
 
         $pagination = $paginator->paginate(
             $collection,
@@ -128,7 +129,7 @@ final class LocationController extends AbstractController
 
         foreach ($pagination as $location) {
             $totalPrice = 0;
-            foreach ($location->getVehicle() as $vehicle) {
+            foreach ($location->getVehicles() as $vehicle) {
                 $totalPrice += $vehicle->getPricePerDay();
             }
 
@@ -151,7 +152,8 @@ final class LocationController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         SessionInterface $session,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        LocationRepository $locationRepository
     ): Response {
         $location = new Location();
 
@@ -192,6 +194,27 @@ final class LocationController extends AbstractController
         $newLocationVehiclesIds = $session->get('new_location_vehicles', []);
         $selectedVehicles = $entityManager->getRepository(Vehicle::class)->findBy(['id' => $newLocationVehiclesIds]);
 
+        $vehiclesAvailability = [];
+        foreach ($selectedVehicles as $vehicle) {
+            $reservations = $locationRepository->findReservationsForVehicle($vehicle->getId());
+            if (empty($reservations)) {
+                $vehiclesAvailability[$vehicle->getId()] = 'Toutes les dates sont disponibles pour ce véhicule.';
+            } else {
+                $periods = array_map(function ($reservation) {
+                    return sprintf(
+                        'du %s au %s',
+                        $reservation->getStartDate()->format('d/m/Y'),
+                        $reservation->getEndDate()->format('d/m/Y')
+                    );
+                }, $reservations);
+
+                $vehiclesAvailability[$vehicle->getId()] = sprintf(
+                    'Ce véhicule est déjà réservé pour les dates suivantes : %s. Veuillez choisir d\'autres dates.',
+                    implode(', ', $periods),
+                );
+            }
+        }
+
         if ($request->isMethod('POST')) {
             $userId = $request->request->get('user_id');
             $user = $entityManager->getRepository(User::class)->find($userId);
@@ -209,13 +232,35 @@ final class LocationController extends AbstractController
                 return $this->redirectToRoute('app_location_new');
             }
 
+            $startDate = new \DateTime($startDate);
+            $endDate = new \DateTime($endDate);
+
+            foreach ($selectedVehicles as $vehicle) {
+                if (!$locationRepository->isVehicleAvailableDuringPeriod($vehicle->getId(), $startDate, $endDate)) {
+                    $this->addFlash(
+                        'error',
+                        sprintf(
+                            'Le véhicule %s %s est déjà réservé entre le %s et le %s. Veuillez choisir une autre période.',
+                            $vehicle->getMarque(),
+                            $vehicle->getModel(),
+                            $startDate->format('d/m/Y'),
+                            $endDate->format('d/m/Y')
+                        )
+                    );
+                    return $this->redirectToRoute('app_location_new');
+                }
+            }
+
+            // Création de la location
             $location->setUser($user);
-            $location->setStartDate(new \DateTime($startDate));
-            $location->setEndDate(new \DateTime($endDate));
+            $location->setStartDate($startDate);
+            $location->setEndDate($endDate);
             $location->setCreatedAt(new \DateTimeImmutable());
 
             foreach ($selectedVehicles as $vehicle) {
                 $location->addVehicle($vehicle);
+
+                $vehicle->setStatus($entityManager->getRepository(Status::class)->findOneBy(['name' => 'Réservé']));
             }
 
             $entityManager->persist($location);
@@ -234,6 +279,7 @@ final class LocationController extends AbstractController
             'users' => $users,
             'selectedVehicles' => $selectedVehicles,
             'brands' => $brands,
+            'vehiclesAvailability' => $vehiclesAvailability,
         ]);
     }
 
@@ -286,15 +332,15 @@ final class LocationController extends AbstractController
         /** @var \App\Entity\User user */
         $user = $this->getUser();
 
-        if(!$this->isGranted('ROLE_ORDER_MANAGER') && !$this->isGranted('ROLE_AGENCY_HEAD')){
-            if(!$user->getLocations()->contains($location)){
+        if (!$this->isGranted('ROLE_ORDER_MANAGER') && !$this->isGranted('ROLE_AGENCY_HEAD')) {
+            if (!$user->getLocations()->contains($location)) {
                 return $this->redirectToRoute('app_my_locations');
             }
         }
 
 
         $totalPrice = 0;
-        foreach ($location->getVehicle() as $vehicle) {
+        foreach ($location->getVehicles() as $vehicle) {
             $totalPrice += $vehicle->getPricePerDay();
         }
 
@@ -315,13 +361,11 @@ final class LocationController extends AbstractController
         Request $request,
         Location $location,
         EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        LocationRepository $locationRepository
     ): Response {
-
-        if(!$this->isGranted('ROLE_AGENCY_HEAD')){
-            if(!$this->isGranted('ROLE_ORDER_MANAGER')){
-                throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page.');
-            }
+        if (!$this->isGranted('ROLE_AGENCY_HEAD') && !$this->isGranted('ROLE_ORDER_MANAGER')) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour accéder à cette page.');
         }
 
         $vehiclesQuery = $entityManager->getRepository(Vehicle::class)->createQueryBuilder('v');
@@ -356,16 +400,29 @@ final class LocationController extends AbstractController
         ));
 
         if ($request->isMethod('POST')) {
-            $startDate = $request->request->get('start_date');
-            $endDate = $request->request->get('end_date');
+            $startDate = new \DateTime($request->request->get('start_date'));
+            $endDate = new \DateTime($request->request->get('end_date'));
 
-            if ($startDate && $endDate) {
-                $location->setStartDate(new \DateTime($startDate));
-                $location->setEndDate(new \DateTime($endDate));
-                $entityManager->flush();
-
-                return $this->redirectToRoute('app_location_edit', ['id' => $location->getId()]);
+            foreach ($location->getVehicles() as $vehicle) {
+                if (!$locationRepository->isVehicleAvailableDuringPeriod($vehicle->getId(), $startDate, $endDate, $location->getId())) {
+                    $this->addFlash(
+                        'error',
+                        sprintf(
+                            'Ces dates sont déjà prises pour le véhicule %s %s. Veuillez choisir une autre période.',
+                            $vehicle->getMarque(),
+                            $vehicle->getModel()
+                        )
+                    );
+                    return $this->redirectToRoute('app_location_edit', ['id' => $location->getId()]);
+                }
             }
+
+            $location->setStartDate($startDate);
+            $location->setEndDate($endDate);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Location modifiée avec succès.');
+            return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
         }
 
         $form = $this->createForm(LocationType::class, $location);
@@ -386,18 +443,13 @@ final class LocationController extends AbstractController
         ]);
     }
 
-
-
-
-
     #[Route('/{id}', name: 'app_location_delete', methods: ['POST'])]
     public function delete(
-        Request $request, 
-        Location $location, 
+        Request $request,
+        Location $location,
         EntityManagerInterface $entityManager,
         EmailService $emailService
-    ): Response
-    {
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->request->get('_token'))) {
             // Envoyer l'email avant la suppression
             $emailService->sendLocationDeletedNotification(
@@ -465,7 +517,7 @@ final class LocationController extends AbstractController
             throw $this->createNotFoundException('Location ou véhicule non trouvé.');
         }
 
-        if (!$location->getVehicle()->contains($vehicle)) {
+        if (!$location->getVehicles()->contains($vehicle)) {
             $location->addVehicle($vehicle);
             $entityManager->flush();
         }
@@ -486,7 +538,7 @@ final class LocationController extends AbstractController
             throw $this->createNotFoundException('Location ou véhicule non trouvé.');
         }
 
-        if ($location->getVehicle()->contains($vehicle)) {
+        if ($location->getVehicles()->contains($vehicle)) {
             $location->removeVehicle($vehicle);
             $entityManager->flush();
         }
@@ -498,16 +550,16 @@ final class LocationController extends AbstractController
     public function newVipLocation(
         int $id,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LocationRepository $locationRepository
     ): Response {
-
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour créer une location VIP.');
         }
 
-        if(!$this->isGranted('ROLE_VIP')){
+        if (!$this->isGranted('ROLE_VIP')) {
             throw $this->createAccessDeniedException("Vous devez être VIP pour accéder à cette page.");
         }
 
@@ -521,7 +573,6 @@ final class LocationController extends AbstractController
         $location->setConfig($config);
         $location->setVip(true);
         $location->setCreatedAt(new \DateTimeImmutable());
-
         $location->addVehicle($config->getVehicle());
 
         $form = $this->createForm(VipLocationType::class, $location, [
@@ -531,20 +582,61 @@ final class LocationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $startDate = $location->getStartDate();
+            $endDate = $location->getEndDate();
+            $vehicle = $config->getVehicle();
+
+            if ($vehicle->getStatus()->getName() !== 'Disponible') {
+                $this->addFlash(
+                    'error',
+                    sprintf('Le véhicule %s %s n\'est pas disponible pour une commande VIP.', $vehicle->getMarque(), $vehicle->getModel())
+                );
+                return $this->redirectToRoute('app_location_new_vip', ['id' => $id]);
+            }
+
+            if (!$locationRepository->isVehicleAvailableDuringPeriod($vehicle->getId(), $startDate, $endDate)) {
+                $this->addFlash(
+                    'error',
+                    sprintf(
+                        'Le véhicule %s %s est déjà réservé entre le %s et le %s. Veuillez choisir une autre période.',
+                        $vehicle->getMarque(),
+                        $vehicle->getModel(),
+                        $startDate->format('d/m/Y'),
+                        $endDate->format('d/m/Y')
+                    )
+                );
+                return $this->redirectToRoute('app_location_new_vip', ['id' => $id]);
+            }
+
+            $location->setCreatedAt(new \DateTimeImmutable());
             $entityManager->persist($location);
             $entityManager->flush();
 
             $this->addFlash('success', 'Location VIP créée avec succès.');
 
-            if($user->hasRole('ROLE_VIP')){
+            if ($user->hasRole('ROLE_VIP')) {
                 return $this->redirectToRoute('app_my_locations');
             }
             return $this->redirectToRoute('app_location_index');
         }
 
+        $reservations = $locationRepository->findReservationsForVehicle($config->getVehicle()->getId());
+        $vehicleAvailability = empty($reservations)
+            ? 'Toutes les dates sont disponibles pour ce véhicule.'
+            : implode(', ', array_map(function ($reservation) {
+                return sprintf(
+                    'du %s au %s',
+                    $reservation->getStartDate()->format('d/m/Y'),
+                    $reservation->getEndDate()->format('d/m/Y')
+                );
+            }, $reservations));
+
+
+
         return $this->render('location/new_vip.html.twig', [
             'form' => $form->createView(),
             'config' => $config,
+            'vehicleAvailability' => $vehicleAvailability,
         ]);
     }
 }

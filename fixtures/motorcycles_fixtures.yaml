@@ -1,5 +1,5 @@
 App\Entity\Motorcycle:
-    motorcycle_{1..500}:
+    motorcycle_{1..100}:
         marque: <motorcycleBrand()>
         model: <motorcycleModel($marque)>
                 
@@ -31,3 +31,4 @@ App\Entity\Motorcycle:
         vehicleType: <vehicleType()>    
         agency: '@agency_<numberBetween(1,2)>'
         supplier: '@supplier_<numberBetween(1,3)>' # Associe un supplier aléatoire
+        status: '@status_available'

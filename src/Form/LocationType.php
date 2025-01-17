@@ -23,7 +23,7 @@ class LocationType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Date de fin',
             ])
-            ->add('vehicle', EntityType::class, [
+            ->add('vehicles', EntityType::class, [
                 'class' => Vehicle::class,
                 'choice_label' => 'model',
                 'multiple' => true,

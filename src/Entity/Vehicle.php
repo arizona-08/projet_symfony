@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VehicleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
@@ -38,9 +40,8 @@ class Vehicle
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private $pricePerDay;
 
-    #[ORM\ManyToOne(targetEntity: Location::class, inversedBy: 'vehicle')]
-    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
-    private ?Location $location = null;
+    #[ORM\ManyToMany(targetEntity: Location::class, mappedBy: 'vehicles')]
+    private Collection $locations;
 
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -91,6 +92,15 @@ class Vehicle
 
     #[ORM\OneToOne(mappedBy: 'vehicle', cascade: ['persist', 'remove'])]
     private ?Config $config = null;
+
+    #[ORM\ManyToOne(targetEntity: Status::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Status $status = null;
+
+    public function __construct()
+    {
+        $this->locations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -169,21 +179,29 @@ class Vehicle
         return $this;
     }
 
-    public function getLocation(): ?Location
+    public function getLocations(): Collection
     {
-        return $this->location;
+        return $this->locations;
     }
 
-    public function setLocation(?Location $location): self
-{
-    $this->location = $location;
+    public function addLocation(Location $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->addVehicle($this);
+        }
 
-    if ($location && !$location->getVehicle()->contains($this)) {
-        $location->addVehicle($this);
+        return $this;
     }
 
-    return $this;
-}
+    public function removeLocation(Location $location): self
+    {
+        if ($this->locations->removeElement($location)) {
+            $location->removeVehicle($this); 
+        }
+
+        return $this;
+    }
 
 
     public function getVehicleFuelType(): ?string
@@ -383,5 +401,29 @@ class Vehicle
 
         return $this;
     }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    public function isReservedDuring(\DateTimeInterface $start, \DateTimeInterface $end): bool
+    {
+        foreach ($this->getLocations() as $locations) {
+            if (
+                ($start < $locations->getEndDate() && $end > $locations->getStartDate())
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

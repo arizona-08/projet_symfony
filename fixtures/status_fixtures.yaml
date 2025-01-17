@@ -1,0 +1,9 @@
+App\Entity\Status:
+    status_available:
+        name: 'Disponible'
+    status_reserved:
+        name: 'Réservé'
+    status_repair:
+        name: 'En réparation'
+    status_unavailable:
+        name: 'Indisponible'

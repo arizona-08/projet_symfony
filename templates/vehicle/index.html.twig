@@ -68,8 +68,8 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-10 gap-x-8">
 			{% if vehicles is not empty %}
 				{% for vehicle in vehicles %}
-					<div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
-						<div class="p-6">
+					<div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200 flex flex-col h-full">
+						<div class="p-6 flex-1">
 							<h3 class="text-xl font-semibold text-gray-800">{{ vehicle.marque }}
 								-
 								{{ vehicle.model }}</h3>
@@ -91,8 +91,28 @@
 								{{ vehicle.pricePerDay }}
 								€
 							</p>
+							<p class="text-gray-600 mt-1">
+								<span class="font-bold">Status :</span>
+								{% if vehicle.status.name == 'Réservé' %}
+									Réservé pour les périodes suivantes :
+									<ul class="list-disc list-inside">
+										{% for location in vehicle.locations %}
+											<li>du
+												{{ location.startDate|date('d/m/Y') }}
+												au
+												{{ location.endDate|date('d/m/Y') }}</li>
+										{% endfor %}
+									</ul>
+								{% elseif vehicle.status.name == 'En réparation' %}
+									En réparation
+								{% elseif vehicle.status.name == 'Indisponible' %}
+									Indisponible
+								{% else %}
+									Disponible
+								{% endif %}
+							</p>
 						</div>
-						<div class="p-4 bg-gray-50 text-center flex justify-center gap-4">
+						<div class="p-4 bg-gray-50 flex justify-center gap-4 mt-auto">
 							<a href="{{ path('vehicle_show', { id: vehicle.id }) }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
 								Voir
 							</a>
@@ -107,16 +127,16 @@
 									</button>
 								</form>
 							{% endif %}
-
 						</div>
 					</div>
 				{% endfor %}
 			{% else %}
-				<div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center">
+				<div class="col-span-1 sm:col-span-2 lg:grid-cols-3 text-center">
 					<p class="text-gray-500 text-lg">Aucun véhicule trouvé avec ces critères.</p>
 				</div>
 			{% endif %}
 		</div>
+
 
 		<div class="mt-8 text-center">
 			{{ knp_pagination_render(vehicles) }}

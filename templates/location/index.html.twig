@@ -48,12 +48,12 @@
 							</p>
 							<p class="text-gray-600 mt-4">Véhicules :</p>
 							<ul class="list-disc list-inside">
-								{% for vehicle in item.vehicle %}
+								{% for vehicle in item.vehicles %}
 									<li>{{ vehicle.marque }}
 										-
 										{{ vehicle.model }}</li>
 								{% endfor %}
-								{% if item.vehicle is empty %}
+								{% if item.vehicles is empty %}
 									<li>Aucun véhicule</li>
 									<br>
 									<p>Cliquer sur modifier pour ajouter un véhicule</p>

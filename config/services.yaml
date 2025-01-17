@@ -39,7 +39,11 @@ services:
         arguments:
             $weatherApiKey: '%env(WEATHER_API_KEY)%'
     
-
+    # App\EventListener\LocationEventListener:
+    #     tags:
+    #         - { name: doctrine.event_listener, event: prePersist }
+    #         - { name: doctrine.event_listener, event: preRemove }
+    #         - { name: doctrine.event_listener, event: postFlush }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
