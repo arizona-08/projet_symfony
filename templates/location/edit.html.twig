@@ -26,6 +26,11 @@
 						<input type="date" name="end_date" id="end_date" value="{{ location.endDate|date('Y-m-d') }}" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
 					</div>
 				</div>
+				{% for message in app.flashes('error') %}
+                    <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded relative mb-6">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
 				<div class="mt-4 flex justify-end">
 					<button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
 						Mettre à jour les dates
@@ -34,11 +39,11 @@
 			</form>
 		</div>
 
-		{% if location.vehicle is not empty %}
+		{% if location.vehicles is not empty %}
 			<div class="bg-white shadow-md rounded-lg p-6 mb-10">
 				<h2 class="text-lg font-semibold text-gray-800 mb-4">Véhicules sélectionnés</h2>
 				<div class="space-y-4">
-					{% for vehicle in location.vehicle %}
+					{% for vehicle in location.vehicles %}
 						<div class="flex items-center justify-between bg-blue-50 p-4 rounded-lg shadow-md">
 							<div>
 								<h3 class="text-lg font-semibold text-gray-800">{{ vehicle.marque }}

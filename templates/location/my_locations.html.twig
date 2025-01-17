@@ -51,7 +51,7 @@
                         </p>
                         <p class="text-gray-600 mt-4">Véhicules :</p>
                         <ul class="list-disc list-inside">
-                            {% for vehicle in item.location.vehicle %}
+                            {% for vehicle in item.location.vehicles %}
                                 <li>{{ vehicle.marque }} - {{ vehicle.model }}</li>
                             {% endfor %}
                         </ul>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
             {% endfor %}
-            
+
         {% else %}
             <div class="text-center">
                 <p class="text-gray-500 text-lg">Vous n'avez aucune commande pour le moment.</p>

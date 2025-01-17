@@ -16,10 +16,87 @@ use App\Repository\KitRepository;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Repository\EquipmentRepository;
+use App\Repository\LocationRepository;
+use App\Repository\VehicleRepository;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/config')]
 class ConfigController extends AbstractController
 {
+    #[Route('/', name: 'config_index', methods: ['GET'])]
+    public function index(ConfigRepository $configRepository): Response
+    {
+        $user = $this->getUser();
+
+        // pas nécessaire si on a déjà un firewall qui gère les rôles (voir config/packages/security.yaml)
+        // if (!$user || !in_array('ROLE_VIP', $user->getRoles())) {
+        //     throw $this->createAccessDeniedException('You are not allowed to view configurations.');
+        // }
+
+        $configs = $configRepository->findBy(['client' => $user]);
+
+        return $this->render('config/index.html.twig', [
+            'configs' => $configs,
+        ]);
+    }
+    
+    #[Route('/create', name: 'config_create', methods: ['GET', 'POST'])]
+    public function create(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        VehicleRepository $vehicleRepository,
+        LocationRepository $locationRepository
+    ): Response {
+        $config = new Config();
+        $config->setClient($this->getUser());
+        $form = $this->createForm(ConfigType::class, $config);
+        $form->handleRequest($request);
+
+        $vehicles = $vehicleRepository->findAll();
+        $vehiclesAvailability = [];
+        foreach ($vehicles as $vehicle) {
+            $reservations = $locationRepository->findReservationsForVehicle($vehicle->getId());
+            $vehiclesAvailability[$vehicle->getId()] = $this->formatAvailabilityMessage($reservations);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $entityManager->persist($config);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Configuration créée avec succès !');
+                return $this->redirectToRoute('config_index');
+            } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+                $this->addFlash('error', 'Le véhicule sélectionné possède déjà une configuration.');
+            }
+        }
+
+        return $this->render('config/create.html.twig', [
+            'form' => $form->createView(),
+            'vehicles' => $vehicles,
+            'vehiclesAvailability' => $vehiclesAvailability,
+        ]);
+    }
+
+
+
+    private function formatAvailabilityMessage(array $reservations): string
+    {
+        if (empty($reservations)) {
+            return 'Toutes les dates sont disponibles pour ce véhicule.';
+        }
+
+        $periods = array_map(function ($reservation) {
+            return sprintf(
+                'du %s au %s',
+                $reservation->getStartDate()->format('d/m/Y'),
+                $reservation->getEndDate()->format('d/m/Y')
+            );
+        }, $reservations);
+
+        return 'Ce véhicule est réservé pour les dates suivantes : ' . implode(', ', $periods) . '.';
+    }
+
     #[Route('/edit/{id}', name: 'config_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Config $config, EntityManagerInterface $entityManager): Response
     {
@@ -45,91 +122,33 @@ class ConfigController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $config->getId(), $request->request->get('_token'))) {
             $entityManager->remove($config);
             $entityManager->flush();
-    
             $this->addFlash('success', 'Configuration supprimée avec succès.');
         }
-    
         return $this->redirectToRoute('config_index');
     }
-    
+
     #[Route('/get-kit-accessories', name: 'config_get_kit_accessories', methods: ['GET'])]
     public function getKitAccessories(Request $request, KitRepository $kitRepository): JsonResponse
     {
         $kitId = $request->query->get('kit');
-    
         if (!$kitId) {
             return new JsonResponse([]);
         }
-    
+
         $kit = $kitRepository->find($kitId);
-    
+
         if (!$kit) {
             return new JsonResponse(['error' => 'Kit not found'], 404);
         }
-    
+
         $accessories = $kit->getAccessory();
-    
+
         $response = array_map(fn($accessory) => [
             'id' => $accessory->getId(),
             'name' => $accessory->getName(),
         ], $accessories->toArray());
-    
+
         return new JsonResponse($response);
-    }
-
-    #[Route('/create', name: 'config_create', methods: ['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $entityManager, KitRepository $kitRepository): Response
-    {
-        $user = $this->getUser();
-
-        // pas nécessaire si on a déjà un firewall qui gère les rôles (voir config/packages/security.yaml)
-        // if (!$user || !in_array('ROLE_VIP', $user->getRoles())) {
-        //     throw $this->createAccessDeniedException('You are not allowed to create a configuration.');
-        // }
-
-        $config = new Config();
-        $config->setClient($user);
-
-        $form = $this->createForm(ConfigType::class, $config);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $selectedKitId = $form->get('kit')->getData();
-            $kit = $kitRepository->find($selectedKitId);
-
-            if ($kit) {
-                $config->setKit($kit);
-            }
-
-            $entityManager->persist($config);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Configuration created successfully!');
-
-            return $this->redirectToRoute('config_index');
-        }
-
-        return $this->render('config/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/', name: 'config_index', methods: ['GET'])]
-    public function index(ConfigRepository $configRepository): Response
-    {
-        $user = $this->getUser();
-
-        // pas nécessaire si on a déjà un firewall qui gère les rôles (voir config/packages/security.yaml)
-        // if (!$user || !in_array('ROLE_VIP', $user->getRoles())) {
-        //     throw $this->createAccessDeniedException('You are not allowed to view configurations.');
-        // }
-
-        $configs = $configRepository->findBy(['client' => $user]);
-    
-
-        return $this->render('config/index.html.twig', [
-            'configs' => $configs,
-        ]);
     }
 
 }

@@ -19,7 +19,7 @@ class Location
         $endDate = $this->getEndDate();
 
         if ($startDate && $endDate) {
-            foreach ($this->getVehicle() as $vehicle) {
+            foreach ($this->getVehicles() as $vehicle) {
                 $totalPrice += $startDate->diff($endDate)->days * $vehicle->getPricePerDay();
             }
         }
@@ -44,11 +44,9 @@ class Location
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    /**
-     * @var Collection<int, Vehicle>
-     */
-    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'location')]
-    private Collection $vehicle;
+    #[ORM\ManyToMany(targetEntity: Vehicle::class, inversedBy: 'locations')]
+    #[ORM\JoinTable(name: 'location_vehicle')]
+    private Collection $vehicles;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'locations')]
     #[ORM\JoinColumn(nullable: false)]
@@ -69,7 +67,7 @@ class Location
 
     public function __construct()
     {
-        $this->vehicle = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
         $this->feedback = new ArrayCollection();
     }
 
@@ -131,16 +129,16 @@ class Location
     /**
      * @return Collection<int, Vehicle>
      */
-    public function getVehicle(): Collection
+    public function getVehicles(): Collection
     {
-        return $this->vehicle;
+        return $this->vehicles;
     }
 
     public function addVehicle(Vehicle $vehicle): static
     {
-        if (!$this->vehicle->contains($vehicle)) {
-            $this->vehicle->add($vehicle);
-            $vehicle->setLocation($this);
+        if (!$this->vehicles->contains($vehicle)) {
+            $this->vehicles->add($vehicle);
+            $vehicle->addLocation($this);
         }
 
         return $this;
@@ -148,10 +146,8 @@ class Location
 
     public function removeVehicle(Vehicle $vehicle): static
     {
-        if ($this->vehicle->removeElement($vehicle)) {
-            if ($vehicle->getLocation() === $this) {
-                $vehicle->setLocation(null);
-            }
+        if ($this->vehicles->removeElement($vehicle)) {
+            $vehicle->removeLocation($this);
         }
 
         return $this;

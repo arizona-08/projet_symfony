@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Location;
+use App\Entity\Status;
 use App\Entity\Vehicle;
+use App\Repository\LocationRepository;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,6 +56,7 @@ class HomeController extends AbstractController
         Request $request,
         PaginatorInterface $paginator,
         VehicleRepository $vehicleRepository,
+        LocationRepository $locationRepository,
         SessionInterface $session
     ): Response {
         /** @var \App\Entity\User $user */
@@ -61,6 +64,30 @@ class HomeController extends AbstractController
 
         $selectedVehicleIds = $session->get('selected_vehicles', []);
         $selectedVehicles = $vehicleRepository->findBy(['id' => $selectedVehicleIds]);
+
+        $vehiclesAvailability = [];
+
+        foreach ($selectedVehicles as $vehicle) {
+            $reservations = $locationRepository->findReservationsForVehicle($vehicle->getId());
+
+            if (empty($reservations)) {
+                $vehiclesAvailability[$vehicle->getId()] = 'Toutes les dates sont disponibles pour ce véhicule.';
+            } else {
+                $periods = array_map(function ($reservation) {
+                    return sprintf(
+                        'du %s au %s',
+
+                        $reservation->getStartDate()->format('d/m/Y'), // Utilisation des méthodes getter
+            $reservation->getEndDate()->format('d/m/Y')
+                    );
+                }, $reservations);
+
+                $vehiclesAvailability[$vehicle->getId()] = sprintf(
+                    'Ce véhicule est réservé pour les dates suivantes : %s. Veuillez choisir d\'autres dates.',
+                    implode(', ', $periods)
+                );
+            }
+        }
 
         $startDate = $request->query->get('start_date', (new \DateTime())->format('Y-m-d'));
         $endDate = $request->query->get('end_date', (new \DateTime('+1 day'))->format('Y-m-d'));
@@ -107,9 +134,9 @@ class HomeController extends AbstractController
             'pagination' => $vehicles,
             'start_date' => $startDate,
             'end_date' => $endDate,
+            'vehiclesAvailability' => $vehiclesAvailability,
         ]);
     }
-
 
 
     #[Route('/validate', name: 'app_location_validate', methods: ['POST'])]
@@ -117,9 +144,9 @@ class HomeController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         SessionInterface $session,
-        VehicleRepository $vehicleRepository
+        VehicleRepository $vehicleRepository,
+        LocationRepository $locationRepository
     ): Response {
-
         $selectedVehicleIds = $session->get('selected_vehicles', []);
         $selectedVehicles = $vehicleRepository->findBy(['id' => $selectedVehicleIds]);
 
@@ -134,19 +161,34 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $location = new Location();
-
-        $startDate = $request->request->get('start_date');
-        $endDate = $request->request->get('end_date');
+        $startDate = new \DateTime($request->request->get('start_date'));
+        $endDate = new \DateTime($request->request->get('end_date'));
 
         if (!$startDate || !$endDate) {
             $this->addFlash('error', 'Veuillez renseigner les dates de début et de fin.');
             return $this->redirectToRoute('dashboard');
         }
 
-        $location->setStartDate(new \DateTime($startDate));
-        $location->setEndDate(new \DateTime($endDate));
+        foreach ($selectedVehicles as $vehicle) {
+            if (!$locationRepository->isVehicleAvailableDuringPeriod($vehicle->getId(), $startDate, $endDate)) {
+                $this->addFlash(
+                    'error',
+                    sprintf(
+                        'Le véhicule %s %s est déjà réservé entre le %s et le %s.',
+                        $vehicle->getMarque(),
+                        $vehicle->getModel(),
+                        $startDate->format('d/m/Y'),
+                        $endDate->format('d/m/Y')
+                    )
+                );
+                return $this->redirectToRoute('dashboard');
+            }
+        }
+
+        $location = new Location();
         $location->setUser($user);
+        $location->setStartDate($startDate);
+        $location->setEndDate($endDate);
 
         foreach ($selectedVehicles as $vehicle) {
             $location->addVehicle($vehicle);

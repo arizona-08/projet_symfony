@@ -28,7 +28,9 @@ class VehicleController extends AbstractController
         $sortKm = $request->query->get('sort_km');
         $agency = $request->query->get('agency');
 
-        $queryBuilder = $vehicleRepository->createQueryBuilder('v');
+        $queryBuilder = $vehicleRepository->createQueryBuilder('v')
+            ->leftJoin('v.locations', 'l')
+            ->addSelect('l');
 
         if ($brand) {
             $queryBuilder->andWhere('v.marque = :brand')
