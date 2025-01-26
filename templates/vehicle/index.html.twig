@@ -93,7 +93,9 @@
 							</p>
 							<p class="text-gray-600 mt-1">
 								<span class="font-bold">Status :</span>
-								{% if vehicle.status.name == 'Réservé' %}
+								{% if vehicle.status.name is not defined %}
+									Non défini
+								{% elseif vehicle.status.name == 'Réservé' %}
 									Réservé pour les périodes suivantes :
 									<ul class="list-disc list-inside">
 										{% for location in vehicle.locations %}
