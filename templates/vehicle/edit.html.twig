@@ -9,6 +9,17 @@
         <p class="text-lg text-gray-600 mt-2">Apportez des modifications aux informations de ce véhicule.</p>
     </div>
 
+    {% for message in app.flashes('success') %}
+        <div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <div class="bg-white shadow-md rounded-lg p-6">
         <form action="{{ path('vehicle_update', { id: vehicle.id }) }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
@@ -35,11 +46,7 @@
                     <input type="date" name="last_maintenance" id="last_maintenance" value="{{ vehicle.lastMaintenance|date('Y-m-d') }}"
                            class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
-                <div>
-                    <label for="nb_kilometrage" class="block text-sm font-medium text-gray-700">Nombre de kilomètres</label>
-                    <input type="number" name="nb_kilometrage" id="nb_kilometrage" value="{{ vehicle.nbKilometrage }}" placeholder="Kilométrage"
-                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
+
                 <div>
                     <label for="nb_serie" class="block text-sm font-medium text-gray-700">Numéro de série</label>
                     <input type="text" name="nb_serie" id="nb_serie" value="{{ vehicle.nbSerie }}" placeholder="Numéro de série"
@@ -68,8 +75,24 @@
                     </select>
                 </div>
                 <div>
+                    <label for="status_id" class="block text-sm font-medium text-gray-700">Status</label>
+                    <select name="status_id" id="status_id"
+                            class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        {% for status in statuses %}
+                            <option value="{{ status.id }}" {% if vehicle.status and status.id == vehicle.status.id %}selected{% endif %}>
+                                {{ status.getName }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
                     <label for="price_per_day" class="block text-sm font-medium text-gray-700">Prix par jour</label>
                     <input type="number" name="price_per_day" id="price_per_day" value="{{ vehicle.pricePerDay }}" placeholder="Prix par jour"
+                           class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="nb_kilometrage" class="block text-sm font-medium text-gray-700">Kilométrage</label>
+                    <input type="number" name="nb_kilometrage" id="nb_kilometrage" value="{{ vehicle.nbKilometrage }}" placeholder="nb_kilometrage"
                            class="mt-1 block w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 </div>
             </div>

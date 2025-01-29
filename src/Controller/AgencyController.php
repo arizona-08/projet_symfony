@@ -89,6 +89,9 @@ class AgencyController extends AbstractController
             $entityManager->persist($agency);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Agence créée avec succès.');
+            return $this->redirectToRoute('agency_index');
+
             return $this->redirectToRoute('agency_index');
         }
 
@@ -108,7 +111,7 @@ class AgencyController extends AbstractController
 
     public function getUsersAgenciesHead(UserRepository $userRepository): array
     {
-        
+
         $users = $userRepository->findAll();
         $agenciesHead = [];
         foreach ($users as $user) {
@@ -118,41 +121,6 @@ class AgencyController extends AbstractController
         }
 
         return $agenciesHead;
-    }
-
-    #[Route('/agencies/store', name: 'agency_store', methods: ['POST'])]
-    public function store(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
-    {
-        $data = $request->request->all();
-
-        if (empty($data['label']) || empty($data['address']) || empty($data['city']) || empty($data['zip_code']) || empty($data['user_id'])) {
-            $this->addFlash('error', 'Tous les champs requis doivent être remplis.');
-            return $this->redirectToRoute('agency_create');
-        }
-
-        $existingAgency = $entityManager->getRepository(Agency::class)->findOneBy(['user' => $data['user_id']]);
-        if ($existingAgency) {
-            $this->addFlash('error', 'Cet utilisateur est déjà associé à une agence.');
-            return $this->redirectToRoute('agency_index');
-        }
-
-        $user = $userRepository->find($data['user_id']);
-        if (!$user) {
-            $this->addFlash('error', 'Utilisateur non trouvé.');
-            return $this->redirectToRoute('agency_create');
-        }
-
-        $agency = new Agency();
-        $agency->setLabel($data['label']);
-        $agency->setAddress($data['address']);
-        $agency->setCity($data['city']);
-        $agency->setZipCode($data['zip_code']);
-        $agency->setUser($user);
-
-        $entityManager->persist($agency);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('agency_index');
     }
 
     #[Route('/agencies/{id}', name: 'agency_show', methods: ['GET'])]
@@ -178,70 +146,34 @@ class AgencyController extends AbstractController
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
 
+            if (empty($data['label']) || empty($data['address']) || empty($data['city']) || empty($data['zip_code']) || empty($data['user_id'])) {
+                $this->addFlash('error', 'Tous les champs requis doivent être remplis.');
+                return $this->redirectToRoute('agency_edit', ['id' => $agency->getId()]);
+            }
+
+            $existingAgency = $entityManager->getRepository(Agency::class)->findOneBy(['user' => $data['user_id']]);
+            if ($existingAgency && $existingAgency->getId() !== $agency->getId()) {
+                $this->addFlash('error', 'Cet utilisateur est déjà associé à une autre agence.');
+                return $this->redirectToRoute('agency_edit', ['id' => $agency->getId()]);
+            }
+
             $agency->setLabel($data['label']);
             $agency->setAddress($data['address']);
             $agency->setCity($data['city']);
             $agency->setZipCode($data['zip_code']);
-
-            if ($agency->getUser()->getId() != $data['user_id']) {
-                $existingAgency = $entityManager->getRepository(Agency::class)->findOneBy(['user' => $data['user_id']]);
-                if ($existingAgency) {
-                    $this->addFlash('error', 'Cet utilisateur est déjà associé à une agence.');
-                    return $this->redirectToRoute('agency_index');
-                }
-
-                $newUser = $userRepository->find($data['user_id']);
-                $agency->setUser($newUser);
-            }
+            $agency->setUser($userRepository->find($data['user_id']));
 
             $entityManager->flush();
+
+            $this->addFlash('success', 'Agence mise à jour avec succès.');
             return $this->redirectToRoute('agency_index');
         }
 
-        $users = $userRepository->findAll();
-
         return $this->render('agency/edit.html.twig', [
             'agency' => $agency,
-            'users' => $users,
+            'users' => $userRepository->findBy(['roles' => ['ROLE_AGENCY_HEAD']]),
         ]);
     }
-
-    #[Route('/agencies/{id}/update', name: 'agency_update', methods: ['POST', 'PUT'])]
-    public function update(Request $request, Agency $agency, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
-    {
-        $data = $request->request->all();
-
-        if (empty($data['label']) || empty($data['address']) || empty($data['city']) || empty($data['zip_code']) || empty($data['user_id'])) {
-            $this->addFlash('error', 'Tous les champs requis doivent être remplis.');
-            return $this->redirectToRoute('agency_edit', ['id' => $agency->getId()]);
-        }
-
-        $agency->setLabel($data['label']);
-        $agency->setAddress($data['address']);
-        $agency->setCity($data['city']);
-        $agency->setZipCode($data['zip_code']);
-
-        if ($agency->getUser()->getId() !== (int) $data['user_id']) {
-            $existingAgency = $entityManager->getRepository(Agency::class)->findOneBy(['user' => $data['user_id']]);
-            if ($existingAgency) {
-                $this->addFlash('error', 'Cet utilisateur est déjà associé à une agence.');
-                return $this->redirectToRoute('agency_edit', ['id' => $agency->getId()]);
-            }
-
-            $newUser = $userRepository->find((int) $data['user_id']);
-            if (!$newUser) {
-                $this->addFlash('error', 'Utilisateur non trouvé.');
-                return $this->redirectToRoute('agency_edit', ['id' => $agency->getId()]);
-            }
-
-            $agency->setUser($newUser);
-        }
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('agency_index');
-    }
-
 
     #[Route('/agencies/{id}/delete', name: 'agency_delete', methods: ['POST'])]
     public function delete(Agency $agency, EntityManagerInterface $entityManager): Response
@@ -249,6 +181,7 @@ class AgencyController extends AbstractController
         $entityManager->remove($agency);
         $entityManager->flush();
 
+        $this->addFlash('success', 'Agence supprimée avec succès.');
         return $this->redirectToRoute('agency_index');
     }
 }

@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Agency;
 use App\Entity\Car;
+use App\Entity\Status;
 use App\Entity\Supplier;
 use App\Entity\Vehicle;
-// use App\Entity\Status;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -88,13 +88,19 @@ class VehicleController extends AbstractController
 
             $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
             $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
-
             $vehicle->setAgency($agency);
             $vehicle->setSupplier($supplier);
+
+            $status = $entityManager->getRepository(Status::class)->findOneBy(['name' => 'Disponible']);
+            if (!$status) {
+                throw $this->createNotFoundException('Le statut "Disponible" est introuvable dans la base de données.');
+            }
+            $vehicle->setStatus($status);
 
             $entityManager->persist($vehicle);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Véhicule créé avec succès avec le statut "Disponible".');
             return $this->redirectToRoute('vehicle_index');
         }
 
@@ -106,7 +112,6 @@ class VehicleController extends AbstractController
             'suppliers' => $suppliers,
         ]);
     }
-
 
 
     #[Route('/vehicles/{id}/update', name: 'vehicle_update', methods: ['POST', 'PUT'])]
@@ -122,13 +127,15 @@ class VehicleController extends AbstractController
         $vehicle->setPricePerDay((float) $data['price_per_day']);
 
         $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
-        // $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
+        $statuses = $entityManager->getRepository(Status::class)->find($data['status_id']);
         $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
         $vehicle->setAgency($agency);
-        // $vehicle->setStatus($status);
+        $vehicle->setStatus($statuses);
         $vehicle->setSupplier($supplier);
 
         $entityManager->flush();
+
+        $this->addFlash('success', 'Véhicule modifié avec succès.');
 
         return $this->redirectToRoute('vehicle_index');
     }
@@ -147,12 +154,12 @@ class VehicleController extends AbstractController
             $vehicle->setNbSerie($data['nb_serie']);
             $vehicle->setPricePerDay($data['price_per_day']);
 
-            $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']); // Commenté
-            // $status = $entityManager->getRepository(Status::class)->find($data['status_id']); // Commenté
-            $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']); // Commenté
+            $agency = $entityManager->getRepository(Agency::class)->find($data['agency_id']);
+            $status = $entityManager->getRepository(Status::class)->find($data['status_id']);
+            $supplier = $entityManager->getRepository(Supplier::class)->find($data['supplier_id']);
 
             $vehicle->setAgency($agency);
-            // $vehicle->setStatus($status);
+            $vehicle->setStatus($status);
             $vehicle->setSupplier($supplier);
 
             $entityManager->flush();
@@ -160,14 +167,14 @@ class VehicleController extends AbstractController
             return $this->redirectToRoute('vehicle_index');
         }
 
-        $agencies = $entityManager->getRepository(Agency::class)->findAll(); // Commenté
-        // $statuses = $entityManager->getRepository(Status::class)->findAll(); // Commenté
-        $suppliers = $entityManager->getRepository(Supplier::class)->findAll(); // Commenté
+        $agencies = $entityManager->getRepository(Agency::class)->findAll();
+        $status = $entityManager->getRepository(Status::class)->findAll();
+        $suppliers = $entityManager->getRepository(Supplier::class)->findAll();
 
         return $this->render('vehicle/edit.html.twig', [
             'vehicle' => $vehicle,
             'agencies' => $agencies,
-            // 'statuses' => $statuses,
+            'statuses' => $status,
             'suppliers' => $suppliers,
         ]);
     }
@@ -186,6 +193,8 @@ class VehicleController extends AbstractController
     {
         $entityManager->remove($vehicle);
         $entityManager->flush();
+
+        $this->addFlash('success', 'Véhicule supprimé avec succès.');
 
         return $this->redirectToRoute('vehicle_index');
     }

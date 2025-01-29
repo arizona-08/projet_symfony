@@ -33,7 +33,12 @@ final class KitController extends AbstractController
             $entityManager->persist($kit);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Kit créé avec succès.');
             return $this->redirectToRoute('app_kit_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Une erreur est survenue lors de la création du kit.');
         }
 
         return $this->render('kit/new.html.twig', [
@@ -59,7 +64,12 @@ final class KitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Kit modifié avec succès.');
             return $this->redirectToRoute('app_kit_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Une erreur est survenue lors de la modification du kit.');
         }
 
         return $this->render('kit/edit.html.twig', [
@@ -71,12 +81,15 @@ final class KitController extends AbstractController
     #[Route('/{id}', name: 'app_kit_delete', methods: ['POST'])]
     public function delete(Request $request, Kit $kit, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$kit->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $kit->getId(), $request->request->get('_token'))) {
             $entityManager->remove($kit);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Kit supprimé avec succès.');
+        } else {
+            $this->addFlash('error', 'Échec de la suppression : jeton CSRF invalide.');
         }
 
         return $this->redirectToRoute('app_kit_index', [], Response::HTTP_SEE_OTHER);
     }
-
 }

@@ -9,6 +9,18 @@
         <p class="text-lg text-gray-600 mt-3">Mettez à jour les détails de votre configuration VIP.</p>
     </div>
 
+    {% for message in app.flashes('success') %}
+    <div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
     <div class="bg-white shadow-md rounded-lg p-6">
         {{ form_start(form, {'attr': {'class': 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6'}}) }}
 
