@@ -16,6 +16,18 @@
         <p class="text-lg text-gray-600 mt-3">Consultez les commandes que vous avez passées.</p>
     </div>
 
+    {% for message in app.flashes('success') %}
+    <div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
     <div class="mb-6 text-center">
         <form method="get" class="inline-block">
             <label for="filter" class="sr-only">Filtrer les commandes</label>

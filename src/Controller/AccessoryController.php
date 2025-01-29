@@ -33,7 +33,12 @@ final class AccessoryController extends AbstractController
             $entityManager->persist($accessory);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Accessoire créé avec succès.');
             return $this->redirectToRoute('app_accessory_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Une erreur est survenue lors de la création de l\'accessoire.');
         }
 
         return $this->render('accessory/new.html.twig', [
@@ -59,7 +64,12 @@ final class AccessoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Accessoire modifié avec succès.');
             return $this->redirectToRoute('app_accessory_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Une erreur est survenue lors de la modification de l\'accessoire.');
         }
 
         return $this->render('accessory/edit.html.twig', [
@@ -71,9 +81,13 @@ final class AccessoryController extends AbstractController
     #[Route('/{id}', name: 'app_accessory_delete', methods: ['POST'])]
     public function delete(Request $request, Accessory $accessory, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$accessory->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $accessory->getId(), $request->request->get('_token'))) {
             $entityManager->remove($accessory);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Accessoire supprimé avec succès.');
+        } else {
+            $this->addFlash('error', 'Échec de la suppression : jeton CSRF invalide.');
         }
 
         return $this->redirectToRoute('app_accessory_index', [], Response::HTTP_SEE_OTHER);
