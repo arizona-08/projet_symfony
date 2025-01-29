@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Config;
-
+use App\Other\EasterEgg;
 use App\Form\ConfigType;
 use App\Repository\ConfigRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,8 +35,12 @@ class ConfigController extends AbstractController
 
         $configs = $configRepository->findBy(['client' => $user]);
 
+        $easterEgg = new EasterEgg();
+        $easterEggPhrase = $easterEgg->getPhrase();
+
         return $this->render('config/index.html.twig', [
             'configs' => $configs,
+            'easterEggPhrase' => $easterEggPhrase,
         ]);
     }
     
