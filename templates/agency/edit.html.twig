@@ -12,7 +12,7 @@
     <div class="bg-white shadow-md rounded-lg p-6">
 
 
-        <form action="{{ path('agency_update', {id: agency.id}) }}" method="POST">
+        <form action="{{ path('agency_edit', {id: agency.id}) }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                 <div>
