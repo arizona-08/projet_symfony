@@ -171,7 +171,7 @@ class AgencyController extends AbstractController
 
         return $this->render('agency/edit.html.twig', [
             'agency' => $agency,
-            'users' => $userRepository->findBy(['roles' => ['ROLE_AGENCY_HEAD']]),
+            'users' => $this->getUsersAgenciesHead($userRepository),
         ]);
     }
 
