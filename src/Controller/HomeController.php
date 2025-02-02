@@ -107,10 +107,10 @@ class HomeController extends AbstractController
 
         $queryBuilder = $vehicleRepository->createQueryBuilder('v');
         //affiche que les véhicules de l'agence de l'utilisateur si rôle agency_head
-        if($user->hasRole('ROLE_AGENCY_HEAD')){
-            $queryBuilder->andWhere('v.agency = :agency')
-                ->setParameter('agency', $user->getAgencies()[0]);
-        }
+        // if($user->hasRole('ROLE_AGENCY_HEAD')){
+        //     $queryBuilder->andWhere('v.agency = :agency')
+        //         ->setParameter('agency', $user->getAgencies()[0]);
+        // }
         
         $search = $request->query->get('search');
         $brand = $request->query->get('brand');
