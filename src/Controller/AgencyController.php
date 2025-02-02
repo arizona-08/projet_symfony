@@ -6,6 +6,7 @@ use App\Entity\Agency;
 use App\Entity\User;
 use App\Repository\AgencyRepository;
 use App\Repository\UserRepository;
+use App\Utils\UsersGetter;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AgencyController extends AbstractController
 {
+    private UsersGetter $userGetter;
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userGetter = new UsersGetter($userRepository);
+    }
+
     #[Route('/agencies', name: 'agency_index', methods: ['GET'])]
     public function index(
         AgencyRepository $agencyRepository,
@@ -101,7 +108,7 @@ class AgencyController extends AbstractController
         if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $users = $userRepository->findBy(['id' => $user->getId()]);
         } else {
-            $users = $this->getUsersAgenciesHead($userRepository);
+            $users = $this->userGetter->getUsersAgenciesHead();
         }
 
         return $this->render('agency/create.html.twig', [
@@ -109,19 +116,7 @@ class AgencyController extends AbstractController
         ]);
     }
 
-    public function getUsersAgenciesHead(UserRepository $userRepository): array
-    {
-
-        $users = $userRepository->findAll();
-        $agenciesHead = [];
-        foreach ($users as $user) {
-            if ($user->hasRole('ROLE_AGENCY_HEAD')) {
-                $agenciesHead[] = $user;
-            }
-        }
-
-        return $agenciesHead;
-    }
+    
 
     #[Route('/agencies/{id}', name: 'agency_show', methods: ['GET'])]
     public function show(Request $request, Agency $agency, PaginatorInterface $paginator): Response
@@ -171,7 +166,7 @@ class AgencyController extends AbstractController
 
         return $this->render('agency/edit.html.twig', [
             'agency' => $agency,
-            'users' => $this->getUsersAgenciesHead($userRepository),
+            'users' => $this->userGetter->getUsersAgenciesHead(),
         ]);
     }
 
