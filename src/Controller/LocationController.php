@@ -19,12 +19,20 @@ use App\Form\VipLocationType;
 use App\Entity\Config;
 use App\Entity\Feedback;
 use App\Entity\Status;
+use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints\Collection;
 use App\Service\EmailService;
+use App\Utils\UsersGetter;
 
 #[Route('/location')]
 final class LocationController extends AbstractController
 {
+
+    private UsersGetter $userGetter;
+    
+    public function __construct(UserRepository $userRepository){
+        $this->userGetter = new UsersGetter($userRepository);
+    }
 
     #[Route('/my-locations', name: 'app_my_locations', methods: ['GET'])]
     public function myLocations(LocationRepository $locationRepository, PaginatorInterface $paginator, Request $request): Response
@@ -153,11 +161,10 @@ final class LocationController extends AbstractController
         EntityManagerInterface $entityManager,
         SessionInterface $session,
         PaginatorInterface $paginator,
-        LocationRepository $locationRepository
+        LocationRepository $locationRepository,
+        UserRepository $userRepository
     ): Response {
         $location = new Location();
-
-        $users = $entityManager->getRepository(User::class)->findAll();
 
         $vehiclesQuery = $entityManager->getRepository(Vehicle::class)->createQueryBuilder('v');
 
@@ -276,7 +283,7 @@ final class LocationController extends AbstractController
             'location' => $location,
             'pagination' => $vehicles,
             'vehicles' => $vehicles->getItems(),
-            'users' => $users,
+            'users' => $this->userGetter->getClientsUsers(),
             'selectedVehicles' => $selectedVehicles,
             'brands' => $brands,
             'vehiclesAvailability' => $vehiclesAvailability,

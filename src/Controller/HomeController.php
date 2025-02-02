@@ -6,6 +6,7 @@ use App\Entity\Location;
 use App\Entity\Status;
 use App\Entity\Vehicle;
 use App\Repository\LocationRepository;
+use App\Repository\UserRepository;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,14 +16,17 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Service\WeatherService;
+use App\Utils\UsersGetter;
 
 class HomeController extends AbstractController
 {
     private $weatherService;
+    private UsersGetter $userGetter;
 
-    public function __construct(WeatherService $weatherService)
+    public function __construct(WeatherService $weatherService, UserRepository $userRepository)
     {
         $this->weatherService = $weatherService;
+        $this->userGetter = new UsersGetter($userRepository);
     }
 
 
@@ -102,6 +106,12 @@ class HomeController extends AbstractController
         }
 
         $queryBuilder = $vehicleRepository->createQueryBuilder('v');
+        //affiche que les véhicules de l'agence de l'utilisateur si rôle agency_head
+        if($user->hasRole('ROLE_AGENCY_HEAD')){
+            $queryBuilder->andWhere('v.agency = :agency')
+                ->setParameter('agency', $user->getAgencies()[0]);
+        }
+        
         $search = $request->query->get('search');
         $brand = $request->query->get('brand');
         $price = $request->query->get('price');
@@ -127,6 +137,7 @@ class HomeController extends AbstractController
 
         return $this->render('dashboard.html.twig', [
             'user' => $user,
+            'clients' => $this->userGetter->getClientsUsers(),
             'vehicles' => $vehicles,
             'selectedVehicles' => $selectedVehicles,
             'totalPrice' => $totalPrice,
@@ -145,7 +156,8 @@ class HomeController extends AbstractController
         EntityManagerInterface $entityManager,
         SessionInterface $session,
         VehicleRepository $vehicleRepository,
-        LocationRepository $locationRepository
+        LocationRepository $locationRepository,
+        UserRepository $userRepository
     ): Response {
         $selectedVehicleIds = $session->get('selected_vehicles', []);
         $selectedVehicles = $vehicleRepository->findBy(['id' => $selectedVehicleIds]);
@@ -155,17 +167,25 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
         if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour valider une commande.');
             return $this->redirectToRoute('dashboard');
         }
 
+        $client = $request->request->get('client'); // retourne l'id du client en string
+        $clientObject = $userRepository->find((int)$client);
         $startDate = new \DateTime($request->request->get('start_date'));
         $endDate = new \DateTime($request->request->get('end_date'));
 
         if (!$startDate || !$endDate) {
             $this->addFlash('error', 'Veuillez renseigner les dates de début et de fin.');
+            return $this->redirectToRoute('dashboard');
+        }
+
+        if($user->hasRole('ROLE_AGENCY_HEAD') && !$client) {
+            $this->addFlash('error', 'Veuillez sélectionner un client.');
             return $this->redirectToRoute('dashboard');
         }
 
@@ -186,7 +206,7 @@ class HomeController extends AbstractController
         }
 
         $location = new Location();
-        $location->setUser($user);
+        $user->hasRole('ROLE_AGENCY_HEAD') ? $location->setUser($clientObject) : $location->setUser($user);
         $location->setStartDate($startDate);
         $location->setEndDate($endDate);
 
@@ -202,6 +222,9 @@ class HomeController extends AbstractController
         $session->remove('selected_vehicles');
 
         $this->addFlash('success', 'Votre commande a été validée avec succès.');
+        if($user->hasRole('ROLE_AGENCY_HEAD')){
+            return $this->redirectToRoute('app_location_index');
+        }
         return $this->redirectToRoute('app_my_locations');
     }
 
