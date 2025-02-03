@@ -3,17 +3,9 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <Grants>1||-9223372036854775808|c|G
-1||10|c|G
-1||10|C|G
-1||10|T|G
-4||-9223372036854775808|c|G
-4||10|c|G
-4||10|C|G
-4||10|T|G</Grants>
-      <IntrospectionStateNumber>781</IntrospectionStateNumber>
-      <ServerVersion>16.5</ServerVersion>
-      <StartupTime>1736021582</StartupTime>
+      <IntrospectionStateNumber>755</IntrospectionStateNumber>
+      <ServerVersion>16.6</ServerVersion>
+      <StartupTime>1738618054</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -799,7 +791,6 @@ false posixrules
 </TimeZones>
     </root>
     <database id="2" parent="1" name="flotte">
-      <Current>1</Current>
       <Grants>11||10|C|G
 11||-9223372036854775808|U|G
 11||10|U|G
@@ -809,8 +800,8 @@ false posixrules
 13255||10|C|G
 13255||-9223372036854775808|U|G
 13255||10|U|G</Grants>
-      <IntrospectionStateNumber>781</IntrospectionStateNumber>
-      <ObjectId>16550</ObjectId>
+      <IntrospectionStateNumber>755</IntrospectionStateNumber>
+      <ObjectId>16384</ObjectId>
       <OwnerName>flotte_user</OwnerName>
     </database>
     <database id="3" parent="1" name="postgres">
@@ -4233,845 +4224,1278 @@ false posixrules
     <schema id="264" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>781</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2025-01-04.20:14:12</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>755</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2025-02-03.21:30:42</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
-    <sequence id="265" parent="264" name="agency_id_seq">
-      <ObjectId>16557</ObjectId>
+    <sequence id="265" parent="264" name="accessory_id_seq">
+      <ObjectId>16395</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <sequence id="266" parent="264" name="config_id_seq">
-      <ObjectId>16572</ObjectId>
+    <sequence id="266" parent="264" name="agency_id_seq">
+      <ObjectId>16402</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <sequence id="267" parent="264" name="kit_id_seq">
-      <ObjectId>16696</ObjectId>
+    <sequence id="267" parent="264" name="config_id_seq">
+      <ObjectId>16417</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>761</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <sequence id="268" parent="264" name="location_id_seq">
-      <ObjectId>16595</ObjectId>
+    <sequence id="268" parent="264" name="feedback_id_seq">
+      <ObjectId>16427</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <sequence id="269" parent="264" name="supplier_id_seq">
-      <ObjectId>16608</ObjectId>
+    <sequence id="269" parent="264" name="kit_id_seq">
+      <ObjectId>16438</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <sequence id="270" parent="264" name="user_id_seq">
-      <ObjectId>16615</ObjectId>
+    <sequence id="270" parent="264" name="location_id_seq">
+      <ObjectId>16452</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <sequence id="271" parent="264" name="vehicle_id_seq">
-      <ObjectId>16625</ObjectId>
+    <sequence id="271" parent="264" name="reset_password_request_id_seq">
+      <ObjectId>16589</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>759</StateNumber>
+      <StateNumber>751</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>flotte_user</OwnerName>
     </sequence>
-    <table id="272" parent="264" name="agency">
-      <ObjectId>16558</ObjectId>
-      <StateNumber>759</StateNumber>
+    <sequence id="272" parent="264" name="status_id_seq">
+      <ObjectId>16597</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <OwnerName>flotte_user</OwnerName>
+    </sequence>
+    <sequence id="273" parent="264" name="supplier_id_seq">
+      <ObjectId>16467</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <OwnerName>flotte_user</OwnerName>
+    </sequence>
+    <sequence id="274" parent="264" name="user_id_seq">
+      <ObjectId>16474</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <OwnerName>flotte_user</OwnerName>
+    </sequence>
+    <sequence id="275" parent="264" name="vehicle_id_seq">
+      <ObjectId>16484</ObjectId>
+      <SequenceIdentity>1</SequenceIdentity>
+      <StartValue>1</StartValue>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <OwnerName>flotte_user</OwnerName>
+    </sequence>
+    <table id="276" parent="264" name="accessory">
+      <ObjectId>16396</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="273" parent="264" name="car">
-      <ObjectId>16567</ObjectId>
-      <StateNumber>759</StateNumber>
+    <table id="277" parent="264" name="agency">
+      <ObjectId>16403</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="274" parent="264" name="config">
-      <ObjectId>16573</ObjectId>
-      <StateNumber>761</StateNumber>
+    <table id="278" parent="264" name="car">
+      <ObjectId>16412</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="275" parent="264" name="doctrine_migration_versions">
-      <ObjectId>16551</ObjectId>
-      <StateNumber>758</StateNumber>
+    <table id="279" parent="264" name="config">
+      <ObjectId>16418</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="276" parent="264" name="kit">
-      <ObjectId>16697</ObjectId>
-      <StateNumber>761</StateNumber>
+    <table id="280" parent="264" name="doctrine_migration_versions">
+      <ObjectId>16389</ObjectId>
+      <StateNumber>748</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="277" parent="264" name="location">
-      <ObjectId>16596</ObjectId>
-      <StateNumber>767</StateNumber>
+    <table id="281" parent="264" name="feedback">
+      <ObjectId>16428</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="278" parent="264" name="motorcycle">
-      <ObjectId>16603</ObjectId>
-      <StateNumber>759</StateNumber>
+    <table id="282" parent="264" name="kit">
+      <ObjectId>16439</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="279" parent="264" name="supplier">
-      <ObjectId>16609</ObjectId>
-      <StateNumber>759</StateNumber>
+    <table id="283" parent="264" name="kit_accessory">
+      <ObjectId>16445</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="280" parent="264" name="user">
-      <ObjectId>16616</ObjectId>
-      <StateNumber>759</StateNumber>
+    <table id="284" parent="264" name="location">
+      <ObjectId>16453</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <table id="281" parent="264" name="vehicle">
-      <ObjectId>16626</ObjectId>
-      <StateNumber>759</StateNumber>
+    <table id="285" parent="264" name="location_vehicle">
+      <ObjectId>16582</ObjectId>
+      <StateNumber>751</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>flotte_user</OwnerName>
     </table>
-    <column id="282" parent="272" name="id">
+    <table id="286" parent="264" name="motorcycle">
+      <ObjectId>16462</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>flotte_user</OwnerName>
+    </table>
+    <table id="287" parent="264" name="reset_password_request">
+      <ObjectId>16590</ObjectId>
+      <StateNumber>751</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>flotte_user</OwnerName>
+    </table>
+    <table id="288" parent="264" name="status">
+      <ObjectId>16598</ObjectId>
+      <StateNumber>751</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>flotte_user</OwnerName>
+    </table>
+    <table id="289" parent="264" name="supplier">
+      <ObjectId>16468</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>flotte_user</OwnerName>
+    </table>
+    <table id="290" parent="264" name="user">
+      <ObjectId>16475</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>flotte_user</OwnerName>
+    </table>
+    <table id="291" parent="264" name="vehicle">
+      <ObjectId>16485</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>flotte_user</OwnerName>
+    </table>
+    <column id="292" parent="276" name="id">
+      <DefaultExpression>nextval(&apos;accessory_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16395</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="293" parent="276" name="name">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="294" parent="276" name="accessory_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16400</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="295" parent="276" name="accessory_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16401</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16400</UnderlyingIndexId>
+    </key>
+    <column id="296" parent="277" name="id">
       <DefaultExpression>nextval(&apos;agency_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
-      <SequenceId>16557</SequenceId>
+      <SequenceId>16402</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="283" parent="272" name="user_id">
+    <column id="297" parent="277" name="user_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="284" parent="272" name="label">
+    <column id="298" parent="277" name="label">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="285" parent="272" name="address">
+    <column id="299" parent="277" name="address">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="286" parent="272" name="city">
+    <column id="300" parent="277" name="city">
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="287" parent="272" name="zip_code">
+    <column id="301" parent="277" name="zip_code">
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="288" parent="272" name="fk_70c0c6e6a76ed395">
+    <foreign-key id="302" parent="277" name="fk_70c0c6e6a76ed395">
       <ColNames>user_id</ColNames>
-      <ObjectId>16643</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16502</ObjectId>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16616</RefTableId>
+      <RefTableId>16475</RefTableId>
     </foreign-key>
-    <index id="289" parent="272" name="agency_pkey">
+    <index id="303" parent="277" name="agency_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16564</ObjectId>
+      <ObjectId>16409</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="290" parent="272" name="idx_70c0c6e6a76ed395">
+    <index id="304" parent="277" name="idx_70c0c6e6a76ed395">
       <ColNames>user_id</ColNames>
-      <ObjectId>16566</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16411</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="291" parent="272" name="agency_pkey">
+    <key id="305" parent="277" name="agency_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16565</ObjectId>
+      <ObjectId>16410</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16564</UnderlyingIndexId>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16409</UnderlyingIndexId>
     </key>
-    <column id="292" parent="273" name="id">
+    <column id="306" parent="278" name="id">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="293" parent="273" name="four_wheel">
+    <column id="307" parent="278" name="four_wheel">
       <Position>2</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>boolean|0s</StoredType>
       <TypeId>16</TypeId>
     </column>
-    <foreign-key id="294" parent="273" name="fk_773de69dbf396750">
+    <foreign-key id="308" parent="278" name="fk_773de69dbf396750">
       <ColNames>id</ColNames>
-      <ObjectId>16648</ObjectId>
+      <ObjectId>16507</ObjectId>
       <OnDelete>cascade</OnDelete>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16626</RefTableId>
+      <RefTableId>16485</RefTableId>
     </foreign-key>
-    <index id="295" parent="273" name="car_pkey">
+    <index id="309" parent="278" name="car_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16570</ObjectId>
+      <ObjectId>16415</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="296" parent="273" name="car_pkey">
+    <key id="310" parent="278" name="car_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16571</ObjectId>
+      <ObjectId>16416</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16570</UnderlyingIndexId>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16415</UnderlyingIndexId>
     </key>
-    <column id="297" parent="274" name="id">
+    <column id="311" parent="279" name="id">
       <DefaultExpression>nextval(&apos;config_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
-      <SequenceId>16572</SequenceId>
+      <SequenceId>16417</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="298" parent="274" name="client_id">
+    <column id="312" parent="279" name="client_id">
       <Position>2</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="299" parent="274" name="vehicle_id">
+    <column id="313" parent="279" name="vehicle_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <column id="300" parent="274" name="kit_id">
+    <column id="314" parent="279" name="kit_id">
+      <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>761</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <foreign-key id="301" parent="274" name="fk_d48a2f7c19eb6921">
+    <foreign-key id="315" parent="279" name="fk_d48a2f7c19eb6921">
       <ColNames>client_id</ColNames>
-      <ObjectId>16653</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16512</ObjectId>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16616</RefTableId>
+      <RefTableId>16475</RefTableId>
     </foreign-key>
-    <foreign-key id="302" parent="274" name="fk_d48a2f7c545317d1">
+    <foreign-key id="316" parent="279" name="fk_d48a2f7c545317d1">
       <ColNames>vehicle_id</ColNames>
-      <ObjectId>16658</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16517</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16626</RefTableId>
+      <RefTableId>16485</RefTableId>
     </foreign-key>
-    <foreign-key id="303" parent="274" name="fk_d48a2f7c3a8e60ef">
+    <foreign-key id="317" parent="279" name="fk_d48a2f7c3a8e60ef">
       <ColNames>kit_id</ColNames>
-      <ObjectId>16705</ObjectId>
-      <StateNumber>761</StateNumber>
+      <ObjectId>16577</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16697</RefTableId>
+      <RefTableId>16439</RefTableId>
     </foreign-key>
-    <index id="304" parent="274" name="config_pkey">
+    <index id="318" parent="279" name="config_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16577</ObjectId>
+      <ObjectId>16422</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="305" parent="274" name="uniq_d48a2f7c545317d1">
+    <index id="319" parent="279" name="uniq_d48a2f7c545317d1">
       <ColNames>vehicle_id</ColNames>
-      <ObjectId>16710</ObjectId>
-      <StateNumber>761</StateNumber>
+      <ObjectId>16425</ObjectId>
+      <StateNumber>750</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="306" parent="274" name="idx_d48a2f7c19eb6921">
+    <index id="320" parent="279" name="idx_d48a2f7c19eb6921">
       <ColNames>client_id</ColNames>
-      <ObjectId>16579</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16424</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="307" parent="274" name="idx_d48a2f7c3a8e60ef">
+    <index id="321" parent="279" name="idx_d48a2f7c3a8e60ef">
       <ColNames>kit_id</ColNames>
-      <ObjectId>16711</ObjectId>
-      <StateNumber>761</StateNumber>
+      <ObjectId>16426</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="308" parent="274" name="config_pkey">
+    <key id="322" parent="279" name="config_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16578</ObjectId>
+      <ObjectId>16423</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16577</UnderlyingIndexId>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16422</UnderlyingIndexId>
     </key>
-    <column id="309" parent="275" name="version">
+    <column id="323" parent="280" name="version">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>758</StateNumber>
+      <StateNumber>748</StateNumber>
       <StoredType>varchar(191)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="310" parent="275" name="executed_at">
+    <column id="324" parent="280" name="executed_at">
       <DefaultExpression>NULL::timestamp without time zone</DefaultExpression>
       <Position>2</Position>
-      <StateNumber>758</StateNumber>
+      <StateNumber>748</StateNumber>
       <StoredType>timestamp(0)|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <column id="311" parent="275" name="execution_time">
+    <column id="325" parent="280" name="execution_time">
       <Position>3</Position>
-      <StateNumber>758</StateNumber>
+      <StateNumber>748</StateNumber>
       <StoredType>integer|0s</StoredType>
       <TypeId>23</TypeId>
     </column>
-    <index id="312" parent="275" name="doctrine_migration_versions_pkey">
+    <index id="326" parent="280" name="doctrine_migration_versions_pkey">
       <ColNames>version</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16555</ObjectId>
+      <ObjectId>16393</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>758</StateNumber>
+      <StateNumber>748</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="313" parent="275" name="doctrine_migration_versions_pkey">
+    <key id="327" parent="280" name="doctrine_migration_versions_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16556</ObjectId>
+      <ObjectId>16394</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>758</StateNumber>
-      <UnderlyingIndexId>16555</UnderlyingIndexId>
+      <StateNumber>748</StateNumber>
+      <UnderlyingIndexId>16393</UnderlyingIndexId>
     </key>
-    <column id="314" parent="276" name="id">
-      <DefaultExpression>nextval(&apos;kit_id_seq&apos;::regclass)</DefaultExpression>
+    <column id="328" parent="281" name="id">
+      <DefaultExpression>nextval(&apos;feedback_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>761</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
-      <SequenceId>16696</SequenceId>
+      <SequenceId>16427</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="315" parent="276" name="name">
+    <column id="329" parent="281" name="location_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>761</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="316" parent="276" name="accessory">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>761</StateNumber>
-      <StoredType>json|0s</StoredType>
-      <TypeId>114</TypeId>
-    </column>
-    <index id="317" parent="276" name="kit_pkey">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16703</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>761</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="318" parent="276" name="kit_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16704</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>761</StateNumber>
-      <UnderlyingIndexId>16703</UnderlyingIndexId>
-    </key>
-    <column id="319" parent="277" name="id">
-      <DefaultExpression>nextval(&apos;location_id_seq&apos;::regclass)</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>integer|0s</StoredType>
-      <SequenceId>16595</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="320" parent="277" name="start_date">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="321" parent="277" name="end_date">
-      <NotNull>1</NotNull>
+    <column id="330" parent="281" name="client_id">
       <Position>3</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
     </column>
-    <column id="322" parent="277" name="created_at">
-      <Comment>(DC2Type:datetime_immutable)</Comment>
+    <column id="331" parent="281" name="rating">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
     </column>
-    <column id="323" parent="277" name="updated_at">
-      <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DefaultExpression>NULL::timestamp without time zone</DefaultExpression>
+    <column id="332" parent="281" name="comment">
       <Position>5</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="324" parent="277" name="user_id">
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StateNumber>767</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <foreign-key id="325" parent="277" name="fk_5e9e89cba76ed395">
-      <ColNames>user_id</ColNames>
-      <ObjectId>16712</ObjectId>
-      <StateNumber>767</StateNumber>
-      <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16616</RefTableId>
-    </foreign-key>
-    <index id="326" parent="277" name="location_pkey">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16601</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="327" parent="277" name="idx_5e9e89cba76ed395">
-      <ColNames>user_id</ColNames>
-      <ObjectId>16717</ObjectId>
-      <StateNumber>767</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="328" parent="277" name="location_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16602</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16601</UnderlyingIndexId>
-    </key>
-    <column id="329" parent="278" name="id">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <foreign-key id="330" parent="278" name="fk_21e380e1bf396750">
-      <ColNames>id</ColNames>
-      <ObjectId>16673</ObjectId>
-      <OnDelete>cascade</OnDelete>
-      <StateNumber>759</StateNumber>
-      <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16626</RefTableId>
-    </foreign-key>
-    <index id="331" parent="278" name="motorcycle_pkey">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16606</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="332" parent="278" name="motorcycle_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16607</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16606</UnderlyingIndexId>
-    </key>
-    <column id="333" parent="279" name="id">
-      <DefaultExpression>nextval(&apos;supplier_id_seq&apos;::regclass)</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <SequenceId>16608</SequenceId>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="334" parent="279" name="label">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="335" parent="279" name="created_at">
-      <Comment>(DC2Type:datetime_immutable)</Comment>
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="336" parent="279" name="updated_at">
-      <Comment>(DC2Type:datetime_immutable)</Comment>
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <index id="337" parent="279" name="supplier_pkey">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16613</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="338" parent="279" name="supplier_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16614</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16613</UnderlyingIndexId>
-    </key>
-    <column id="339" parent="280" name="id">
-      <DefaultExpression>nextval(&apos;user_id_seq&apos;::regclass)</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <SequenceId>16615</SequenceId>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="340" parent="280" name="name">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="341" parent="280" name="email">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="342" parent="280" name="email_verified_at">
-      <Comment>(DC2Type:datetime_immutable)</Comment>
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="343" parent="280" name="password">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="344" parent="280" name="remember_token">
-      <DefaultExpression>NULL::character varying</DefaultExpression>
-      <Position>6</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="345" parent="280" name="created_at">
-      <Comment>(DC2Type:datetime_immutable)</Comment>
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>timestamp(0)|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="346" parent="280" name="roles">
-      <NotNull>1</NotNull>
-      <Position>8</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>json|0s</StoredType>
-      <TypeId>114</TypeId>
-    </column>
-    <index id="347" parent="280" name="user_pkey">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16623</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="348" parent="280" name="user_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16624</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16623</UnderlyingIndexId>
-    </key>
-    <column id="349" parent="281" name="id">
-      <DefaultExpression>nextval(&apos;vehicle_id_seq&apos;::regclass)</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <SequenceId>16625</SequenceId>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="350" parent="281" name="location_id">
-      <Position>2</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="351" parent="281" name="agency_id">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="352" parent="281" name="supplier_id">
-      <Position>4</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="353" parent="281" name="model">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="354" parent="281" name="marque">
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="355" parent="281" name="last_maintenance">
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>date|0s</StoredType>
-      <TypeId>1082</TypeId>
-    </column>
-    <column id="356" parent="281" name="nb_kilometrage">
-      <NotNull>1</NotNull>
-      <Position>8</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="357" parent="281" name="nb_serie">
-      <NotNull>1</NotNull>
-      <Position>9</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="358" parent="281" name="price_per_day">
-      <NotNull>1</NotNull>
-      <Position>10</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>numeric(10,2 digit)|0s</StoredType>
-      <TypeId>1700</TypeId>
-    </column>
-    <column id="359" parent="281" name="vehicle_fuel_type">
-      <DefaultExpression>NULL::character varying</DefaultExpression>
-      <Position>11</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="360" parent="281" name="trunk">
-      <Position>12</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="361" parent="281" name="dimension">
-      <Position>13</Position>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <StoredType>text|0s</StoredType>
       <TypeId>25</TypeId>
     </column>
-    <column id="362" parent="281" name="nbr_place">
-      <Position>14</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="363" parent="281" name="nbr_door">
-      <Position>15</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="364" parent="281" name="consumption_max">
-      <DefaultExpression>NULL::numeric</DefaultExpression>
-      <Position>16</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>numeric(5,2 digit)|0s</StoredType>
-      <TypeId>1700</TypeId>
-    </column>
-    <column id="365" parent="281" name="critair">
-      <Position>17</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="366" parent="281" name="hp">
-      <Position>18</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="367" parent="281" name="color">
-      <DefaultExpression>NULL::character varying</DefaultExpression>
-      <Position>19</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="368" parent="281" name="equipment">
-      <Position>20</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>json|0s</StoredType>
-      <TypeId>114</TypeId>
-    </column>
-    <column id="369" parent="281" name="gear_box_type">
-      <DefaultExpression>NULL::character varying</DefaultExpression>
-      <Position>21</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="370" parent="281" name="year">
-      <DefaultExpression>NULL::character varying</DefaultExpression>
-      <Position>22</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="371" parent="281" name="vehicle_type">
-      <DefaultExpression>NULL::character varying</DefaultExpression>
-      <Position>23</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="372" parent="281" name="discr">
+    <column id="333" parent="281" name="created_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
       <NotNull>1</NotNull>
-      <Position>24</Position>
-      <StateNumber>759</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
+      <Position>6</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
     </column>
-    <foreign-key id="373" parent="281" name="fk_1b80e48664d218e">
+    <foreign-key id="334" parent="281" name="fk_d229445864d218e">
       <ColNames>location_id</ColNames>
-      <ObjectId>16678</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16527</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16596</RefTableId>
+      <RefTableId>16453</RefTableId>
     </foreign-key>
-    <foreign-key id="374" parent="281" name="fk_1b80e486cdeadb2a">
-      <ColNames>agency_id</ColNames>
-      <ObjectId>16683</ObjectId>
-      <StateNumber>759</StateNumber>
+    <foreign-key id="335" parent="281" name="fk_d229445819eb6921">
+      <ColNames>client_id</ColNames>
+      <ObjectId>16532</ObjectId>
+      <StateNumber>750</StateNumber>
       <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16558</RefTableId>
+      <RefTableId>16475</RefTableId>
     </foreign-key>
-    <foreign-key id="375" parent="281" name="fk_1b80e4862add6d8c">
-      <ColNames>supplier_id</ColNames>
-      <ObjectId>16688</ObjectId>
-      <StateNumber>759</StateNumber>
-      <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16609</RefTableId>
-    </foreign-key>
-    <index id="376" parent="281" name="vehicle_pkey">
+    <index id="336" parent="281" name="feedback_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16638</ObjectId>
+      <ObjectId>16434</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
+      <StateNumber>750</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="377" parent="281" name="idx_1b80e48664d218e">
+    <index id="337" parent="281" name="idx_d229445864d218e">
       <ColNames>location_id</ColNames>
-      <ObjectId>16640</ObjectId>
-      <StateNumber>759</StateNumber>
+      <ObjectId>16436</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="378" parent="281" name="idx_1b80e486cdeadb2a">
-      <ColNames>agency_id</ColNames>
-      <ObjectId>16641</ObjectId>
-      <StateNumber>759</StateNumber>
+    <index id="338" parent="281" name="idx_d229445819eb6921">
+      <ColNames>client_id</ColNames>
+      <ObjectId>16437</ObjectId>
+      <StateNumber>750</StateNumber>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="379" parent="281" name="idx_1b80e4862add6d8c">
-      <ColNames>supplier_id</ColNames>
-      <ObjectId>16642</ObjectId>
-      <StateNumber>759</StateNumber>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="380" parent="281" name="vehicle_pkey">
+    <key id="339" parent="281" name="feedback_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16639</ObjectId>
+      <ObjectId>16435</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>759</StateNumber>
-      <UnderlyingIndexId>16638</UnderlyingIndexId>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16434</UnderlyingIndexId>
+    </key>
+    <column id="340" parent="282" name="id">
+      <DefaultExpression>nextval(&apos;kit_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16438</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="341" parent="282" name="name">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="342" parent="282" name="kit_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16443</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="343" parent="282" name="kit_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16444</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16443</UnderlyingIndexId>
+    </key>
+    <column id="344" parent="283" name="kit_id">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="345" parent="283" name="accessory_id">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="346" parent="283" name="fk_12e9b8e03a8e60ef">
+      <ColNames>kit_id</ColNames>
+      <ObjectId>16537</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16439</RefTableId>
+    </foreign-key>
+    <foreign-key id="347" parent="283" name="fk_12e9b8e027e8cc78">
+      <ColNames>accessory_id</ColNames>
+      <ObjectId>16542</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16396</RefTableId>
+    </foreign-key>
+    <index id="348" parent="283" name="kit_accessory_pkey">
+      <ColNames>kit_id
+accessory_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16448</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="349" parent="283" name="idx_12e9b8e03a8e60ef">
+      <ColNames>kit_id</ColNames>
+      <ObjectId>16450</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="350" parent="283" name="idx_12e9b8e027e8cc78">
+      <ColNames>accessory_id</ColNames>
+      <ObjectId>16451</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="351" parent="283" name="kit_accessory_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16449</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16448</UnderlyingIndexId>
+    </key>
+    <column id="352" parent="284" name="id">
+      <DefaultExpression>nextval(&apos;location_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16452</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="353" parent="284" name="user_id">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="354" parent="284" name="config_id">
+      <Position>3</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="355" parent="284" name="start_date">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="356" parent="284" name="end_date">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="357" parent="284" name="created_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="358" parent="284" name="updated_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <DefaultExpression>NULL::timestamp without time zone</DefaultExpression>
+      <Position>7</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="359" parent="284" name="vip">
+      <Position>8</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>boolean|0s</StoredType>
+      <TypeId>16</TypeId>
+    </column>
+    <foreign-key id="360" parent="284" name="fk_5e9e89cba76ed395">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16547</ObjectId>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16475</RefTableId>
+    </foreign-key>
+    <foreign-key id="361" parent="284" name="fk_5e9e89cb24db0683">
+      <ColNames>config_id</ColNames>
+      <ObjectId>16552</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16418</RefTableId>
+    </foreign-key>
+    <index id="362" parent="284" name="location_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16458</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="363" parent="284" name="idx_5e9e89cba76ed395">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16460</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="364" parent="284" name="idx_5e9e89cb24db0683">
+      <ColNames>config_id</ColNames>
+      <ObjectId>16461</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="365" parent="284" name="location_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16459</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16458</UnderlyingIndexId>
+    </key>
+    <column id="366" parent="285" name="location_id">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="367" parent="285" name="vehicle_id">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="368" parent="285" name="fk_f5c5f72264d218e">
+      <ColNames>location_id</ColNames>
+      <ObjectId>16604</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>751</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16453</RefTableId>
+    </foreign-key>
+    <foreign-key id="369" parent="285" name="fk_f5c5f722545317d1">
+      <ColNames>vehicle_id</ColNames>
+      <ObjectId>16609</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>751</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16485</RefTableId>
+    </foreign-key>
+    <index id="370" parent="285" name="location_vehicle_pkey">
+      <ColNames>location_id
+vehicle_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16585</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>751</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="371" parent="285" name="idx_f5c5f72264d218e">
+      <ColNames>location_id</ColNames>
+      <ObjectId>16587</ObjectId>
+      <StateNumber>751</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="372" parent="285" name="idx_f5c5f722545317d1">
+      <ColNames>vehicle_id</ColNames>
+      <ObjectId>16588</ObjectId>
+      <StateNumber>751</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="373" parent="285" name="location_vehicle_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16586</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>751</StateNumber>
+      <UnderlyingIndexId>16585</UnderlyingIndexId>
+    </key>
+    <column id="374" parent="286" name="id">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <foreign-key id="375" parent="286" name="fk_21e380e1bf396750">
+      <ColNames>id</ColNames>
+      <ObjectId>16557</ObjectId>
+      <OnDelete>cascade</OnDelete>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16485</RefTableId>
+    </foreign-key>
+    <index id="376" parent="286" name="motorcycle_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16465</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="377" parent="286" name="motorcycle_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16466</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16465</UnderlyingIndexId>
+    </key>
+    <column id="378" parent="287" name="id">
+      <DefaultExpression>nextval(&apos;reset_password_request_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16589</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="379" parent="287" name="user_id">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="380" parent="287" name="selector">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>varchar(20)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="381" parent="287" name="hashed_token">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>varchar(100)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="382" parent="287" name="requested_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="383" parent="287" name="expires_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <foreign-key id="384" parent="287" name="fk_7ce748aa76ed395">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16614</ObjectId>
+      <StateNumber>751</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16475</RefTableId>
+    </foreign-key>
+    <index id="385" parent="287" name="reset_password_request_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16594</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>751</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="386" parent="287" name="idx_7ce748aa76ed395">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16596</ObjectId>
+      <StateNumber>751</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="387" parent="287" name="reset_password_request_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16595</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>751</StateNumber>
+      <UnderlyingIndexId>16594</UnderlyingIndexId>
+    </key>
+    <column id="388" parent="288" name="id">
+      <DefaultExpression>nextval(&apos;status_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16597</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="389" parent="288" name="name">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="390" parent="288" name="status_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16602</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>751</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="391" parent="288" name="status_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16603</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>751</StateNumber>
+      <UnderlyingIndexId>16602</UnderlyingIndexId>
+    </key>
+    <column id="392" parent="289" name="id">
+      <DefaultExpression>nextval(&apos;supplier_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16467</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="393" parent="289" name="label">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="394" parent="289" name="created_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="395" parent="289" name="updated_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <index id="396" parent="289" name="supplier_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16472</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="397" parent="289" name="supplier_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16473</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16472</UnderlyingIndexId>
+    </key>
+    <column id="398" parent="290" name="id">
+      <DefaultExpression>nextval(&apos;user_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16474</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="399" parent="290" name="name">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="400" parent="290" name="email">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="401" parent="290" name="email_verified_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="402" parent="290" name="password">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="403" parent="290" name="remember_token">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <Position>6</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="404" parent="290" name="created_at">
+      <Comment>(DC2Type:datetime_immutable)</Comment>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>timestamp(0)|0s</StoredType>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="405" parent="290" name="roles">
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>json|0s</StoredType>
+      <TypeId>114</TypeId>
+    </column>
+    <index id="406" parent="290" name="user_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16482</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="407" parent="290" name="user_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16483</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16482</UnderlyingIndexId>
+    </key>
+    <column id="408" parent="291" name="id">
+      <DefaultExpression>nextval(&apos;vehicle_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>16484</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="409" parent="291" name="status_id">
+      <Position>2</Position>
+      <StateNumber>751</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="410" parent="291" name="agency_id">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="411" parent="291" name="supplier_id">
+      <Position>4</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="412" parent="291" name="model">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="413" parent="291" name="marque">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="414" parent="291" name="last_maintenance">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>date|0s</StoredType>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="415" parent="291" name="nb_kilometrage">
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="416" parent="291" name="nb_serie">
+      <NotNull>1</NotNull>
+      <Position>9</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="417" parent="291" name="price_per_day">
+      <NotNull>1</NotNull>
+      <Position>10</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>numeric(10,2 digit)|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="418" parent="291" name="vehicle_fuel_type">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <Position>11</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="419" parent="291" name="trunk">
+      <Position>12</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="420" parent="291" name="dimension">
+      <Position>13</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>text|0s</StoredType>
+      <TypeId>25</TypeId>
+    </column>
+    <column id="421" parent="291" name="nbr_place">
+      <Position>14</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="422" parent="291" name="nbr_door">
+      <Position>15</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="423" parent="291" name="consumption_max">
+      <DefaultExpression>NULL::numeric</DefaultExpression>
+      <Position>16</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>numeric(5,2 digit)|0s</StoredType>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="424" parent="291" name="critair">
+      <Position>17</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="425" parent="291" name="hp">
+      <Position>18</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="426" parent="291" name="color">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <Position>19</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="427" parent="291" name="equipment">
+      <Position>20</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>json|0s</StoredType>
+      <TypeId>114</TypeId>
+    </column>
+    <column id="428" parent="291" name="gear_box_type">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <Position>21</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="429" parent="291" name="year">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <Position>22</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="430" parent="291" name="vehicle_type">
+      <DefaultExpression>NULL::character varying</DefaultExpression>
+      <Position>23</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="431" parent="291" name="discr">
+      <NotNull>1</NotNull>
+      <Position>24</Position>
+      <StateNumber>750</StateNumber>
+      <StoredType>varchar(255)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <foreign-key id="432" parent="291" name="fk_1b80e4866bf700bd">
+      <ColNames>status_id</ColNames>
+      <ObjectId>16619</ObjectId>
+      <StateNumber>751</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16598</RefTableId>
+    </foreign-key>
+    <foreign-key id="433" parent="291" name="fk_1b80e486cdeadb2a">
+      <ColNames>agency_id</ColNames>
+      <ObjectId>16567</ObjectId>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16403</RefTableId>
+    </foreign-key>
+    <foreign-key id="434" parent="291" name="fk_1b80e4862add6d8c">
+      <ColNames>supplier_id</ColNames>
+      <ObjectId>16572</ObjectId>
+      <StateNumber>750</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16468</RefTableId>
+    </foreign-key>
+    <index id="435" parent="291" name="vehicle_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16497</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="436" parent="291" name="idx_1b80e4866bf700bd">
+      <ColNames>status_id</ColNames>
+      <ObjectId>16624</ObjectId>
+      <StateNumber>751</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="437" parent="291" name="idx_1b80e486cdeadb2a">
+      <ColNames>agency_id</ColNames>
+      <ObjectId>16500</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="438" parent="291" name="idx_1b80e4862add6d8c">
+      <ColNames>supplier_id</ColNames>
+      <ObjectId>16501</ObjectId>
+      <StateNumber>750</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="439" parent="291" name="vehicle_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16498</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>750</StateNumber>
+      <UnderlyingIndexId>16497</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>
