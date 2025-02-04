@@ -21,9 +21,9 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        
+
                     {% endif %}
-                    
+
                     <input type="hidden" name="start_date" id="start_date" value="{{ start_date }}">
                     <input type="hidden" name="end_date" id="end_date" value="{{ end_date }}">
 
@@ -60,7 +60,7 @@
                                             {% for location in vehicle.locations %}
                                                 du {{location.startDate|date('d/m/Y') }} au {{location.endDate|date('d/m/Y') }}
                                             {% endfor %}
-                                            
+
                                         {% endif %}
                                     </div>
                                 {% endif %}
@@ -94,7 +94,7 @@
             </div>
         {% endif %}
     {% else %}
-        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded-md">
+        <div class="bg-gray-300 border-l-4 border-red-500  p-4 mb-6 rounded-md">
             <p class="font-bold">Attention</p>
             <p>Vous devez être connecté pour passer une commande.</p>
             <div class="mt-4">
