@@ -1,150 +1,179 @@
-<header class="w-full px-3 py-4 bg-white border-b sticky top-0 left-0 z-20">
-    <nav class="max-w-8xl m-auto flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <a href="/">
-                <p class="font-sans text-2xl font-semibold sm:text-3xl">Flexi<span class="text-red-600">Fleet</span></p>
-            </a>
+<header class="w-full bg-white border-b shadow-md sticky top-0 left-0 z-50">
+	<nav
+		class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+		<a href="/" class="text-2xl sm:text-3xl font-bold text-gray-900">
+			Flexi<span class="text-red-600">Fleet</span>
+		</a>
 
-            <ul class="hidden xl:flex xl:items-center xl:gap-8 text-gray-500">
-                <li class="{{ app.current_route == 'dashboard' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                    <a href="{{ path('dashboard') }}">Accueil</a>
-                </li>
+		<ul class="hidden xl:flex items-center gap-6 text-gray-600 font-medium">
+			<li class="hover:text-red-600 transition">
+				<a href="{{ path('dashboard') }}">Accueil</a>
+			</li>
+			<li class="hover:text-red-600 transition">
+				<a href="{{ path('vehicle_index') }}">Véhicules</a>
+			</li>
+            <li class="hover:text-red-600 transition">
+				<a href="{{ path('app_my_locations') }}">Mes commandes</a>
+			</li>
+			<li class="hover:text-red-600 transition">
+				<a href="{{ path('app_weather') }}">Météo</a>
+			</li>
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="{{ app.current_route == 'admin' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('admin') }}">Admin</a>
-                    </li>
-                {% endif %}
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AGENCY_HEAD') or is_granted('ROLE_SUPPLIER_MANAGER') or is_granted('ROLE_ORDER_MANAGER') %}
+				<li class="relative group">
+					<button class="hover:text-red-600 transition focus:outline-none">Gestion ▾</button>
+					<ul class="absolute left-0 hidden group-hover:flex flex-col bg-white shadow-md rounded-md py-2 top-6 w-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+						{% if is_granted('ROLE_ADMIN') %}
+							<li>
+								<a href="{{ path('admin') }}" class="block px-4 py-2 hover:bg-gray-100">Admin</a>
+							</li>
+						{% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+							<li>
+								<a href="{{ path('admin_user_index') }}" class="block px-4 py-2 hover:bg-gray-100">Utilisateurs</a>
+							</li>
+						{% endif %}
+						{% if is_granted('ROLE_AGENCY_HEAD') %}
+							<li>
+								<a href="{{ path('agency_index') }}" class="block px-4 py-2 hover:bg-gray-100">Agences</a>
+							</li>
+						{% endif %}
+						{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
+							<li>
+								<a href="{{ path('supplier_index') }}" class="block px-4 py-2 hover:bg-gray-100">Fournisseurs</a>
+							</li>
+						{% endif %}
+						{% if is_granted('ROLE_ORDER_MANAGER') or is_granted('ROLE_AGENCY_HEAD') %}
+							<li>
+								<a href="{{ path('app_location_index') }}" class="block px-4 py-2 hover:bg-gray-100">Commandes</a>
+							</li>
+						{% endif %}
+					</ul>
+				</li>
+			{% endif %}
 
-                {% if is_granted('ROLE_AGENCY_HEAD') %}
-                    <li class="{{ app.current_route == 'agency_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('agency_index') }}">Agence</a>
-                    </li>
-                {% endif %}
+			{% if is_granted('ROLE_VIP') or is_granted('ROLE_DARK_ADMIN') %}
+				<li class="relative group">
+					<button class="hover:text-red-600 transition focus:outline-none">VIP ▾</button>
+					<ul class="absolute left-0 hidden group-hover:flex flex-col bg-white shadow-md rounded-md py-2 top-6 w-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+						{% if is_granted('ROLE_VIP') %}
+							<li>
+								<a href="{{ path('config_index') }}" class="block px-4 py-2 hover:bg-gray-100">VIP</a>
+							</li>
+						{% endif %}
+						{% if is_granted('ROLE_DARK_ADMIN') %}
+							<li>
+								<a href="{{ path('app_accessory_index') }}" class="block px-4 py-2 hover:bg-gray-100">Accessoires</a>
+							</li>
+							<li>
+								<a href="{{ path('app_kit_index') }}" class="block px-4 py-2 hover:bg-gray-100">Kits</a>
+							</li>
+						{% endif %}
+					</ul>
+				</li>
+			{% endif %}
 
-                <li class="{{ app.current_route == 'vehicle_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                    <a href="{{ path('vehicle_index') }}">Véhicule</a>
-                </li>
+		</ul>
 
-                {% if is_granted('ROLE_SUPPLIER_MANAGER') %}
-                    <li class="{{ app.current_route == 'supplier_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('supplier_index') }}">Fournisseur</a>
-                    </li>
-                {% endif %}
+		<div class="hidden xl:flex items-center gap-3">
+			{% if app.user %}
+				<a href="{{ path('profile') }}" class="px-2 py-1 border-2 border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition">Mon profil</a>
+				<a href="{{ path('app_logout') }}" class="px-2 py-1 border-2 border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition">Déconnexion</a>
+			{% else %}
+				<a href="{{ path('app_register') }}" class="px-2 py-1 bg-red-600 text-white rounded font-medium hover:bg-red-700 transition">Inscription</a>
+				<a href="{{ path('app_login') }}" class="px-2 py-1 border-2 border-red-600 rounded font-medium hover:bg-red-600 hover:text-white transition">Connexion</a>
+			{% endif %}
+		</div>
 
-                {% if is_granted('ROLE_ORDER_MANAGER') or is_granted('ROLE_AGENCY_HEAD') %}
-                    <li class="{{ app.current_route == 'app_location_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('app_location_index') }}">Commandes</a>
-                    </li>
-                {% endif %}
+		<button id="menu-toggle" class="xl:hidden flex items-center justify-center w-10 h-10 rounded-md bg-gray-100 hover:bg-gray-200 transition">
+			<svg class="w-6 h-6 text-gray-900" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+				<path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+			</svg>
+		</button>
+	</nav>
 
-                {% if is_granted('ROLE_USER') %}
-                    <li class="{{ app.request.attributes.get('_route') == 'app_my_locations' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('app_my_locations') }}">Mes commandes</a>
-                    </li>
-                {% endif %}
+	<div id="mobile-menu" class="fixed top-0 left-0 w-full h-full bg-white shadow-lg z-40 transform translate-x-full transition-transform">
+		<div class="p-6 space-y-5">
+			<button id="close-menu" class="self-end text-gray-800 hover:text-red-600">
+				<svg class="w-8 h-8" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+			</button>
 
-                {% if is_granted('ROLE_VIP') %}
-                    <li class="{{ app.request.attributes.get('_route') == 'config_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('config_index') }}">VIP</a>
-                    </li>
-                {% endif %}
+			<ul class="text-lg text-gray-600 space-y-4">
+				<li>
+					<a href="{{ path('dashboard') }}" class="hover:text-red-600 transition">Accueil</a>
+				</li>
+				<li>
+					<a href="{{ path('vehicle_index') }}" class="hover:text-red-600 transition">Véhicules</a>
+				</li>
+				<li>
+					<a href="{{ path('app_weather') }}" class="hover:text-red-600 transition">Météo</a>
+				</li>
 
-                {% if is_granted('ROLE_DARK_ADMIN') %}
-                    <li class="{{ app.request.attributes.get('_route') == 'app_accessory_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('app_accessory_index') }}">Accessoires</a>
-                    </li>
-                {% endif %}
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AGENCY_HEAD') or is_granted('ROLE_SUPPLIER_MANAGER') or is_granted('ROLE_ORDER_MANAGER') %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<li>
+							<a href="{{ path('admin') }}" class="hover:text-red-600 transition">Admin</a>
+						</li>
+					{% endif %}
+					{% if is_granted('ROLE_AGENCY_HEAD') %}
+						<li>
+							<a href="{{ path('agency_index') }}" class="hover:text-red-600 transition">Agences</a>
+						</li>
+					{% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+							<li>
+								<a href="{{ path('admin_user_index') }}" class="block px-4 py-2 hover:bg-gray-100">Utilisateurs</a>
+							</li>
+						{% endif %}
+					{% if is_granted('ROLE_SUPPLIER_MANAGER') %}
+						<li>
+							<a href="{{ path('supplier_index') }}" class="hover:text-red-600 transition">Fournisseurs</a>
+						</li>
+					{% endif %}
+					{% if is_granted('ROLE_ORDER_MANAGER') or is_granted('ROLE_AGENCY_HEAD') %}
+						<li>
+							<a href="{{ path('app_location_index') }}" class="hover:text-red-600 transition">Commandes</a>
+						</li>
+					{% endif %}
+				{% endif %}
 
-                {% if is_granted('ROLE_DARK_ADMIN') %}
-                    <li class="{{ app.request.attributes.get('_route') == 'app_kit_index' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                        <a href="{{ path('app_kit_index') }}">Kit</a>
-                    </li>
-                {% endif %}
+				{% if is_granted('ROLE_VIP') or is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('config_index') }}" class="hover:text-red-600 transition">VIP</a>
+					</li>
+				{% endif %}
+				{% if is_granted('ROLE_DARK_ADMIN') %}
+					<li>
+						<a href="{{ path('app_accessory_index') }}" class="hover:text-red-600 transition">Accessoires</a>
+					</li>
+					<li>
+						<a href="{{ path('app_kit_index') }}" class="hover:text-red-600 transition">Kits</a>
+					</li>
+				{% endif %}
+			</ul>
 
-                <li class="{{ app.current_route == 'app_weather' ? 'font-medium text-gray-800' : 'hover:text-gray-800 hover:font-medium' }}">
-                    <a href="{{ path('app_weather') }}">Météo</a>
-                </li>
-            </ul>
-        </div>
-
-        <div id="burger-menu" class="xl:hidden w-7 h-4">
-            <div class="stripes w-full h-full relative">
-                <span class="h-[3px] inline-block w-full bg-red-600 rounded absolute top-0 transition-all"></span>
-                <span class="h-[3px] inline-block w-full bg-red-600 rounded absolute top-1/2 transition-all"></span>
-                <span class="h-[3px] inline-block w-full bg-red-600 rounded absolute top-full transition-all"></span>
-            </div>
-        </div>
-
-        <ul class="hidden xl:flex xl:gap-3">
-            {% if app.user is defined and app.user is not null %}
-                <li class="px-2 py-1 border-2 border-blue-600 rounded font-medium">
-                    <a href="{{ path('profile') }}">Mon profil</a>
-                </li>
-                <li class="px-2 py-1 border-2 border-red-600 rounded font-medium">
-                    <a href="{{ path('app_logout') }}">Déconnexion</a>
-                </li>
-            {% else %}
-                <li class="px-2 py-1 bg-red-600 rounded text-white font-medium">
-                    <a href="{{ path('app_register') }}">Inscription</a>
-                </li>
-                <li class="px-2 py-1 border-2 border-red-600 rounded font-medium">
-                    <a href="{{ path('app_login') }}">Connexion</a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-
-    <div id="mobile-log-links" class="w-44 hidden xl:hidden absolute right-3 top-14 border rounded px-3 py-1 bg-white">
-        <ul class="flex flex-col">
-            <div class="flex flex-col gap-2 py-2 border-b">
-                <li><a href="{{ path('dashboard') }}">Accueil</a></li>
-
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('admin') }}">Admin</a></li>
-                {% endif %}
-
-                {% if is_granted('ROLE_AGENCY_HEAD') %}
-                    <li><a href="{{ path('agency_index') }}">Agence</a></li>
-                {% endif %}
-
-                <li><a href="{{ path('vehicle_index') }}">Véhicule</a></li>
-
-                {% if is_granted('ROLE_SUPPLIER_MANAGER') %}
-                    <li><a href="{{ path('supplier_index') }}">Fournisseur</a></li>
-                {% endif %}
-
-                {% if is_granted('ROLE_ORDER_MANAGER') or is_granted('ROLE_AGENCY_HEAD') %}
-                    <li><a href="{{ path('app_location_index') }}">Commandes</a></li>
-                {% endif %}
-
-                {% if is_granted('ROLE_USER') %}
-                    <li><a href="{{ path('app_my_locations') }}">Mes commandes</a></li>
-                {% endif %}
-
-                {% if is_granted('ROLE_VIP') %}
-                    <li><a href="{{ path('config_index') }}">VIP</a></li>
-                {% endif %}
-
-                {% if is_granted('ROLE_DARK_ADMIN') %}
-                    <li><a href="{{ path('app_accessory_index') }}">Accessoires</a></li>
-                {% endif %}
-
-                {% if is_granted('ROLE_DARK_ADMIN') %}
-                    <li><a href="{{ path('app_kit_index') }}">Kit</a></li>
-                {% endif %}
-
-                <li><a href="{{ path('app_weather') }}">Météo</a></li>
-            </div>
-
-            <div class="flex flex-col gap-2 py-2">
-                {% if app.user is defined and app.user is not null %}
-                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
-                {% else %}
-                    <li><a href="{{ path('app_register') }}">Inscription</a></li>
-                    <li><a href="{{ path('app_login') }}">Connexion</a></li>
-                {% endif %}
-            </div>
-        </ul>
-    </div>
+			<div class="mt-4 space-y-3">
+				{% if app.user %}
+					<a href="{{ path('profile') }}" class="block text-center py-2 border-2 border-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition">Profil</a>
+					<a href="{{ path('app_logout') }}" class="block text-center py-2 border-2 border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">Déconnexion</a>
+				{% else %}
+					<a href="{{ path('app_register') }}" class="block text-center py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">Inscription</a>
+					<a href="{{ path('app_login') }}" class="block text-center py-2 border-2 border-red-600 rounded-md hover:bg-red-600 hover:text-white transition">Connexion</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 </header>
+
+<script>
+	document.getElementById("menu-toggle").addEventListener("click", () => {
+document.getElementById("mobile-menu").classList.remove("translate-x-full");
+});
+
+document.getElementById("close-menu").addEventListener("click", () => {
+document.getElementById("mobile-menu").classList.add("translate-x-full");
+});
+</script>
+

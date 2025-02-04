@@ -10,6 +10,12 @@
             <p class="text-gray-600 mt-2">Créez un compte pour accéder à nos services.</p>
         </div>
 
+            {% for message in app.flashes('error') %}
+                <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
         {{ form_start(registrationForm, {'attr': {'class': 'flex flex-col gap-4'}}) }}
             {{ form_errors(registrationForm) }}
 
