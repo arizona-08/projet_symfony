@@ -1,0 +1,23 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Erreur {{ status_code }}{% endblock %}
+
+{% block main %}
+<section class="max-w-8xl mx-auto px-3 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-5xl font-bold text-red-600">Erreur {{ status_code }}</h1>
+        <p class="text-xl text-gray-700 mt-3">{{ status_text }}</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 mx-auto max-w-2xl">
+        <p class="text-gray-800 text-lg mb-6">
+            {{ message }}
+        </p>
+        <div class="flex justify-center">
+            <a href="{{ path('dashboard') }}" class="px-6 py-3 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition duration-200">
+                Retourner à l'accueil
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
