@@ -1,6 +1,7 @@
 /.idea
 ###> symfony/framework-bundle ###
 /.env.local
+/.env.recette
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -23,7 +24,7 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-
+.env.recette
 .env
 /node_modules
 .env.prod
