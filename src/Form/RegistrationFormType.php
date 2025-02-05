@@ -21,7 +21,7 @@ class RegistrationFormType extends AbstractType
             ->add('name')
             ->add('email', EmailType::class, [
 
-                'mapped' => false,
+                'mapped' => true,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([

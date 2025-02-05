@@ -34,6 +34,7 @@ class RegistrationController extends AbstractController
             $name = $form->get('name')->getData();
             $user->setName($name);
             $user->setRoles(['ROLE_USER']);
+            $user->setEmail($email);
             $user->setEmailVerifiedAt(now());
             $user->setCreatedAt(now());
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
