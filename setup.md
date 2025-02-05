@@ -11,6 +11,10 @@
 
 - `` WEATHER_API_KEY= on te donnera la clef dans le livrable `` 
 
+## Pour la recette
+
+- ``APP_DEBUG=0`` pour désactiver le mode debug en recette
+
 ## Recette
 Pour passer en recette il faut changer la valeur de APP_ENV dans le fichier .env puis :
 - ``docker compose down `` 
