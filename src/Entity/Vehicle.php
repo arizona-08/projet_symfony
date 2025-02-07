@@ -392,7 +392,6 @@ class Vehicle
 
     public function setConfig(Config $config): static
     {
-        // set the owning side of the relation if necessary
         if ($config->getVehicle() !== $this) {
             $config->setVehicle($this);
         }

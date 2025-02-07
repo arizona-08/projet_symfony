@@ -7,10 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class VehicleControllerTest extends WebTestCase
 {
-    // test la création d'un véhicule
     public function testCreateVehicle(): void
     {
-        //Log in as an admin
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testAdminUser = $userRepository->findOneByEmail('admin@example.com');
@@ -33,8 +31,7 @@ class VehicleControllerTest extends WebTestCase
         ]);
         $client->submit($form);
         
-        $crawler = $client->request('GET', '/vehicles?brand=TestMarque&sort_km=&agency='); // On vérifie que le véhicule a bien été créé
+        $crawler = $client->request('GET', '/vehicles?brand=TestMarque&sort_km=&agency=');
         $this->assertAnySelectorTextSame('.vehicle-item-title', 'TestMarque - TestModel');
-        // $this->assertSelectorTextContains('.vehicle-list', 'TestMarque TestModel');
     }
 }

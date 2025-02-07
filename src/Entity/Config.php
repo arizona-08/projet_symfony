@@ -100,7 +100,6 @@ class Config
     public function removeLocation(Location $location): static
     {
         if ($this->locations->removeElement($location)) {
-            // set the owning side to null (unless already changed)
             if ($location->getConfig() === $this) {
                 $location->setConfig(null);
             }

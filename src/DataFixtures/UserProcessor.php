@@ -24,6 +24,6 @@ class UserProcessor implements ProcessorInterface
 
     public function postProcess(string $fixtureId, object $object): void
     {
-        // No-op
+     
     }
 }

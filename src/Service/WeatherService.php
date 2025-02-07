@@ -27,7 +27,6 @@ class WeatherService
         ]);
 
         $data = $response->toArray();
-        // Utilisation de dd() pour déboguer les données
     
 
         return $data;    }

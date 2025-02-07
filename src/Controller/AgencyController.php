@@ -31,7 +31,6 @@ class AgencyController extends AbstractController
         /** @var \App\Entity\User */
         $user = $this->getUser();
 
-        // Commenté pour ignorer les rôles
         if ($user->hasRole('ROLE_AGENCY_HEAD')) {
             $agencies = $agencyRepository->findBy(['user' => $user->getId()]);
 

@@ -74,7 +74,6 @@ class Kit
     public function removeConfig(Config $config): static
     {
         if ($this->configs->removeElement($config)) {
-            // set the owning side to null (unless already changed)
             if ($config->getKit() === $this) {
                 $config->setKit(null);
             }

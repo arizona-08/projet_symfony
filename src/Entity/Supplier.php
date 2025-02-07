@@ -97,7 +97,6 @@ class Supplier
     public function removeVehicle(Vehicle $vehicle): static
     {
         if ($this->vehicles->removeElement($vehicle)) {
-            // set the owning side to null (unless already changed)
             if ($vehicle->getSupplier() === $this) {
                 $vehicle->setSupplier(null);
             }

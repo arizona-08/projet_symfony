@@ -163,7 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAgency(Agency $agency): static
     {
         if ($this->agencies->removeElement($agency)) {
-            // Set the owning side to null (unless already changed)
             if ($agency->getUser() === $this) {
                 $agency->setUser(null);
             }
@@ -188,8 +187,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        // $roles[] = 'ROLE_USER';
+ 
 
         return array_unique($roles);
     }
@@ -222,7 +220,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeLocation(Location $location): self
     {
         if ($this->locations->removeElement($location)) {
-            // Set the owning side to null (unless already changed)
             if ($location->getUser() === $this) {
                 $location->setUser(null);
             }
@@ -236,8 +233,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+
     }
 
     /**
@@ -261,7 +257,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeConfig(Config $config): static
     {
         if ($this->configs->removeElement($config)) {
-            // set the owning side to null (unless already changed)
             if ($config->getClient() === $this) {
                 $config->setClient(null);
             }
@@ -296,7 +291,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeFeedback(Feedback $feedback): static
     {
         if ($this->feedback->removeElement($feedback)) {
-            // set the owning side to null (unless already changed)
             if ($feedback->getClient() === $this) {
                 $feedback->setClient(null);
             }

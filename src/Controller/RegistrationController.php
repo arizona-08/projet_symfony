@@ -30,7 +30,6 @@ class RegistrationController extends AbstractController
                 $this->addFlash('error', 'Email invalide');
                 return $this->redirectToRoute('app_register');
             }
-            // encode the plain password
             $name = $form->get('name')->getData();
             $user->setName($name);
             $user->setRoles(['ROLE_USER']);
@@ -42,7 +41,6 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');
         }
