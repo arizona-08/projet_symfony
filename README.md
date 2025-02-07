@@ -1,51 +1,113 @@
-# Symfony Docker
+# **FlexiFleet - Système de Gestion de Flotte**
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
+FlexiFleet est une application web permettant aux agences de location de gérer leurs flottes de véhicules et aux clients de réserver des voitures en ligne. Elle propose une interface intuitive pour les différents utilisateurs ayant des rôles distincts : administrateurs, chefs d'agence, gestionnaires de commandes, fournisseurs et clients (dont des abonnés VIP).
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+---
 
-## Getting Started
+## **Table des Matières**
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull always -d --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+1. [Installation](#installation)
+2. [Utilisation](#utilisation)
+3. [Fonctionnalités](#fonctionnalités)
+4. [Comptes de test](#comptes-de-test)
+5. [Contributeurs](#contributeurs)
 
-## Features
+---
 
-* Production, development and CI ready
-* Just 1 service by default
-* Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-* [Vulcain](https://vulcain.rocks) support
-* Native [XDebug](docs/xdebug.md) integration
-* Super-readable configuration
+## **Installation**
 
-**Enjoy!**
+### **Prérequis**
+Avant de commencer, assurez-vous d'avoir :
+- **Docker** et **Docker Compose** installés sur votre machine.
+- **PHP 8** (si vous exécutez le projet sans Docker).
 
-## Docs
+### **Installation du projet**
 
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
+1. Clonez le projet :
+   ```bash
+   git clone https://github.com/arizona-08/projet_symfony.git
+   cd flexifleet
+   ```
+2. Construisez et démarrez les containers Docker :
+   ```bash
+   docker compose build --no-cache
+   docker compose up -d
+   ```
+3. Installez les dépendances PHP :
+   ```bash
+   docker exec -it web_app composer install
+   ```
+4. Créez la base de données :
+   ```bash
+   docker exec -it web_app php bin/console doctrine:database:create
+   ```
+5. Chargez les données d'exemple (fixtures) :
+   ```bash
+   docker exec -it web_app php bin/console hautelook:fixtures:load --env=dev
+   ```
+6. Exécutez TailwindCSS (nécessaire pour le design) :
+   ```bash
+   docker exec -it web_app php bin/console tailwind:build --watch --poll
+   ```
+7. Accédez à l'application :
+   - Ouvrez **localhost** dans votre navigateur.
 
-## License
+---
 
-Symfony Docker is available under the MIT License.
+## **Utilisation**
 
-## Credits
+Une fois installé, FlexiFleet permet :
+- De naviguer dans le catalogue des véhicules disponibles.
+- De réserver des véhicules avec un compte utilisateur.
+- De gérer les véhicules et les agences en fonction des permissions attribuées aux rôles.
+- D'accéder à des fonctionnalités avancées via l'abonnement VIP.
 
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+---
+
+## **Fonctionnalités**
+
+### **1. Gestion des Utilisateurs**
+- Inscription, connexion et réinitialisation de mot de passe.
+- Gestion des profils.
+- Administration des comptes utilisateurs.
+
+### **2. Dashboard**
+- Accès à une page permettant de louer des véhicules.
+
+### **3. Gestion des Véhicules**
+- Ajout, modification et suppression de véhicules.
+- Gestion des disponibilités et des kilométrages.
+
+### **4. Gestion des Agences**
+- Création et gestion des agences pour les chefs d'agence et les administrateurs.
+
+### **5. Gestion des Locations**
+- Recherche et réservation de véhicules par les clients.
+- Validation et gestion des commandes par les gestionnaires de commande.
+
+### **7. Gestion des Commandes**
+- Confirmation, annulation et suivi des réservations.
+
+---
+
+## **Comptes de Test**
+
+Pour tester l'application, utilisez les identifiants suivants :
+
+| Rôle               | Email                     | Mot de passe |
+|---------------------|-------------------------|--------------|
+| **Darkadmin**      | dark@example.com        | password     |
+| **Admin**          | admin@example.com       | password     |
+| **Client Standard**| client1@example.com     | password     |
+| **Client VIP**     | clientvip@example.com   | password     |
+| **Chef d'Agence**  | agencyh1@example.com    | password     |
+| **Gestionnaire**   | agencym@example.com     | password     |
+
+---
+
+## **Contributeurs**
+
+Ce projet a été réalisé par l'équipe **FlexiFleet**.
+
+**Bon développement !** 🚀
+

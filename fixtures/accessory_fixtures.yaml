@@ -1,0 +1,7 @@
+App\Entity\Accessory:
+    accessory_1:
+        name: '49.3'
+    accessory_2:
+        name: 'Poutre de Bamako'
+    accessory_3:
+        name: 'Glock 17'

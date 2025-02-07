@@ -1,6 +1,25 @@
 {% extends "base.html.twig" %}
 
+{% block title %}Welcome!{% endblock %}
 {% block body %}
-    {# Créer un template navbar #}
-   <h1 class="text-3xl font-semibold">Bienvenue sur FlexiFleet</h1>
+    {% include "components/navbar.html.twig" %}
+    <main class="relative">
+        {% block main %}
+
+            <section class="w-full min-h-[calc(100vh-65px)] sm:min-h-[calc(100vh-69px)] bg-hero-car bg-center bg-cover px-3 py-6 custom-2xl:px-0">
+                <div id="cover" class="absolute top-0 left-0 w-full h-full bg-black/75"></div>
+
+                <div class="w-full mb-4 text-white flex flex-col items-center absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <h1 class="text-4xl font-bold mb-3 text-center">Faites de vos rêves une réalité.</h1>
+                    <p class="mb-2 text-center">Louez la voiture de vos rêves le temps d'un moment.</p>
+                    {% if app.user is defined and app.user is not null %}
+                        <button class="px-2 py-1 bg-red-600 rounded max-w-md font-medium text-white"><a href="{{ path('dashboard') }}">Aller à l'accueil</a></button>
+                    {% else %}
+                        <button class="px-2 py-1 bg-red-600 rounded max-w-md font-medium text-white"><a href="{{ path('app_register') }}">Inscription</a></button>
+                    {% endif %}
+                </div>
+            </section>
+        {% endblock %}
+    </main>
+
 {% endblock %}

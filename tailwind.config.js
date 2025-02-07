@@ -5,7 +5,17 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        "custom-2xl" : "1292px"
+      },
+      backgroundImage: {
+        'hero-car': "url('./imgs/hero-car.jpg')"
+      },
+      maxWidth: {
+        '8xl': '96rem'
+      }
+    },
   },
   plugins: [],
 }

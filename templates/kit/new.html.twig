@@ -1,0 +1,50 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Ajouter un Kit{% endblock %}
+
+{% block main %}
+<section class="max-w-8xl m-auto px-3 py-12 bg-gray-900 h-screen text-gray-100">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-200">Ajouter un nouveau kit</h1>
+        <p class="text-lg text-gray-400 mt-3">Remplissez les informations ci-dessous pour ajouter un kit.</p>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
+    <div class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md">
+        <form action="{{ path('app_kit_new') }}" method="POST">
+            {{ form_start(form, { 'attr': {'class': 'space-y-6'} }) }}
+
+            <div>
+                <label for="kit_name" class="block text-sm font-medium text-gray-200">Nom du Kit</label>
+                {{ form_widget(form.name, { 'attr': {'class': 'mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500'} }) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div>
+                <label for="kit_accessory" class="block text-sm font-medium text-gray-200">Accessoires</label>
+                {{ form_widget(form.accessory, { 'attr': {'class': 'mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500'} }) }}
+                {{ form_errors(form.accessory) }}
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button type="submit" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                    Ajouter
+                </button>
+            </div>
+
+            {{ form_end(form) }}
+        </form>
+    </div>
+</section>
+{% endblock %}

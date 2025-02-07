@@ -1,0 +1,13 @@
+App\Entity\Config:
+    config_1:
+        client: '@user_client_vip'
+        vehicle: '@car_1'
+        kit: '@kit_1'
+    config_2:
+        client: '@user_client_vip_2'
+        vehicle: '@car_4'
+        kit: '@kit_2'
+    config_3:
+        client: '@user_client_vip_3'
+        vehicle: '@car_6'
+        kit: '@kit_3'

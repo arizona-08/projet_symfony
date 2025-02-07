@@ -1,0 +1,167 @@
+{% extends "index.html.twig" %}
+
+{% block main %}
+<section class="max-w-8xl m-auto px-3 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Bonjour{{ user != null ? ', ' ~ user.getName : '' }} !</h1>
+        <p class="text-lg text-gray-600 mt-3">Parcourez notre catalogue et commandez votre véhicule préféré en toute simplicité.</p>
+    </div>
+
+    {% if app.user is not null %}
+        {% if selectedVehicles is not empty %}
+            <div class="bg-white shadow-md rounded-lg p-6 mb-10">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Commande en cours</h2>
+                <form action="{{ path('app_location_validate') }}" method="POST">
+                    {% if is_granted('ROLE_AGENCY_HEAD') %}
+                        <div class="mb-6">
+                            <span class="block text-sm font-medium text-gray-700 mb-2">Pour le client:</span>
+                            <select name="client" id="client" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                {% for client in clients %}
+                                    <option value="{{ client.id }}">{{ client.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                    {% endif %}
+
+                    <input type="hidden" name="start_date" id="start_date" value="{{ start_date }}">
+                    <input type="hidden" name="end_date" id="end_date" value="{{ end_date }}">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-2">Date de début :</label>
+                            <input type="date" name="start_date" value="{{ app.request.query.get('start_date') }}" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-2">Date de fin :</label>
+                            <input type="date" name="end_date" value="{{ app.request.query.get('end_date') }}" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    {% for message in app.flashes('error') %}
+                        <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded relative mb-6">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+
+                    <div class="space-y-4">
+                        {% for vehicle in selectedVehicles %}
+                            <div class="flex flex-col bg-blue-50 p-4 rounded-lg shadow-md">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-800">{{ vehicle.marque }} - {{ vehicle.model }}</h3>
+                                    <p class="text-gray-600">Prix par jour : <span class="font-bold">{{ vehicle.pricePerDay }}€</span></p>
+                                </div>
+
+                                {% if vehicle.status.name != 'Disponible' %}
+                                    <div class="mt-2 text-sm text-yellow-600">
+                                        <strong>Status :</strong> {{ vehicle.status.name }}
+                                        {% if vehicle.locations %}
+                                            {% for location in vehicle.locations %}
+                                                du {{location.startDate|date('d/m/Y') }} au {{location.endDate|date('d/m/Y') }}
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                {% if vehiclesAvailability[vehicle.id] %}
+                                    <div class="mt-2 text-sm text-green-600">
+                                        <strong>Disponibilité :</strong> {{ vehiclesAvailability[vehicle.id] }}
+                                    </div>
+                                {% endif %}
+
+                                <a href="{{ path('dashboard_remove_from_order', { id: vehicle.id }) }}" class="text-red-600 hover:text-red-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </a>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <p class="text-lg font-semibold text-gray-800 mt-4">
+                        Prix total par jour : <span id="totalPrice" class="text-blue-600">{{ totalPrice }}€</span>
+                    </p>
+
+                    <div class="mt-4 flex justify-end gap-4">
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Valider la commande
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="bg-gray-300 border-l-4 border-red-500  p-4 mb-6 rounded-md">
+            <p class="font-bold">Attention</p>
+            <p>Vous devez être connecté pour passer une commande.</p>
+            <div class="mt-4">
+                <a href="{{ path('app_login') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Se connecter
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    <form action="{{ path('dashboard') }}" method="GET" class="bg-white shadow-md rounded-lg p-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div>
+                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Recherche :</label>
+                <input type="text" name="search" id="search" placeholder="Marque ou modèle" value="{{ app.request.query.get('search') }}" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Marque :</label>
+                <select name="brand" id="brand" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm">
+                    <option value="">Toutes</option>
+                    {% for brand in brands %}
+                        <option value="{{ brand }}" {{ app.request.query.get('brand') == brand ? 'selected' : '' }}>
+                            {{ brand }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Prix max :</label>
+                <input type="number" name="price" id="price" placeholder="Prix max" value="{{ app.request.query.get('price') }}" class="w-full px-4 py-2 border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                    Rechercher
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-y-10 gap-x-8">
+        {% if vehicles is not empty %}
+            {% for vehicle in vehicles %}
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800">{{ vehicle.marque }} - {{ vehicle.model }}</h3>
+                        <p class="text-gray-600 mt-3">
+                            <span class="font-bold text-lg">{{ vehicle.pricePerDay }}€</span> par jour
+                        </p>
+                        <p class="text-gray-500 mt-2">Kilométrage : <span class="font-medium">{{ vehicle.nbKilometrage }} km</span></p>
+                        <p class="text-gray-500">Agence : {{ vehicle.agency ? vehicle.agency.label : 'Non assignée' }}</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 text-center">
+                        <a href="{{ path('dashboard_add_to_order', app.request.query.all|merge({ id: vehicle.id })) }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                            Commander
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center">
+                <p class="text-gray-500 text-lg">Aucun véhicule disponible pour le moment. Essayez de modifier vos filtres.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-8 text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+</section>
+{% endblock %}

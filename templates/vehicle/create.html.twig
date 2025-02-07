@@ -1,0 +1,81 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Ajouter un véhicule{% endblock %}
+
+{% block main %}
+<section class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Ajouter un véhicule</h2>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <form action="{{ path('vehicle_create') }}" method="POST" class="bg-white p-6 shadow-md rounded-lg">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700">Type de véhicule</label>
+                    <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <option value="car">Voiture</option>
+                        <option value="motorcycle">Moto</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="marque" class="block text-sm font-medium text-gray-700">Marque</label>
+                    <input type="text" name="marque" id="marque" placeholder="Marque" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="model" class="block text-sm font-medium text-gray-700">Modèle</label>
+                    <input type="text" name="model" id="model" placeholder="Modèle" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="last_maintenance" class="block text-sm font-medium text-gray-700">Dernière maintenance</label>
+                    <input type="date" name="last_maintenance" id="last_maintenance" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="nb_kilometrage" class="block text-sm font-medium text-gray-700">Nombre de kilomètres</label>
+                    <input type="number" name="nb_kilometrage" id="nb_kilometrage" placeholder="Kilomètres" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="nb_serie" class="block text-sm font-medium text-gray-700">Numéro de série</label>
+                    <input type="text" name="nb_serie" id="nb_serie" placeholder="N° de série" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="supplier_id" class="block text-sm font-medium text-gray-700">Fournisseur</label>
+                    <select name="supplier_id" id="supplier_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        {% for supplier in suppliers %}
+                            <option value="{{ supplier.id }}">{{supplier.getLabel}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="agency_id" class="block text-sm font-medium text-gray-700">Agence</label>
+                    <select name="agency_id" id="agency_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        {% for agency in agencies %}
+                            <option value="{{ agency.id }}">{{ agency.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="price_per_day" class="block text-sm font-medium text-gray-700">Prix par jour</label>
+                    <input type="number" name="price_per_day" id="price_per_day" placeholder="Prix par jour" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="px-2 py-1 border-2 border-red-600 rounded font-medium">
+                    Ajouter
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

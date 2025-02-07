@@ -1,0 +1,104 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Agence - {{ agency.label }}{% endblock %}
+
+{% block main %}
+<section class="max-w-8xl m-auto px-3 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Détails de l'agence : {{ agency.label }}</h1>
+        <p class="text-lg text-gray-600 mt-3">Informations détaillées sur l'agence et ses véhicules associés.</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 mb-10">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Informations de l'agence</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Nom :</label>
+                <p class="mt-1 text-gray-800">{{ agency.label }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Chef d'agence :</label>
+                <p class="mt-1 text-gray-800">{{ agency.user.name }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Nombre de véhicules :</label>
+                <p class="mt-1 text-gray-800">{{ agency.vehicles|length }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Adresse :</label>
+                <p class="mt-1 text-gray-800">{{ agency.address }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Ville :</label>
+                <p class="mt-1 text-gray-800">{{ agency.city }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Code postal :</label>
+                <p class="mt-1 text-gray-800">{{ agency.zipCode }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Véhicules associés</h2>
+        {% if agency.vehicles is empty %}
+            <div class="bg-white shadow-md rounded-lg p-6 text-center">
+                <p class="text-gray-500">Cette agence ne possède aucun véhicule pour le moment.</p>
+            </div>
+        {% else %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for vehicle in pagination %}
+                    <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800">{{ vehicle.marque }} - {{ vehicle.model }}</h3>
+                            <p class="text-gray-600 mt-3">
+                                <span class="font-bold">Dernière maintenance :</span>
+                                {{ vehicle.lastMaintenance|date('d/m/Y') }}
+                            </p>
+                            <p class="text-gray-600 mt-1">
+                                <span class="font-bold">Kilométrage :</span>
+                                {{ vehicle.nbKilometrage }} km
+                            </p>
+                            <p class="text-gray-600 mt-1">
+                                <span class="font-bold">Numéro de série :</span>
+                                {{ vehicle.nbSerie }}
+                            </p>
+                            <p class="text-gray-600 mt-1">
+                                <span class="font-bold">Fournisseur :</span>
+                                {{ vehicle.supplier.label ?? 'N/A' }}
+                            </p>
+                            <p class="text-gray-600 mt-1">
+                                <span class="font-bold">Statut :</span>
+                                {{ vehicle.status.label ?? 'N/A' }}
+                            </p>
+                        </div>
+                        <div class="p-4 bg-gray-50 text-center">
+                            <a href="{{ path('vehicle_show', { id: vehicle.id }) }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                Voir détails
+                            </a>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="mt-8 text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+    <div class="mt-6 flex justify-end gap-4">
+        <a href="{{ path('agency_index') }}" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+            Retour
+        </a>
+        <a href="{{ path('agency_edit', { id: agency.id }) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+            Modifier
+        </a>
+        <form action="{{ path('agency_delete', { id: agency.id }) }}" method="POST" class="inline">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                Supprimer
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

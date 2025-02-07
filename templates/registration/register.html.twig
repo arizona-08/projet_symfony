@@ -1,0 +1,46 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block main %}
+<section class="max-w-8xl m-auto px-3 py-12 flex justify-center items-center min-h-[calc(100vh-69px)] bg-gray-100">
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-md p-6">
+        <div class="text-center mb-6">
+            <h1 class="text-4xl font-bold text-gray-800">Inscription</h1>
+            <p class="text-gray-600 mt-2">Créez un compte pour accéder à nos services.</p>
+        </div>
+
+            {% for message in app.flashes('error') %}
+                <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+        {{ form_start(registrationForm, {'attr': {'class': 'flex flex-col gap-4'}}) }}
+            {{ form_errors(registrationForm) }}
+
+            <div class="flex flex-col gap-2">
+                {{ form_label(registrationForm.name, 'Nom :', {'label_attr': {'class': 'font-medium text-gray-700'}}) }}
+                {{ form_widget(registrationForm.name, {'attr': {'class': 'border-2 rounded-md p-3 w-full focus:ring-red-600 focus:border-red-600'}}) }}
+                {{ form_errors(registrationForm.name) }}
+            </div>
+
+            <div class="flex flex-col gap-2">
+                {{ form_label(registrationForm.email, 'Email :', {'label_attr': {'class': 'font-medium text-gray-700'}}) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'border-2 rounded-md p-3 w-full focus:ring-red-600 focus:border-red-600'}}) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="flex flex-col gap-2">
+                {{ form_label(registrationForm.plainPassword, 'Mot de passe :', {'label_attr': {'class': 'font-medium text-gray-700'}}) }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'border-2 rounded-md p-3 w-full focus:ring-red-600 focus:border-red-600'}}) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            <button type="submit" class="px-2 py-1 bg-red-600 rounded text-white font-medium">
+                M'inscrire
+            </button>
+        {{ form_end(registrationForm) }}
+    </div>
+</section>
+{% endblock %}

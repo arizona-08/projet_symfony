@@ -1,0 +1,85 @@
+App\Entity\User:
+    user_client_1:
+        name: 'Client1'
+        password: 'password'
+        email: 'client1@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_USER']
+    user_client_2:
+        name: 'Client2'
+        password: 'password'
+        email: 'client2@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_USER']
+    user_admin:
+        name: 'Admin'
+        password: 'password'
+        email: 'admin@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_ADMIN']
+    user_client_vip:
+        name: 'Client VIP 1'    
+        password: 'password'
+        email: 'clientvip@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_VIP']
+    user_client_vip_2:
+        name: 'Client VIP 2'
+        password: 'password'
+        email: 'clientvip2@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_VIP']
+    user_client_vip_3:
+        name: 'Client VIP 3'
+        password: 'password'
+        email: 'clientvip3@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_VIP']
+    user_agency_head_1:
+        name: 'Agency Head 1'
+        password: 'password'
+        email: 'agencyh1@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_AGENCY_HEAD']
+    user_agency_head_2:
+        name: 'Agency Head 2'
+        password: 'password'
+        email: 'agencyh2@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_AGENCY_HEAD']
+    user_agency_manager:
+        name: 'Agency Manager'
+        password: 'password'
+        email: 'agencym@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_AGENCY_MANAGER']
+    user_supplier_manager:
+        name: 'Supplier Manager'
+        password: 'password'
+        email: 'supplierm@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_SUPPLIER_MANAGER']
+    user_order_manager:
+        name: 'Order Manager 1'
+        password: 'password'
+        email: 'supplierm@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_ORDER_MANAGER']    
+    user_dark_admin:
+        name: 'Dark Admin'
+        password: 'password'
+        email: 'dark@example.com'
+        email_verified_at: <dateTime('now')>
+        created_at: <dateTime('now')>
+        roles: ['ROLE_DARK_ADMIN']

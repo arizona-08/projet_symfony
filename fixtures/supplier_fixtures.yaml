@@ -1,0 +1,13 @@
+App\Entity\Supplier:
+    supplier_1:
+        label: 'Supplier One'
+        createdAt: <dateTime('now')>
+        updatedAt: <dateTime('now')>
+    supplier_2:
+        label: 'Supplier Two'
+        createdAt: <dateTime('now')>
+        updatedAt: <dateTime('now')>
+    supplier_3:
+        label: 'Supplier Three'
+        createdAt: <dateTime('now')>
+        updatedAt: <dateTime('now')>

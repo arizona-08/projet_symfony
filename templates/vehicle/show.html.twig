@@ -1,0 +1,59 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Véhicule - {{ vehicle.marque }} {{ vehicle.model }}{% endblock %}
+
+{% block main %}
+<section class="max-w-4xl m-auto px-4 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Détails du véhicule</h1>
+        <p class="text-lg text-gray-600 mt-3">Visualisez les informations détaillées de ce véhicule.</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 text-center mx-auto">
+        <div class="p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ vehicle.marque }} - {{ vehicle.model }}</h2>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Dernière maintenance :</span>
+                {{ vehicle.lastMaintenance ? vehicle.lastMaintenance|date('d/m/Y') : 'Non définie' }}
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Nombre de kilomètres :</span>
+                {{ vehicle.nbKilometrage }} km
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Numéro de série :</span>
+                {{ vehicle.nbSerie }}
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Prix par jour :</span>
+                <span class="text-blue-600 font-bold">{{ vehicle.pricePerDay }} €</span>
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Agence :</span>
+                {{ vehicle.agency ? vehicle.agency.label : 'Non assignée' }}
+            </p>
+            <p class="text-gray-600 mb-4">
+                <span class="font-medium">Fournisseur :</span>
+                {{ vehicle.supplier ? vehicle.supplier.label : 'Non assigné' }}
+        
+        </div>
+    </div>
+    <div class="mt-6 text-center flex justify-center gap-4">
+        <a href="{{ path('vehicle_index') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-600 hover:text-white transition-colors">
+            Retour à la liste
+        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('vehicle_edit', { id: vehicle.id }) }}" class="px-4 py-2 text-yellow-600 border border-yellow-600 rounded-md font-medium hover:bg-yellow-600 hover:text-white transition-colors">
+                Modifier
+            </a>
+            <form action="{{ path('vehicle_delete', { id: vehicle.id }) }}" method="POST" class="inline">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="px-4 py-2 text-red-600 border border-red-600 rounded-md font-medium hover:bg-red-600 hover:text-white transition-colors">
+                    Supprimer
+                </button>
+            </form>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

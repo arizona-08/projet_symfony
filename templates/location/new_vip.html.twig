@@ -1,0 +1,89 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Créer une Location VIP{% endblock %}
+
+{% block main %}
+<section class="max-w-8xl m-auto px-3 py-12">
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-gray-800">Créer une Location VIP</h1>
+        <p class="text-lg text-gray-600 mt-3">
+            Passez une commande en utilisant la configuration sélectionnée.
+        </p>
+    </div>
+
+    {% for message in app.flashes('success') %}
+    <div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded mb-4">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto">
+        <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-800">Détails de la configuration :</h3>
+            <div class="bg-gray-100 p-4 rounded-md shadow mt-3">
+                <h4 class="text-lg font-semibold text-gray-900">Véhicule</h4>
+                <p class="text-lg font-bold text-blue-700 mt-1">
+                    {{ config.vehicle.marque }} - {{ config.vehicle.model }}
+                </p>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <div class="bg-gray-100 p-4 rounded-md shadow mt-3">
+                <h4 class="text-lg font-semibold text-gray-900">Kit</h4>
+                <p class="text-lg font-bold text-green-700 mt-1">
+                    {{ config.kit.name }}
+                </p>
+                <div class="mt-4">
+                    <h4 class="text-lg font-semibold text-gray-900">Accessoires inclus :</h4>
+                    <ul class="list-disc list-inside text-gray-700 mt-2">
+                        {% for accessory in config.kit.accessory %}
+                            <li>{{ accessory }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="grid grid-cols-1 gap-6 mb-6">
+            <div>
+                <label for="start_date" class="block text-sm font-medium text-gray-700 mb-2">Date de début :</label>
+                {{ form_widget(form.start_date, {
+                    'attr': {
+                        'class': 'w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500'
+                    }
+                }) }}
+            </div>
+            <div>
+                <label for="end_date" class="block text-sm font-medium text-gray-700 mb-2">Date de fin :</label>
+                {{ form_widget(form.end_date, {
+                    'attr': {
+                        'class': 'w-full px-4 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500'
+                    }
+                }) }}
+            </div>
+        </div>
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800">Véhicule non disponible aux dates suivantes :</h3>
+            <div class="bg-gray-100 p-4 rounded-md shadow mt-3">
+                <p class="text-gray-700">{{ vehicleAvailability }}</p>
+            </div>
+        </div>
+        <div class="flex justify-end gap-4">
+            <a href="{{ path('app_location_index') }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md shadow-md hover:bg-gray-400">
+                Retour à la liste
+            </a>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700">
+                Créer
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</section>
+{% endblock %}
