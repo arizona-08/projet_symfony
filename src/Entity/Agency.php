@@ -125,7 +125,6 @@ class Agency
     public function removeVehicle(Vehicle $vehicle): static
     {
         if ($this->vehicles->removeElement($vehicle)) {
-            // Set the owning side to null (unless already changed)
             if ($vehicle->getAgency() === $this) {
                 $vehicle->setAgency(null);
             }

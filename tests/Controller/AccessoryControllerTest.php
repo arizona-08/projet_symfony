@@ -36,8 +36,7 @@ final class AccessoryControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('Accessory index');
 
-        // Use the $crawler to perform additional assertions e.g.
-        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
+
     }
 
     public function testNew(): void
@@ -72,7 +71,6 @@ final class AccessoryControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('Accessory');
 
-        // Use assertions to check that the properties are properly displayed.
     }
 
     public function testEdit(): void

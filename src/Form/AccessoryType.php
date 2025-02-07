@@ -15,11 +15,7 @@ class AccessoryType extends AbstractType
     {
         $builder
             ->add('name')
-            // ->add('kits', EntityType::class, [
-            //     'class' => Kit::class,
-            //     'choice_label' => 'id',
-            //     'multiple' => true,
-            // ])
+
         ;
     }
 

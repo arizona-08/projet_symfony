@@ -40,7 +40,6 @@ final class LocationController extends AbstractController
         $filter = $request->query->get('filter', 'all');
         $user = $this->getUser();
 
-        // Récupération des locations selon le filtre
         $locations = match ($filter) {
             'finished' => $locationRepository->findFinishedByUser($user),
             'ongoing' => $locationRepository->findOngoingByUser($user),
@@ -48,7 +47,6 @@ final class LocationController extends AbstractController
             default => $locationRepository->findAllByUser($user),
         };
 
-        // Transformation et vérification des véhicules dans les locations
         $locationsWithTotalPrice = array_map(function ($location) {
             $totalPrice = array_reduce(
                 $location->getVehicles()->toArray(),
@@ -68,7 +66,6 @@ final class LocationController extends AbstractController
             ];
         }, $locations);
 
-        // Ajout des messages flash pour les locations sans véhicule
         foreach ($locationsWithTotalPrice as $locationData) {
             if (empty($locationData['location']->getVehicles()->toArray())) {
                 $this->addFlash(
@@ -102,7 +99,6 @@ final class LocationController extends AbstractController
             }
         }
 
-        // if the user is an agency head, we only show the locations of the vehicles of his agency
 
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -258,7 +254,6 @@ final class LocationController extends AbstractController
                 }
             }
 
-            // Création de la location
             $location->setUser($user);
             $location->setStartDate($startDate);
             $location->setEndDate($endDate);
@@ -458,7 +453,6 @@ final class LocationController extends AbstractController
         EmailService $emailService
     ): Response {
         if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->request->get('_token'))) {
-            // Envoyer l'email avant la suppression
             $emailService->sendLocationDeletedNotification(
                 $location->getUser()->getEmail(),
                 $location->getId()

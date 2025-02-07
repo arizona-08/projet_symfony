@@ -81,7 +81,7 @@ class HomeController extends AbstractController
                     return sprintf(
                         'du %s au %s',
 
-                        $reservation->getStartDate()->format('d/m/Y'), // Utilisation des méthodes getter
+                        $reservation->getStartDate()->format('d/m/Y'), 
             $reservation->getEndDate()->format('d/m/Y')
                     );
                 }, $reservations);
@@ -106,7 +106,6 @@ class HomeController extends AbstractController
         }
 
         $queryBuilder = $vehicleRepository->createQueryBuilder('v');
-        //affiche que les véhicules de l'agence de l'utilisateur si rôle agency_head
         if($user && $user->hasRole('ROLE_AGENCY_HEAD')){
             $queryBuilder->andWhere('v.agency = :agency')
                 ->setParameter('agency', $user->getAgencies()[0]);
@@ -174,7 +173,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $client = $request->request->get('client'); // retourne l'id du client en string
+        $client = $request->request->get('client');
         $clientObject = $userRepository->find((int)$client);
         $startDate = new \DateTime($request->request->get('start_date'));
         $endDate = new \DateTime($request->request->get('end_date'));

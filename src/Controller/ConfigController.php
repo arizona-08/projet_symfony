@@ -28,11 +28,6 @@ class ConfigController extends AbstractController
     {
         $user = $this->getUser();
 
-        // pas nécessaire si on a déjà un firewall qui gère les rôles (voir config/packages/security.yaml)
-        // if (!$user || !in_array('ROLE_VIP', $user->getRoles())) {
-        //     throw $this->createAccessDeniedException('You are not allowed to view configurations.');
-        // }
-
         $configs = $configRepository->findBy(['client' => $user]);
 
         $easterEgg = new EasterEgg();

@@ -14,11 +14,11 @@ class MotorcycleProvider{
 
     public static function motorcycleBrand()
     {
-        return array_rand(self::$brands); // Random brand name
+        return array_rand(self::$brands); 
     }
 
     public static function motorcycleModel($brand)
     {
-        return self::$brands[$brand][array_rand(self::$brands[$brand])]; // Matching model
+        return self::$brands[$brand][array_rand(self::$brands[$brand])]; 
     }
 }
